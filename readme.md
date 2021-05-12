@@ -66,3 +66,17 @@
 ### config
 
 [viper](!https://github.com/spf13/viper)
+
+
+## 启动方式
+
+### 普通启动
+```
+go build .
+```
+
+### Docker启动
+```
+docker build -t fly:v1.0.0 .
+docker run --rm -it -p 8888:8888 -p 9999:9999 --name fly fly:v1.0.0
+```
