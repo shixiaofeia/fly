@@ -1,0 +1,38 @@
+{
+  "ServerAddress": "0.0.0.0",
+  "ServerPort": "8888",
+  "WebSocketPort": "9999",
+  "IsMonitor": true,
+  "Mysql": {
+    "Write": {
+      "Address": "",
+      "Port": "3306",
+      "User": "root",
+      "Password": "root",
+      "DBName": "fly",
+      "MaxIdleCoon": 50,
+      "MaxOpenCoon": 500
+    },
+    "Read": {
+    }
+  },
+  "Redis": {
+    "地址格式": "127.0.0.1:6379",
+    "Address": "",
+    "Password": "",
+    "AddressList": []
+  },
+  "RabbitMq": {
+    "Address": "",
+    "Port": "5672",
+    "User": "admin",
+    "Password": "admin"
+  },
+  "Email": {
+    "Website": "https://blog.csdn.net/ywdhzxf",
+    "User": "",
+    "NickName": "Fly运营团队",
+    "Password": "",
+    "Logo": "https://profile.csdnimg.cn/8/9/2/3_ywdhzxf"
+  }
+}
