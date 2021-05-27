@@ -5,11 +5,15 @@ import (
 	"fly/pkg/httpcode"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/middleware/pprof"
+	"time"
 )
 
 // Index
 func Index(app *iris.Application) {
-	app.Get("/", httpcode.HeaderMiddleware, func(ctx iris.Context) {
+	app.Use(httpcode.HeaderMiddleware)
+
+	app.Get("/", func(ctx iris.Context) {
+		time.Sleep(10 * time.Second)
 		r, _ := httpcode.NewRequest(ctx, nil)
 		r.JsonOk("Welcome To Fly")
 	})
@@ -17,7 +21,7 @@ func Index(app *iris.Application) {
 	app.Any("/debug/pprof", pprof.New())
 	// 加载子路由
 	app.Any("/debug/pprof/{action:path}", pprof.New())
-	v1 := app.Party("/v1", httpcode.HeaderMiddleware)
+	v1 := app.Party("/v1")
 	{
 		example.InitApi(v1)
 	}

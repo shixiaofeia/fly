@@ -27,9 +27,11 @@
 ├── db                  // 数据库相关
 |  ├── sqldb            // mysql相关, 包含对sql相关的操作
 ├── pkg                 // 安全导入的包(可以被任何项目直接导入使用)
-|  ├── cache            // 缓存相关
-|  └── monitor          // 监控定时服务相关
-|  └── models           // 公用结构体
+|  ├── httpcode         // 请求处理组件
+|  ├── logging          // 日志组件
+|  └── mq               // mq组件
+|  └── mysql            // mysql组件
+|  └── redis            // redis组件
 ├── go.mod              // 包管理    
 ├── main.go             // 入口文件     
 ├── Dockerfile          // Dockerfile     
