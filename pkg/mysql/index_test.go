@@ -1,7 +1,6 @@
 package mysql
 
 import (
-	"context"
 	"testing"
 	"time"
 )
@@ -16,7 +15,7 @@ func TestGetDB(t *testing.T) {
 		CreateTime int64  `gorm:"column:create_time;default:0" json:"createTime"`
 		UpdateTime int64  `gorm:"column:update_time;default:0" json:"updateTime"`
 	}
-	tx := NewWriteDB(context.TODO())
+	tx := NewWriteDB()
 	if err := tx.AutoMigrate(Fly{}); err != nil {
 		t.Error(err)
 	}

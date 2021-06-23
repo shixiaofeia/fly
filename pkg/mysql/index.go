@@ -1,7 +1,6 @@
 package mysql
 
 import (
-	"context"
 	"fly/pkg/logging"
 	"fmt"
 	"gorm.io/driver/mysql"
@@ -44,13 +43,13 @@ func Init(readConf, writeConf Conf) (err error) {
 }
 
 // NewReadDB
-func NewReadDB(ctx context.Context) *gorm.DB {
-	return readDB.WithContext(ctx)
+func NewReadDB() *gorm.DB {
+	return readDB
 }
 
 // NewWriteDB
-func NewWriteDB(ctx context.Context) *gorm.DB {
-	return writeDB.WithContext(ctx)
+func NewWriteDB() *gorm.DB {
+	return writeDB
 }
 
 // InitReadDB 初始化读
@@ -59,7 +58,7 @@ func InitReadDB(c Conf) (err error) {
 		logging.Log.Warn("InitReadDB not config")
 		return
 	}
-	dsn := c.User + ":" + c.Password + "@tcp(" + c.Address + ":" + c.Port + ")/" + c.DBName + "?charset=utf8&parseTime=True&loc=Local"
+	dsn := c.User + ":" + c.Password + "@tcp(" + c.Address + ":" + c.Port + ")/" + c.DBName + "?charset=utf8mb4&parseTime=True&loc=Local"
 	mysqlConfig.DSN = dsn
 	db, err := gorm.Open(mysql.New(mysqlConfig), &gorm.Config{Logger: newLogger})
 	if err != nil {
@@ -78,7 +77,7 @@ func InitWriteDB(c Conf) (err error) {
 		logging.Log.Warn("InitWriteDB not config")
 		return
 	}
-	dsn := c.User + ":" + c.Password + "@tcp(" + c.Address + ":" + c.Port + ")/" + c.DBName + "?charset=utf8&parseTime=True&loc=Local"
+	dsn := c.User + ":" + c.Password + "@tcp(" + c.Address + ":" + c.Port + ")/" + c.DBName + "?charset=utf8mb4&parseTime=True&loc=Local"
 	mysqlConfig.DSN = dsn
 	db, err := gorm.Open(mysql.New(mysqlConfig), &gorm.Config{Logger: newLogger})
 	if err != nil {

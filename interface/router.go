@@ -5,7 +5,6 @@ import (
 	"fly/pkg/httpcode"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/middleware/pprof"
-	"time"
 )
 
 // Index
@@ -13,7 +12,6 @@ func Index(app *iris.Application) {
 	app.Use(httpcode.HeaderMiddleware)
 
 	app.Get("/", func(ctx iris.Context) {
-		time.Sleep(10 * time.Second)
 		r, _ := httpcode.NewRequest(ctx, nil)
 		r.JsonOk("Welcome To Fly")
 	})

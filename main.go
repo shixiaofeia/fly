@@ -16,21 +16,21 @@ import (
 )
 
 func main() {
-	var err error
-	app := iris.New()
-
-	// 优雅的关闭程序
-	wg := new(sync.WaitGroup)
+	var (
+		err         error
+		ctx, cancel = context.WithTimeout(context.Background(), 20*time.Second)
+		wg          = new(sync.WaitGroup)
+		app         = iris.New()
+	)
+	defer cancel()
 	defer wg.Wait()
+	// 优雅的关闭程序
 	iris.RegisterOnInterrupt(func() {
 		wg.Add(1)
 		defer wg.Done()
-		ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
-		defer cancel()
 		// 关闭所有主机
 		_ = app.Shutdown(ctx)
 	})
-
 	// 初始化配置
 	config.Init()
 	// 注册mysql
@@ -50,7 +50,7 @@ func main() {
 	sqldb.InitCreateTables()
 
 	// 监控服务
-	go monitor.InitMonitor()
+	go monitor.InitMonitor(ctx)
 	// 初始化路由
 	api.Index(app)
 	// 监听端口
