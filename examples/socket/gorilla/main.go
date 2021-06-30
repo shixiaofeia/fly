@@ -49,11 +49,8 @@ func consumer(conn *websocket.Conn) {
 	for {
 		_, data, err := conn.ReadMessage()
 		if err != nil {
-			if err.Error() == fmt.Sprintf("websocket: close %d (no status)", websocket.CloseNoStatusReceived) {
-				return
-			}
 			fmt.Println("consumer err: " + err.Error())
-			continue
+			return
 		}
 		fmt.Println(fmt.Sprintf("consumer data: %v", string(data)))
 	}
