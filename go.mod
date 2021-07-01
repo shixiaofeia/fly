@@ -19,9 +19,12 @@ require (
 	github.com/kataras/golog v0.1.7 // indirect
 	github.com/kataras/iris/v12 v12.1.8
 	github.com/kataras/neffos v0.0.18
+	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/microcosm-cc/bluemonday v1.0.3 // indirect
 	github.com/moul/http2curl v1.0.0 // indirect
 	github.com/nats-io/nats-server/v2 v2.2.3 // indirect
+	github.com/olivere/elastic v6.2.35+incompatible // indirect
+	github.com/olivere/elastic/v6 v6.2.1
 	github.com/onsi/gomega v1.12.0 // indirect
 	github.com/robfig/cron v1.2.0
 	github.com/satori/go.uuid v1.2.0
