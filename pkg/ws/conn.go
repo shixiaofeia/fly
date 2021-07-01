@@ -41,7 +41,7 @@ func (c *SocketConn) Close() {
 
 // JoinGroup 加入组
 func (c *SocketConn) JoinGroup(groupId GroupId) error {
-	if !GroupExist(groupId) {
+	if !new(SocketGroup).Exist(groupId) {
 		return errors.New("groupId not exist")
 	}
 	NewGroup(groupId).Join(c.ConnId)

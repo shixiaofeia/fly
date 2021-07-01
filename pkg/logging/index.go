@@ -35,7 +35,7 @@ func NewLogger(logPath string, level zapcore.Level, maxSize int, maxBackups int,
 		TimeKey:        "time",
 		LevelKey:       "level",
 		NameKey:        "logger",
-		CallerKey:      "linenum",
+		CallerKey:      "file",
 		MessageKey:     "msg",
 		StacktraceKey:  "stacktrace",
 		LineEnding:     zapcore.DefaultLineEnding,
@@ -57,7 +57,7 @@ func NewLogger(logPath string, level zapcore.Level, maxSize int, maxBackups int,
 	core := zapcore.NewCore(
 		zapcore.NewJSONEncoder(encoderConfig),                                           // 编码器配置
 		zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(&hook)), // 打印到控制台和文件
-		atomicLevel, // 日志级别
+		atomicLevel,                                                                     // 日志级别
 	)
 
 	// 开启开发模式，堆栈跟踪

@@ -14,8 +14,8 @@ func NewGroup(groupId GroupId) *SocketGroup {
 	return sockets.Groups[groupId]
 }
 
-// GroupExist 组是否存在
-func GroupExist(groupId GroupId) bool {
+// Exist 组是否存在
+func (g *SocketGroup) Exist(groupId GroupId) bool {
 	sockets.GroupLock.RLock()
 	defer sockets.GroupLock.RUnlock()
 	if _, ok := sockets.Groups[groupId]; ok {

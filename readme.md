@@ -1,5 +1,9 @@
 # Welcome To Fly
 
+## 简介
+
+一个简单快速实现业务的后端项目
+
 ## 项目结构
 
 参考 [Go程序布局](!https://github.com/golang-standards/project-layout/blob/master/README_zh.md)
@@ -49,6 +53,10 @@
 
 [iris 号称最快的Web框架](!https://github.com/kataras/iris)
 
+### Socket
+
+[gorilla](!https://github.com/gorilla/websocket)
+
 ### mysql
 
 [gorm](!https://gorm.io/)
@@ -69,15 +77,16 @@
 
 [viper](!https://github.com/spf13/viper)
 
-
 ## 启动方式
 
-### 普通启动
+### 命令行启动
+
 ```
-go build .
+go run main.go
 ```
 
 ### Docker启动
+
 ```
 docker build -t fly:v1.0.0 .
 docker run --rm -it -p 8888:8888 -p 9999:9999 --name fly fly:v1.0.0
