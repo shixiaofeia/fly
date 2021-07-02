@@ -25,6 +25,7 @@ func (c *SocketConn) delUser() {
 // GetConnByUserId 获取指定用户连接
 func (c *SocketConn) GetConnByUserId(userId UserId) (*SocketConn, error) {
 	sockets.UserLock.RLock()
+	defer sockets.UserLock.RUnlock()
 	connId, ok := sockets.Users[userId]
 	if !ok {
 		return nil, errors.New("userId not exist")
