@@ -45,6 +45,9 @@ func (c *SocketConn) JoinGroup(groupId GroupId) error {
 		return errors.New("groupId not exist")
 	}
 	NewGroup(groupId).Join(c.ConnId)
+	c.Lock.Lock()
+	c.Groups[groupId] = struct{}{}
+	c.Lock.Unlock()
 	return nil
 }
 

@@ -2,7 +2,9 @@ package ws
 
 import (
 	"github.com/gorilla/websocket"
+	"log"
 	"sync"
+	"time"
 )
 
 type (
@@ -44,6 +46,10 @@ var (
 	}
 )
 
+func init() {
+	go printSockets()
+}
+
 // NewClient 新的连接
 func NewClient(connId ConnId, userId UserId, conn *websocket.Conn, handle func(*SocketConn, []byte)) {
 	client := &SocketConn{
@@ -61,4 +67,33 @@ func NewClient(connId ConnId, userId UserId, conn *websocket.Conn, handle func(*
 	go client.consumer(handle)
 	go client.production()
 	return
+}
+
+// printSockets 打印sockets信息(调试堆栈释放)
+func printSockets() {
+	var (
+		clientNum    int
+		groupNum     int
+		userNum      int
+		groupUserNum int
+	)
+	for {
+		sockets.ClientLock.RLock()
+		clientNum = len(sockets.Clients)
+		sockets.ClientLock.RUnlock()
+		sockets.GroupLock.RLock()
+		groupNum = len(sockets.Groups)
+		if val, ok := sockets.Groups["10010"]; ok {
+			val.Lock.RLock()
+			groupUserNum = len(val.ConnIds)
+			val.Lock.RUnlock()
+		}
+		sockets.GroupLock.RUnlock()
+		sockets.UserLock.RLock()
+		userNum = len(sockets.Users)
+		sockets.UserLock.RUnlock()
+		log.Printf("clientNum: %d, groupNum: %d, userNum: %d, groupUserNum: %d", clientNum, groupNum, userNum, groupUserNum)
+		time.Sleep(10 * time.Second)
+	}
+
 }
