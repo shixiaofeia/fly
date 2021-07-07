@@ -47,7 +47,7 @@ var (
 )
 
 func init() {
-	go printSockets()
+	//go printSockets()
 }
 
 // NewClient 新的连接
