@@ -30,13 +30,15 @@ func CallApi(url, method string, data interface{}, response interface{}, header 
 		logging.Log.Error(fmt.Sprintf("NewRequest err: %v, url: %s", err, url))
 		return
 	}
+	// 防止Tcp复用
+	request.Close = true
 	if method == RequestGetPost {
 		request.Header.Set("Content-Type", "application/json;charset=UTF-8")
 	}
 	for k, v := range header {
 		request.Header.Add(k, v)
 	}
-	client := http.Client{}
+	client := &http.Client{}
 	client.Timeout = constants.CallInnerTimeOut
 	resp, err := client.Do(request)
 	if err != nil {
