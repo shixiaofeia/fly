@@ -24,8 +24,8 @@ func (c *SocketConn) Close() {
 	if err := c.Conn.Close(); err != nil {
 		return
 	}
-	c.closeCh <- 1
-	c.closeCh <- 1
+	close(c.closeCh)
+	close(c.sendCh)
 	c.delUser()
 	// 退出群组
 	for groupId := range c.Groups {
@@ -34,8 +34,6 @@ func (c *SocketConn) Close() {
 	sockets.ClientLock.Lock()
 	defer sockets.ClientLock.Unlock()
 	delete(sockets.Clients, c.ConnId)
-	close(c.sendCh)
-	close(c.closeCh)
 	return
 }
 
@@ -45,6 +43,9 @@ func (c *SocketConn) JoinGroup(groupId GroupId) error {
 		return errors.New("groupId not exist")
 	}
 	NewGroup(groupId).Join(c.ConnId)
+	c.Lock.Lock()
+	c.Groups[groupId] = struct{}{}
+	c.Lock.Unlock()
 	return nil
 }
 
@@ -79,6 +80,8 @@ func (c *SocketConn) production() {
 // consumer 消费
 func (c *SocketConn) consumer(handle func(*SocketConn, []byte)) {
 	for {
+		// 1分钟收不到心跳自动断开
+		_ = c.Conn.SetReadDeadline(time.Now().Add(time.Minute))
 		_, data, err := c.Conn.ReadMessage()
 		if err != nil {
 			// 预防客户端未发送消息主动断开连接
@@ -90,6 +93,7 @@ func (c *SocketConn) consumer(handle func(*SocketConn, []byte)) {
 				continue
 			}
 		}
+		_ = c.Conn.SetReadDeadline(time.Time{})
 		handle(c, data)
 	}
 }
