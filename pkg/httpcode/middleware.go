@@ -23,10 +23,12 @@ func HeaderMiddleware(ctx iris.Context) {
 			return
 		}
 	}()
-	ctx.Header("Access-Control-Allow-Credentials", "true")
-	ctx.Header("Access-Control-Allow-Origin", ctx.Request().Header.Get("origin"))
-	ctx.Header("Access-Control-Allow-Headers", "Content-Type,Authorization,x-access-token,captcha-session")
-	ctx.Header("content-type", "application/json")
+	ctx.Header("Access-Control-Allow-Origin", "*")
+	ctx.Header("Access-Control-Allow-Headers", "*")
+	ctx.Header("content-type", "application/json;charset=utf-8")
+	if ctx.Method() == "OPTIONS" {
+		return
+	}
 	start := time.Now().UnixNano()
 	ctx.Values().Set(CtxStartTime, start)
 	ctx.Next()
