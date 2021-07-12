@@ -44,7 +44,7 @@
 ├── cmd                 // 如果该项目有多个入口文件, 则舍弃main文件根据业务存放在cmd里
 |  ├── xxx-interface
 |  |   ├── main.go      // 入口文件
-|  |   ├── Dockerfile   // docker file  
+|  |   ├── Dockerfile   // Dockerfile  
 ```
 
 ## 技术选型
