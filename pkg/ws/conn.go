@@ -25,7 +25,6 @@ func (c *SocketConn) Close() {
 		return
 	}
 	close(c.closeCh)
-	close(c.sendCh)
 	c.delUser()
 	// 退出群组
 	for groupId := range c.Groups {
@@ -34,6 +33,7 @@ func (c *SocketConn) Close() {
 	sockets.ClientLock.Lock()
 	defer sockets.ClientLock.Unlock()
 	delete(sockets.Clients, c.ConnId)
+	close(c.sendCh)
 	return
 }
 

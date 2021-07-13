@@ -42,8 +42,9 @@ func (g *SocketGroup) Exit(connId ConnId) {
 func (g *SocketGroup) SendMsg(msg interface{}) {
 	g.Lock.RLock()
 	defer g.Lock.RUnlock()
+	s := &SocketConn{}
 	for connId := range g.ConnIds {
-		if c, err := new(SocketConn).GetConnById(connId); err == nil {
+		if c, err := s.GetConnById(connId); err == nil {
 			c.SendMsg(msg)
 		}
 	}
