@@ -8,7 +8,7 @@
 
 ## 项目结构
 
-参考 [Go程序布局](!https://github.com/golang-standards/project-layout/blob/master/README_zh.md)
+参考 [Go程序布局](https://github.com/golang-standards/project-layout/blob/master/README_zh.md)
 
 ```
 ├── README.md
@@ -53,31 +53,31 @@
 
 ### web框架
 
-[iris 号称最快的Web框架](!https://github.com/kataras/iris)
+[iris 号称最快的Web框架](https://github.com/kataras/iris)
 
 ### socket
 
-[gorilla](!https://github.com/gorilla/websocket)
+[gorilla](https://github.com/gorilla/websocket)
 
 ### mysql
 
-[gorm](!https://gorm.io/)
+[gorm](https://gorm.io/)
 
 ### redis
 
-[redis](!https://github.com/go-redis/redis)
+[redis](https://github.com/go-redis/redis)
 
 ### mq
 
-[amqp](!https://github.com/streadway/amqp)
+[amqp](https://github.com/streadway/amqp)
 
 ### log
 
-[zap](!https://pkg.go.dev/go.uber.org/zap)
+[zap](https://pkg.go.dev/go.uber.org/zap)
 
 ### config
 
-[viper](!https://github.com/spf13/viper)
+[viper](https://github.com/spf13/viper)
 
 ## 启动方式
 
