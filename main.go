@@ -17,17 +17,18 @@ import (
 
 func main() {
 	var (
-		err         error
-		ctx, cancel = context.WithTimeout(context.Background(), 20*time.Second)
-		wg          = new(sync.WaitGroup)
-		app         = iris.New()
+		err error
+		ctx, cancel = context.WithCancel(context.Background())
+		wg  = new(sync.WaitGroup)
+		app = iris.New()
 	)
-	defer cancel()
 	defer wg.Wait()
 	// 优雅的关闭程序
 	iris.RegisterOnInterrupt(func() {
 		wg.Add(1)
 		defer wg.Done()
+		cancel()
+		time.Sleep(20 * time.Second)
 		// 关闭所有主机
 		_ = app.Shutdown(ctx)
 	})

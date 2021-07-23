@@ -4,6 +4,8 @@
 
 一个简单快速实现业务的后端项目
 
+[个人博客](https://blog.csdn.net/ywdhzxf/)
+
 ## 项目结构
 
 参考 [Go程序布局](!https://github.com/golang-standards/project-layout/blob/master/README_zh.md)
