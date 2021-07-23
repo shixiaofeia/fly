@@ -22,7 +22,7 @@ func TestNewClient(t *testing.T) {
 		indexName = "fly"
 		indexType = "_doc"
 	)
-	if err := Init("http://10.32.1.206:9200"); err != nil {
+	if err := Init("http://127.0.0.1:9200"); err != nil {
 		t.Error(err.Error())
 	}
 	// index exist
