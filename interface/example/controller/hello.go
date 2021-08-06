@@ -33,12 +33,13 @@ func Export(ctx iris.Context) {
 		return
 	}
 	type Response struct {
-		Name string `json:"name"`
+		Id   int    `json:"id"`
+		Name string `json:"name" excel:"-"`
 		Age  int    `json:"age"`
 	}
 	dataList := []interface{}{
-		Response{"1", 2},
-		Response{"3", 4},
+		Response{1, "1", 2},
+		Response{2, "3", 4},
 	}
-	r.DataToExcel([]string{"名字", "年龄"}, dataList, "test")
+	r.DataToExcel([]string{"Id", "年龄"}, dataList, "test")
 }

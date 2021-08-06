@@ -11,6 +11,7 @@ import (
 	"github.com/tealeg/xlsx"
 	"gopkg.in/validator.v2"
 	"reflect"
+	"strings"
 	"time"
 )
 
@@ -118,7 +119,7 @@ func (r *Req) DataToExcel(titleList []string, data interface{}, fileName string)
 		row.WriteSlice(&dataList, -1)
 	}
 	fileName = fmt.Sprintf("%s.xlsx", fileName)
-	// 打开注册即可本地保存文件
+	// 打开save即可本地保存文件
 	_ = file.Save(fileName)
 	r.ctx.Header("Content-Disposition", fmt.Sprintf(`attachment; filename="%s"`, fileName))
 	r.ctx.Header("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
@@ -142,8 +143,39 @@ func RecursionStructValueToSlice(val interface{}, v reflect.Value, data *[]inter
 		if v.Field(i).Type().Kind() == reflect.Struct {
 			RecursionStructValueToSlice(nil, v.Field(i), data)
 		} else {
+			t := v.Type().Field(i)
+			tags := ParseTagSetting(t.Tag, "excel")
+			// 忽略不导出字段
+			if _, ok := tags["-"]; ok {
+				continue
+			}
 			*data = append(*data, v.Field(i).Interface())
 		}
 	}
 	return
+}
+
+// ParseTagSetting 获取字段tags
+func ParseTagSetting(tags reflect.StructTag, key ...string) map[string]string {
+	setting := map[string]string{}
+	for _, v := range key {
+		str := tags.Get(v)
+		if len(str) == 0 {
+			continue
+		}
+		tagList := strings.Split(str, ";")
+		for _, value := range tagList {
+			if len(value) == 0 {
+				continue
+			}
+			tagV := strings.Split(value, ":")
+			k := strings.TrimSpace(strings.ToUpper(tagV[0]))
+			if len(tagV) >= 2 {
+				setting[k] = strings.Join(tagV[1:], ":")
+			} else {
+				setting[k] = k
+			}
+		}
+	}
+	return setting
 }
