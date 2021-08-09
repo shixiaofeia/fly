@@ -1,0 +1,7 @@
+.git
+Dockerfile
+.idea/*
+logs
+*_test.go
+readme.md
+.gitignore
