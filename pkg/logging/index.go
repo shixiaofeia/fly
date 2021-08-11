@@ -41,8 +41,9 @@ func NewLogger(logPath string, level zapcore.Level, maxSize int, maxBackups int,
 		LineEnding:     zapcore.DefaultLineEnding,
 		EncodeLevel:    zapcore.LowercaseLevelEncoder,  // 小写编码器
 		EncodeTime:     zapcore.ISO8601TimeEncoder,     // ISO8601 UTC 时间格式
+		FunctionKey:    "func",                         // 方法名
 		EncodeDuration: zapcore.SecondsDurationEncoder, //
-		EncodeCaller:   zapcore.FullCallerEncoder,      // 全路径编码器
+		EncodeCaller:   zapcore.ShortCallerEncoder,     // 路径
 		EncodeName:     zapcore.FullNameEncoder,
 	}
 	// 时间格式自定义
@@ -62,9 +63,11 @@ func NewLogger(logPath string, level zapcore.Level, maxSize int, maxBackups int,
 
 	// 开启开发模式，堆栈跟踪
 	caller := zap.AddCaller()
-	// 开启文件及行号
+	// 开发模式
 	development := zap.Development()
+	// 忽略封装器
+	skip := zap.AddCallerSkip(1)
 	// 构造日志
-	logger := zap.New(core, caller, development)
+	logger := zap.New(core, caller, development, skip)
 	return logger
 }

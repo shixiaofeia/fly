@@ -51,7 +51,8 @@ func (r *Req) JsonCode(code ErrCode, data interface{}) {
 	takeTime := (time.Now().UnixNano() - startTime) / 1e6
 	r.ctx.Header(CtxRequestId, r.requestId)
 	_, _ = r.ctx.JSON(map[string]interface{}{"code": code.Code, "message": code.Msg, "run": takeTime, "data": data})
-	r.Log.Info(fmt.Sprintf("api: %s, param: %s, code: %+v, response: %+v", r.ctx.Request().RequestURI, r.body, code, data))
+	r.Log.Info(fmt.Sprintf("api: %s, param: %s, code: %+v", r.ctx.Request().RequestURI, r.body, code))
+	//r.Log.Info(fmt.Sprintf("api: %s, param: %s, code: %+v, response: %+v", r.ctx.Request().RequestURI, r.body, code, data))
 }
 
 // NewRequest 解析post传参
@@ -60,7 +61,7 @@ func NewRequest(ctx iris.Context, params interface{}) (r *Req, b bool) {
 	r = &Req{
 		ctx:       ctx,
 		requestId: uid,
-		Log:       logging.NewPrefixLog("API X-Request-Id: " + uid),
+		Log:       logging.NewPrefixLog("X-Request-Id: " + uid),
 	}
 	if params != nil {
 		body, err := ctx.GetBody()
