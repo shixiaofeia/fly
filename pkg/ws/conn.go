@@ -9,8 +9,8 @@ import (
 
 // GetConnById 获取指定连接
 func (c *SocketConn) GetConnById(connId ConnId) (*SocketConn, error) {
-	sockets.ClientLock.RLock()
-	defer sockets.ClientLock.RUnlock()
+	sockets.clientMu.RLock()
+	defer sockets.clientMu.RUnlock()
 	if v, ok := sockets.Clients[connId]; ok {
 		return v, nil
 	}
@@ -19,8 +19,8 @@ func (c *SocketConn) GetConnById(connId ConnId) (*SocketConn, error) {
 
 // Close 关闭连接
 func (c *SocketConn) Close() {
-	c.Lock.Lock()
-	defer c.Lock.Unlock()
+	c.mu.Lock()
+	defer c.mu.Unlock()
 	if err := c.Conn.Close(); err != nil {
 		return
 	}
@@ -30,8 +30,8 @@ func (c *SocketConn) Close() {
 	for groupId := range c.Groups {
 		NewGroup(groupId).Exit(c.ConnId)
 	}
-	sockets.ClientLock.Lock()
-	defer sockets.ClientLock.Unlock()
+	sockets.clientMu.Lock()
+	defer sockets.clientMu.Unlock()
 	delete(sockets.Clients, c.ConnId)
 	close(c.sendCh)
 	return
@@ -43,17 +43,17 @@ func (c *SocketConn) JoinGroup(groupId GroupId) error {
 		return errors.New("groupId not exist")
 	}
 	NewGroup(groupId).Join(c.ConnId)
-	c.Lock.Lock()
+	c.mu.Lock()
 	c.Groups[groupId] = struct{}{}
-	c.Lock.Unlock()
+	c.mu.Unlock()
 	return nil
 }
 
 // ExitGroup 退出组
 func (c *SocketConn) ExitGroup(groupId GroupId) {
 	NewGroup(groupId).Exit(c.ConnId)
-	c.Lock.Lock()
-	defer c.Lock.Unlock()
+	c.mu.Lock()
+	defer c.mu.Unlock()
 	delete(c.Groups, groupId)
 	return
 }

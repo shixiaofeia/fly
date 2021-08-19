@@ -13,22 +13,22 @@ type (
 	UserId  string // 用户Id
 	// Socket 连接管理
 	Socket struct {
-		ClientLock sync.RWMutex
-		GroupLock  sync.RWMutex
-		UserLock   sync.RWMutex
-		Clients    map[ConnId]*SocketConn   // 连接Map
-		Groups     map[GroupId]*SocketGroup // 组Map
-		Users      map[UserId]ConnId        // 用户映射
+		clientMu sync.RWMutex
+		groupMu  sync.RWMutex
+		userMu   sync.RWMutex
+		Clients  map[ConnId]*SocketConn   // 连接Map
+		Groups   map[GroupId]*SocketGroup // 组Map
+		Users    map[UserId]ConnId        // 用户映射
 	}
 	// SocketGroup 组
 	SocketGroup struct {
-		Lock    sync.RWMutex
+		mu      sync.RWMutex
 		GroupId GroupId
 		ConnIds map[ConnId]struct{}
 	}
 	// SocketConn 单个连接
 	SocketConn struct {
-		Lock    sync.Mutex
+		mu      sync.Mutex
 		ConnId  ConnId
 		Conn    *websocket.Conn
 		UserId  UserId
@@ -60,9 +60,9 @@ func NewClient(connId ConnId, userId UserId, conn *websocket.Conn, handle func(*
 		sendCh:  make(chan []byte, 20),
 		closeCh: make(chan uint8, 2),
 	}
-	sockets.ClientLock.Lock()
+	sockets.clientMu.Lock()
 	sockets.Clients[client.ConnId] = client
-	sockets.ClientLock.Unlock()
+	sockets.clientMu.Unlock()
 	client.addUser()
 	go client.consumer(handle)
 	go client.production()
@@ -78,20 +78,20 @@ func printSockets() {
 		groupUserNum int
 	)
 	for {
-		sockets.ClientLock.RLock()
+		sockets.clientMu.RLock()
 		clientNum = len(sockets.Clients)
-		sockets.ClientLock.RUnlock()
-		sockets.GroupLock.RLock()
+		sockets.clientMu.RUnlock()
+		sockets.groupMu.RLock()
 		groupNum = len(sockets.Groups)
 		if val, ok := sockets.Groups["10010"]; ok {
-			val.Lock.RLock()
+			val.mu.RLock()
 			groupUserNum = len(val.ConnIds)
-			val.Lock.RUnlock()
+			val.mu.RUnlock()
 		}
-		sockets.GroupLock.RUnlock()
-		sockets.UserLock.RLock()
+		sockets.groupMu.RUnlock()
+		sockets.userMu.RLock()
 		userNum = len(sockets.Users)
-		sockets.UserLock.RUnlock()
+		sockets.userMu.RUnlock()
 		log.Printf("clientNum: %d, groupNum: %d, userNum: %d, groupUserNum: %d", clientNum, groupNum, userNum, groupUserNum)
 		time.Sleep(10 * time.Second)
 	}
