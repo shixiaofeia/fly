@@ -63,6 +63,10 @@
 
 [gorm](https://gorm.io/)
 
+### clickhouse
+
+[dbr](https://github.com/mailru/dbr)
+
 ### redis
 
 [redis](https://github.com/go-redis/redis)
