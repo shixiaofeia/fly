@@ -5,12 +5,17 @@ import (
 	"fly/pkg/httpcode"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/middleware/pprof"
+	recover2 "github.com/kataras/iris/v12/middleware/recover"
 )
 
 // Index
 func Index(app *iris.Application) {
+	app.Use(recover2.New())
 	app.Use(httpcode.HeaderMiddleware)
 
+	app.Options("/*", func(ctx iris.Context) {
+		ctx.Next()
+	})
 	app.Get("/", func(ctx iris.Context) {
 		r, _ := httpcode.NewRequest(ctx, nil)
 		r.JsonOk("Welcome To Fly")
