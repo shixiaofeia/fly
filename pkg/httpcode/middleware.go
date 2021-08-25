@@ -12,7 +12,6 @@ func HeaderMiddleware(ctx iris.Context) {
 	ctx.Header("content-type", "application/json;charset=utf-8")
 	if ctx.Request().Method == "OPTIONS" {
 		ctx.Header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,PATCH,OPTIONS")
-		ctx.Header("Access-Control-Allow-Headers", "Content-Type, Accept, Authorization")
 		ctx.StatusCode(204)
 		return
 	}
