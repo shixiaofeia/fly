@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fly/pkg/email"
 	"fly/pkg/logging"
+	"fly/pkg/mongo"
 	"fly/pkg/mq"
 	"fly/pkg/redis"
 	"fmt"
@@ -15,16 +16,16 @@ import (
 type jsonConfig struct {
 	ServerAddress string // 对外服务地址
 	ServerPort    string // 对外服务端口
-	WebSocketPort string // socket端口
 	IsMonitor     bool   // 是否启动monitor
-	Mysql         MySqlConfig
+	Mysql         MySqlConf
+	Mongo         mongo.Conf
 	Redis         redis.Conf
 	RabbitMq      mq.Conf
 	Email         email.Conf
-	QiNiu         QiNiuConfig
-	ALi           ALiYunConfig
-	Wechat        WechatConfig
-	BaiDu         BaiDuConfig
+	QiNiu         QiNiuConf
+	ALi           ALiYunConf
+	Wechat        WechatConf
+	BaiDu         BaiDuConf
 }
 
 var configPath string
@@ -59,7 +60,7 @@ func WatchConfig() {
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
 		// 配置文件发生变更之后会调用的回调函数
-		logging.Log.Info("Config file changed: " + e.Name)
+		logging.Log.Info("Conf file changed: " + e.Name)
 		parseConfig()
 	})
 }

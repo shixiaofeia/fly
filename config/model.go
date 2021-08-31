@@ -2,28 +2,28 @@ package config
 
 import "fly/pkg/mysql"
 
-type MySqlConfig struct {
+type MySqlConf struct {
 	Write mysql.Conf // 写配置
 	Read  mysql.Conf // 读配置
 }
 
-type QiNiuConfig struct {
+type QiNiuConf struct {
 	AccessKey string
 	SecretKey string
 	Bucket    string
 	Domain    string
 }
 
-type ALiYunConfig struct {
+type ALiYunConf struct {
 	AccessKeyId     string
 	AccessKeySecret string
 }
 
-type WechatConfig struct {
+type WechatConf struct {
 	AppId     string
 	AppSecret string
 }
 
-type BaiDuConfig struct {
+type BaiDuConf struct {
 	Ak string // 百度地图AK
 }

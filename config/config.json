@@ -1,7 +1,6 @@
 {
   "ServerAddress": "0.0.0.0",
   "ServerPort": "8888",
-  "WebSocketPort": "9999",
   "IsMonitor": true,
   "Mysql": {
     "Write": {

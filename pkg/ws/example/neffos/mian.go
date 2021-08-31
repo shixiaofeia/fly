@@ -52,7 +52,7 @@ func production(conn *neffos.Conn) {
 	}
 }
 
-// consumer 消费 TODO 存在漏接消息的情况, 已提issues
+// consumer 消费 TODO 存在漏接消息的情况, 已提[issues](https://github.com/kataras/neffos/issues/58)
 func consumer(conn *neffos.Conn) {
 	for {
 		data, _, err := conn.Socket().ReadData(0)
