@@ -1,11 +1,14 @@
 package mongo
 
 import (
+	"fly/pkg/logging"
+	"fmt"
 	"gopkg.in/mgo.v2"
 )
 
 type Conf struct {
-	Address string
+	Address     string // 地址 host:port
+	MaxPoolSize int    // 连接池最大值
 }
 
 var (
@@ -14,12 +17,23 @@ var (
 
 // Init 初始化
 func Init(c Conf) (err error) {
-	session, err = mgo.Dial(c.Address)
+	if c.Address == "" {
+		logging.Log.Warn("Init MongoDB not config")
+		return
+	}
+	if c.MaxPoolSize <= 0 {
+		c.MaxPoolSize = 10
+	}
+	session, err = mgo.Dial(fmt.Sprintf("mongodb://%s?maxPoolSize=%d", c.Address, c.MaxPoolSize))
 	if err != nil {
 		return
 	}
-	// Optional. Switch the session to a monotonic behavior.
-	session.SetMode(mgo.Monotonic, true)
+	// 单调模式, 此模式下调用session必须使用copy/clone, 使用完进行close, 不然可能会有缓存冲突问题
+	//session.SetMode(mgo.Monotonic, true)
+	// 最终一致性 直接使用 NewCollection 就可以, 但提交顺序可能存在不一致, 每次都是获取新的连接
+	session.SetMode(mgo.Eventual, true)
+	// set pool limit
+	session.SetPoolLimit(c.MaxPoolSize)
 	return nil
 }
 
