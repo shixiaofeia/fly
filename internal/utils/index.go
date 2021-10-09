@@ -1,7 +1,9 @@
 package utils
 
 import (
+	"bytes"
 	"crypto/md5"
+	"encoding/gob"
 	"encoding/hex"
 	"math/rand"
 	"reflect"
@@ -65,4 +67,13 @@ func Assign(origin, target interface{}, excludes ...string) {
 		}
 		tmpTarget.Set(tmpOrigin)
 	}
+}
+
+// DeepCopy 深拷贝
+func DeepCopy(source, target interface{}) error {
+	var buf bytes.Buffer
+	if err := gob.NewEncoder(&buf).Encode(source); err != nil {
+		return err
+	}
+	return gob.NewDecoder(bytes.NewBuffer(buf.Bytes())).Decode(target)
 }
