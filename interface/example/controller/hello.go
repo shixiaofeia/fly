@@ -8,16 +8,18 @@ import (
 
 // Hello 请求示例
 func Hello(ctx iris.Context) {
-	type Param struct {
-		Name string `json:"name" validate:"nonzero"`
-	}
+	type (
+		Param struct {
+			Name string `json:"name" validate:"nonzero"`
+		}
+		Response struct {
+			Name string `json:"name"`
+		}
+	)
 	req := &Param{}
 	r, ok := httpcode.NewRequest(ctx, req)
 	if !ok {
 		return
-	}
-	type Response struct {
-		Name string `json:"name"`
 	}
 	res := Response{
 		Name: fmt.Sprintf("hello, %s", req.Name),
@@ -37,9 +39,9 @@ func Export(ctx iris.Context) {
 		Name string `json:"name" excel:"-"`
 		Age  int    `json:"age"`
 	}
-	dataList := []interface{}{
-		Response{1, "1", 2},
-		Response{2, "3", 4},
+	dataList := []*Response{
+		{1, "1", 2},
+		{2, "3", 4},
 	}
-	r.DataToExcel([]string{"Id", "年龄"}, dataList, "test")
+	r.ToExcel([]string{"Id", "年龄"}, dataList, "test")
 }

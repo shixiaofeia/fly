@@ -13,3 +13,6 @@
 
 .idea/*
 logs
+
+# Test export
+test.xlsx
