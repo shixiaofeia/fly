@@ -65,7 +65,7 @@ func init() {
 		wg.Add(1)
 		defer wg.Done()
 		cancel()
-		time.Sleep(20 * time.Second)
+		time.Sleep(5 * time.Second)
 		// 关闭所有主机
 		_ = app.Shutdown(ctx)
 	})

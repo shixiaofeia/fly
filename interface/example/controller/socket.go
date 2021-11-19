@@ -3,7 +3,6 @@ package controller
 import (
 	"encoding/json"
 	"fly/pkg/ws"
-	"fmt"
 	"github.com/gorilla/websocket"
 	"github.com/kataras/iris/v12"
 	uuid "github.com/satori/go.uuid"
@@ -38,7 +37,7 @@ func socketHandle(conn *ws.SocketConn, data []byte) {
 	_ = json.Unmarshal(data, req)
 	switch req.OpType {
 	case 1:
-		conn.SendMsg(fmt.Sprintf("hello: %s", req.Data))
+		conn.SendMsg("hello: " + req.Data)
 	case 2:
 		_ = conn.JoinGroup(ws.GroupId(req.Data))
 	case 3:

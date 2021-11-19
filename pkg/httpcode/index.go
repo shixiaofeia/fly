@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"fly/internal/const"
 	"fly/pkg/logging"
-	"fmt"
 	"github.com/kataras/iris/v12"
 	uuid "github.com/satori/go.uuid"
+	"go.uber.org/zap"
 	"gopkg.in/validator.v2"
 	"reflect"
 	"time"
@@ -22,7 +22,7 @@ type Req struct {
 	ctx       iris.Context
 	body      []byte
 	requestId string
-	Log       *logging.PrefixLog
+	Log       *zap.SugaredLogger
 }
 
 // JsonOk 正确的json返回
@@ -49,8 +49,7 @@ func (r *Req) JsonCode(code ErrCode, data interface{}) {
 	takeTime := (time.Now().UnixNano() - startTime) / 1e6
 	r.ctx.Header(CtxRequestId, r.requestId)
 	_, _ = r.ctx.JSON(map[string]interface{}{"code": code.Code, "message": code.Msg, "run": takeTime, "data": data})
-	r.Log.Info(fmt.Sprintf("api: %s, param: %s, code: %+v", r.ctx.Request().RequestURI, r.body, code))
-	//r.Log.Info(fmt.Sprintf("api: %s, param: %s, code: %+v, response: %+v", r.ctx.Request().RequestURI, r.body, code, data))
+	r.Log.Infof("api: %s, run: %d, param: %s, code: %d", r.ctx.Request().RequestURI, takeTime, r.body, code.Code)
 }
 
 // NewRequest 解析post传参
@@ -59,18 +58,18 @@ func NewRequest(ctx iris.Context, params interface{}) (r *Req, b bool) {
 	r = &Req{
 		ctx:       ctx,
 		requestId: uid,
-		Log:       logging.NewPrefixLog("X-Request-Id: " + uid),
+		Log:       logging.NewWithField("X-Request-Id", uid),
 	}
 	if params != nil {
 		body, err := ctx.GetBody()
 		if err != nil {
-			r.Log.Error(fmt.Sprintf("api: %s GetBody err: %v", ctx.Request().RequestURI, err))
+			r.Log.Errorf("api: %s GetBody err: %v", ctx.Request().RequestURI, err)
 			r.JsonParamError()
 			return
 		}
 		if len(body) > 0 {
 			if err = json.Unmarshal(body, params); err != nil {
-				r.Log.Error(fmt.Sprintf("api: %s Unmarshal err: %v, body: %s", ctx.Request().RequestURI, err, body))
+				r.Log.Errorf("api: %s Unmarshal err: %v, body: %s", ctx.Request().RequestURI, err, body)
 				r.JsonParamError()
 				return
 			}

@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	constants "fly/internal/const"
 	"fly/pkg/logging"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 )
@@ -27,7 +26,7 @@ func CallApi(url, method string, data interface{}, response interface{}, header 
 	// 构建请求
 	request, err := http.NewRequest(method, url, reader)
 	if err != nil {
-		logging.Log.Error(fmt.Sprintf("NewRequest err: %v, url: %s", err, url))
+		logging.Log.Errorf("NewRequest err: %v, url: %s", err, url)
 		return
 	}
 	// 防止Tcp复用
@@ -42,7 +41,7 @@ func CallApi(url, method string, data interface{}, response interface{}, header 
 	client.Timeout = constants.CallInnerTimeOut
 	resp, err := client.Do(request)
 	if err != nil {
-		logging.Log.Error(fmt.Sprintf("CallInnerWithHeader err: %v, url: %s", err, url))
+		logging.Log.Errorf("CallInnerWithHeader err: %v, url: %s", err, url)
 		return
 	}
 
@@ -52,7 +51,7 @@ func CallApi(url, method string, data interface{}, response interface{}, header 
 	// 读取返回
 	respBytes, err = ioutil.ReadAll(resp.Body)
 	if err != nil {
-		logging.Log.Error(fmt.Sprintf("CallInnerWithHeader ReadAll err: %v, url: %s, body: %v", err, url, resp.Body))
+		logging.Log.Errorf("CallInnerWithHeader ReadAll err: %v, url: %s, body: %v", err, url, resp.Body)
 		return
 	}
 	// 需要结果则赋值结构体
