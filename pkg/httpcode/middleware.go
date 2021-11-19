@@ -15,7 +15,6 @@ func HeaderMiddleware(ctx iris.Context) {
 		ctx.StatusCode(204)
 		return
 	}
-	start := time.Now().UnixNano()
-	ctx.Values().Set(CtxStartTime, start)
+	ctx.Values().Set(CtxStartTime, time.Now())
 	ctx.Next()
 }

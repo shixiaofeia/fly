@@ -45,11 +45,14 @@ func (r *Req) JsonCode(code ErrCode, data interface{}) {
 	if data == nil {
 		data = map[string]interface{}{}
 	}
-	startTime := r.ctx.Values().GetInt64Default(CtxStartTime, time.Now().UnixNano())
-	takeTime := (time.Now().UnixNano() - startTime) / 1e6
+	var runTime string
+	if startTime, ok := r.ctx.Values().Get(CtxStartTime).(time.Time); ok {
+		runTime = time.Now().Sub(startTime).String()
+	}
+
 	r.ctx.Header(CtxRequestId, r.requestId)
-	_, _ = r.ctx.JSON(map[string]interface{}{"code": code.Code, "message": code.Msg, "run": takeTime, "data": data})
-	r.Log.Infof("api: %s, run: %d, param: %s, code: %d", r.ctx.Request().RequestURI, takeTime, r.body, code.Code)
+	_, _ = r.ctx.JSON(map[string]interface{}{"code": code.Code, "message": code.Msg, "run": runTime, "data": data})
+	r.Log.Infof("api: %s, run: %s, param: %s, code: %d", r.ctx.Request().RequestURI, runTime, r.body, code.Code)
 }
 
 // NewRequest 解析post传参
