@@ -33,11 +33,17 @@
 ├── domain              // 数据库相关
 |  ├── sqldb            // mysql相关, 包含对sql相关的操作
 ├── pkg                 // 安全导入的包(可以被任何项目直接导入使用)
+|  ├── clickhouse       // ck组件
+|  ├── email            // 邮件组件
+|  ├── es               // es组件
 |  ├── httpcode         // 请求处理组件
 |  ├── logging          // 日志组件
+|  ├── mongo            // mongo组件
 |  └── mq               // mq组件
 |  └── mysql            // mysql组件
 |  └── redis            // redis组件
+|  └── safego           // 安全运行组件
+|  └── ws               // socket组件
 ├── go.mod              // 包管理    
 ├── main.go             // 入口文件     
 ├── Dockerfile          // Dockerfile     
