@@ -10,6 +10,7 @@ import (
 	"fly/pkg/mq"
 	"fly/pkg/mysql"
 	"fly/pkg/redis"
+	recover2 "fly/pkg/safego/recover"
 	"github.com/kataras/iris/v12"
 	"sync"
 	"time"
@@ -29,7 +30,9 @@ func main() {
 	domain.InitDomain()
 
 	// 监控服务
-	go monitor.InitMonitor(ctx)
+	recover2.SafeGo(func() {
+		monitor.InitMonitor(ctx)
+	})
 
 	// 初始化路由
 	api.Index(app)
