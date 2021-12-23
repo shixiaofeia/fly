@@ -89,7 +89,7 @@ func (c *SocketConn) consumer(handle func(*SocketConn, []byte)) {
 			case <-c.closeCh:
 				return
 			case <-time.After(1 * time.Second):
-				go c.Close()
+				c.Close()
 				continue
 			}
 		}

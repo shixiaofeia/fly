@@ -1,6 +1,7 @@
 package main
 
 import (
+	recover2 "fly/pkg/safego/recover"
 	"fmt"
 	"github.com/gorilla/websocket"
 	"github.com/kataras/iris/v12"
@@ -26,8 +27,12 @@ func Hello(ctx iris.Context) {
 	if err != nil {
 		return
 	}
-	go production(conn)
-	go consumer(conn)
+	recover2.SafeGo(func() {
+		production(conn)
+	})
+	recover2.SafeGo(func() {
+		consumer(conn)
+	})
 }
 
 // production 生产

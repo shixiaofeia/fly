@@ -1,6 +1,7 @@
 package main
 
 import (
+	recover2 "fly/pkg/safego/recover"
 	"fmt"
 	websocket2 "github.com/gorilla/websocket"
 	"github.com/kataras/iris/v12"
@@ -35,8 +36,13 @@ func Hello(ctx iris.Context) {
 	conn := websocket.Upgrade(ctx, func(ctx context.Context) string {
 		return uuid.NewV4().String()
 	}, ws)
-	go production(conn)
-	go consumer(conn)
+	recover2.SafeGo(func() {
+		production(conn)
+	})
+	recover2.SafeGo(func() {
+		consumer(conn)
+	})
+
 }
 
 // production 生产

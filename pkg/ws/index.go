@@ -1,6 +1,7 @@
 package ws
 
 import (
+	recover2 "fly/pkg/safego/recover"
 	"github.com/gorilla/websocket"
 	"log"
 	"sync"
@@ -47,7 +48,6 @@ var (
 )
 
 func init() {
-	//go printSockets()
 }
 
 // NewClient 新的连接
@@ -64,8 +64,10 @@ func NewClient(connId ConnId, userId UserId, conn *websocket.Conn, handle func(*
 	sockets.Clients[client.ConnId] = client
 	sockets.clientMu.Unlock()
 	client.addUser()
-	go client.consumer(handle)
-	go client.production()
+	recover2.SafeGo(func() {
+		client.consumer(handle)
+	})
+	recover2.SafeGo(client.production)
 	return
 }
 

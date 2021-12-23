@@ -7,6 +7,7 @@ import (
 	"fly/pkg/mongo"
 	"fly/pkg/mq"
 	"fly/pkg/redis"
+	recover2 "fly/pkg/safego/recover"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 	"path"
@@ -33,7 +34,7 @@ var Config = jsonConfig{}
 
 // Init 初始化函数
 func Init() {
-	flag.StringVar(&configPath, "config", "./config", "配置文件路径以及文件名(必填)")
+	flag.StringVar(&configPath, "config", "./config/config.json", "配置文件路径以及文件名(必填)")
 	flag.Parse()
 	// 初始化日志
 	logging.Init("./logs/fly.log", 30, true)
@@ -41,7 +42,7 @@ func Init() {
 	viper.SetConfigType("json")
 	viper.AddConfigPath(path.Dir(configPath))
 	parseConfig()
-	go WatchConfig()
+	recover2.SafeGo(WatchConfig)
 }
 
 // parseConfig 解析配置
