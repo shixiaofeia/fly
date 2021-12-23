@@ -9,6 +9,7 @@ import (
 	"fly/pkg/redis"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
+	"path"
 )
 
 // 用来读取json 映射的结构
@@ -33,11 +34,12 @@ var Config = jsonConfig{}
 // Init 初始化函数
 func Init() {
 	flag.StringVar(&configPath, "config", "./config", "配置文件路径以及文件名(必填)")
+	flag.Parse()
 	// 初始化日志
 	logging.Init("./logs/fly.log", 30, true)
-	viper.SetConfigName("config.json")
+	viper.SetConfigName(path.Base(configPath))
 	viper.SetConfigType("json")
-	viper.AddConfigPath(configPath)
+	viper.AddConfigPath(path.Dir(configPath))
 	parseConfig()
 	go WatchConfig()
 }
