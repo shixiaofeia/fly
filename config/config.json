@@ -1,6 +1,7 @@
 {
   "ServerAddress": "0.0.0.0",
-  "ServerPort": "8888",
+  "ServerPort": ":8888",
+  "RpcPort": ":9999",
   "IsMonitor": true,
   "Mysql": {
     "Write": {

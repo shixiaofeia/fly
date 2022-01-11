@@ -11,7 +11,10 @@ import (
 	"fly/pkg/mysql"
 	"fly/pkg/redis"
 	recover2 "fly/pkg/safego/recover"
+	"fly/rpc"
 	"github.com/kataras/iris/v12"
+	"google.golang.org/grpc"
+	"net"
 	"sync"
 	"time"
 )
@@ -21,6 +24,7 @@ var (
 	ctx, cancel = context.WithCancel(context.Background())
 	wg          = new(sync.WaitGroup)
 	app         = iris.New()
+	gServer     = grpc.NewServer()
 )
 
 func main() {
@@ -37,10 +41,13 @@ func main() {
 	// 初始化路由
 	api.Index(app)
 
+	// rpc
+	initRpc()
+
 	// 监听端口
 	logging.Log.Info("Start Fly Server API ")
-	if err = app.Run(iris.Addr(":"+config.Config.ServerPort), iris.WithoutInterruptHandler); err != nil {
-		logging.Log.Error("Start Fly Server API err: " + err.Error())
+	if err = app.Run(iris.Addr(config.Config.ServerPort), iris.WithoutInterruptHandler); err != nil {
+		logging.Log.Fatal("Start Fly Server API err: " + err.Error())
 	}
 }
 
@@ -71,5 +78,20 @@ func init() {
 		time.Sleep(5 * time.Second)
 		// 关闭所有主机
 		_ = app.Shutdown(ctx)
+	})
+}
+
+// initRpc 初始化rpc
+func initRpc() {
+	rpc.Index(gServer)
+	recover2.SafeGo(func() {
+		lis, err := net.Listen("tcp", config.Config.RpcPort)
+		if err != nil {
+			logging.Log.Fatal("Start Fly Rpc Listen err: " + err.Error())
+		}
+		logging.Log.Info("Start Fly Rpc Server ")
+		if err = gServer.Serve(lis); err != nil {
+			logging.Log.Fatal("Start Fly Rpc Server err: " + err.Error())
+		}
 	})
 }

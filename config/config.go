@@ -17,6 +17,7 @@ import (
 type jsonConfig struct {
 	ServerAddress string // 对外服务地址
 	ServerPort    string // 对外服务端口
+	RpcPort       string // rpc端口
 	IsMonitor     bool   // 是否启动monitor
 	Mysql         MySqlConf
 	Mongo         mongo.Conf
