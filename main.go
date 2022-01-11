@@ -77,6 +77,7 @@ func init() {
 		cancel()
 		time.Sleep(5 * time.Second)
 		// 关闭所有主机
+		gServer.Stop()
 		_ = app.Shutdown(ctx)
 	})
 }
