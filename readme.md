@@ -24,6 +24,15 @@
 |  |     ├── service    // 接口逻辑
 |  |     └── models     // 结构体存放
 |  |     ├── router.go  // 模块子路由
+├── rpc                 // grpc
+|  ├── v1               // grpc版本
+|  |  ├── router.go     // 主路由
+|  |  └── user          // 模块分组
+|  |     ├── controller // 控制器
+|  |     ├── service    // 接口逻辑
+|  |     └── models     // 结构体存放
+|  |     └── pb         // proto文件
+|  |     ├── router.go  // 模块子路由
 ├── internal            // 私有程序
 |  ├── cache            // 缓存相关
 |  ├── const            // 常量

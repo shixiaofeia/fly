@@ -1,7 +1,6 @@
 package redis
 
 import (
-	"fly/pkg/logging"
 	"fmt"
 	"github.com/go-redis/redis"
 )
@@ -39,7 +38,6 @@ func NewStandAloneClient() *redis.Client {
 // InitCluster  // 初始化redis集群模式
 func InitCluster(address []string, passWord string) (err error) {
 	if len(address) == 0 {
-		logging.Log.Warn("InitCluster not config")
 		return
 	}
 	clusterClient = redis.NewClusterClient(&redis.ClusterOptions{
@@ -56,7 +54,6 @@ func InitCluster(address []string, passWord string) (err error) {
 // InitStandAlone 初始化redis单机模式
 func InitStandAlone(address string, passWord string) (err error) {
 	if address == "" {
-		logging.Log.Warn("InitStandAlone not config")
 		return
 	}
 	standAloneClient = redis.NewClient(

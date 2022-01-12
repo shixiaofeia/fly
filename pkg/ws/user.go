@@ -1,6 +1,8 @@
 package ws
 
-import "errors"
+import (
+	"fmt"
+)
 
 // addUser 添加用户
 func (c *SocketConn) addUser() {
@@ -28,7 +30,7 @@ func (c *SocketConn) GetConnByUserId(userId UserId) (*SocketConn, error) {
 	defer sockets.userMu.RUnlock()
 	connId, ok := sockets.Users[userId]
 	if !ok {
-		return nil, errors.New("userId not exist")
+		return nil, fmt.Errorf("userId not exist")
 	}
 	return c.GetConnById(connId)
 }

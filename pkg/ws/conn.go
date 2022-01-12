@@ -2,7 +2,7 @@ package ws
 
 import (
 	"encoding/json"
-	"errors"
+	"fmt"
 	"github.com/gorilla/websocket"
 	"time"
 )
@@ -14,7 +14,7 @@ func (c *SocketConn) GetConnById(connId ConnId) (*SocketConn, error) {
 	if v, ok := sockets.Clients[connId]; ok {
 		return v, nil
 	}
-	return nil, errors.New("connId not exist")
+	return nil, fmt.Errorf("connId not exist")
 }
 
 // Close 关闭连接
@@ -40,7 +40,7 @@ func (c *SocketConn) Close() {
 // JoinGroup 加入组
 func (c *SocketConn) JoinGroup(groupId GroupId) error {
 	if !new(SocketGroup).Exist(groupId) {
-		return errors.New("groupId not exist")
+		return fmt.Errorf("groupId not exist")
 	}
 	NewGroup(groupId).Join(c.ConnId)
 	c.mu.Lock()

@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"errors"
+	"fmt"
 	"math/rand"
 	"strings"
 	"time"
@@ -83,11 +83,11 @@ func (c *InviteCode) initCheck() (bool, error) {
 	lenBase := len(c.base)
 	// 检查进制字符
 	if c.base == "" {
-		return false, errors.New("base string is nil or empty")
+		return false, fmt.Errorf("base string is nil or empty")
 	}
 	// 检查长度是否符合
 	if uint32(lenBase) != c.decimal {
-		return false, errors.New("base length and len not match")
+		return false, fmt.Errorf("base length and len not match")
 	}
-	return true, errors.New("")
+	return true, nil
 }

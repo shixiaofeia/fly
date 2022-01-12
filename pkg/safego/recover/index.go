@@ -1,13 +1,15 @@
 package recover
 
-import "fmt"
+import (
+	"log"
+)
 
 // SafeGo
 func SafeGo(f func()) {
 	go func() {
 		defer func() {
-			if panicMessage := recover(); panicMessage != nil {
-				fmt.Println(panicMessage)
+			if msg := recover(); msg != nil {
+				log.Println(msg)
 			}
 		}()
 		f()

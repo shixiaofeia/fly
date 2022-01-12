@@ -1,7 +1,6 @@
 package mongo
 
 import (
-	"fly/pkg/logging"
 	"fmt"
 	"gopkg.in/mgo.v2"
 )
@@ -18,7 +17,6 @@ var (
 // Init 初始化
 func Init(c Conf) (err error) {
 	if c.Address == "" {
-		logging.Log.Warn("Init MongoDB not config")
 		return
 	}
 	if c.MaxPoolSize <= 0 {

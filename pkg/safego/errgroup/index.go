@@ -2,7 +2,7 @@ package errgroup
 
 import (
 	"context"
-	"fmt"
+	"log"
 	"sync"
 )
 
@@ -49,8 +49,8 @@ func (g *Group) Go(f func() error) {
 	go func() {
 		defer func() {
 			g.wg.Done()
-			if panicMessage := recover(); panicMessage != nil {
-				fmt.Println(panicMessage)
+			if msg := recover(); msg != nil {
+				log.Println(msg)
 			}
 		}()
 

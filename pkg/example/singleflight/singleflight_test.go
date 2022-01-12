@@ -1,7 +1,7 @@
 package singleflight
 
 import (
-	"errors"
+	"fmt"
 	"go.uber.org/atomic"
 	"sync"
 	"testing"
@@ -76,7 +76,7 @@ func getCityFromDb(key string) (interface{}, error) {
 // getCityFromCache 从缓存获取信息
 func getCityFromCache(key string) (interface{}, error) {
 	if cacheCity == nil {
-		return "", errors.New("not found")
+		return "", fmt.Errorf("not found")
 	}
 	return cacheCity, nil
 }
