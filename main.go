@@ -10,7 +10,7 @@ import (
 	"fly/pkg/mq"
 	"fly/pkg/mysql"
 	"fly/pkg/redis"
-	recover2 "fly/pkg/safego/recover"
+	"fly/pkg/safego/safe"
 	"fly/rpc"
 	"github.com/kataras/iris/v12"
 	"google.golang.org/grpc"
@@ -34,7 +34,7 @@ func main() {
 	domain.InitDomain()
 
 	// 监控服务
-	recover2.SafeGo(func() {
+	safe.Go(func() {
 		monitor.InitMonitor(ctx)
 	})
 
@@ -85,7 +85,7 @@ func init() {
 // initRpc 初始化rpc
 func initRpc() {
 	rpc.Index(gServer)
-	recover2.SafeGo(func() {
+	safe.Go(func() {
 		lis, err := net.Listen("tcp", config.Config.RpcPort)
 		if err != nil {
 			logging.Log.Fatal("Start Fly Rpc Listen err: " + err.Error())

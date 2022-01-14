@@ -1,11 +1,11 @@
-package recover
+package safe
 
 import (
 	"log"
 )
 
-// SafeGo
-func SafeGo(f func()) {
+// Go
+func Go(f func()) {
 	go func() {
 		defer func() {
 			if msg := recover(); msg != nil {

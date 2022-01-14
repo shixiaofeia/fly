@@ -1,4 +1,4 @@
-package recover
+package safe
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 )
 
 func TestSafeGo(t *testing.T) {
-	SafeGo(func() {
+	Go(func() {
 		var (
 			total = 10
 			size  = 0
