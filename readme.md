@@ -2,7 +2,7 @@
 
 ## 简介
 
-一个简单快速实现业务的后端项目
+一个简单而优雅的后端框架, 封装常用数据库组件及应用示例, 助力后端人员快速开发
 
 [个人博客](https://blog.csdn.net/ywdhzxf/)
 
@@ -70,6 +70,10 @@
 
 [iris 号称最快的Web框架](https://github.com/kataras/iris)
 
+### rpc
+
+[grpc](https://pkg.go.dev/google.golang.org/grpc)
+
 ### socket
 
 [gorilla](https://github.com/gorilla/websocket)
@@ -81,6 +85,14 @@
 ### clickhouse
 
 [dbr](https://github.com/mailru/dbr)
+
+### es
+
+[elastic](https://github.com/olivere/elastic/v6)
+
+### mongo
+
+[mongo](https://github.com/go-mgo/mgo/tree/v2)
 
 ### redis
 
