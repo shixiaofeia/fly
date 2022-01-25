@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"fly/interface/example/model"
 	"fly/pkg/ws"
 	"github.com/gorilla/websocket"
 	"github.com/kataras/iris/v12"
@@ -29,11 +30,7 @@ func SocketHealth(ctx iris.Context) {
 
 // socketHandle socket处理
 func socketHandle(conn *ws.SocketConn, data []byte) {
-	type Param struct {
-		OpType uint   `json:"opType"`
-		Data   string `json:"data"`
-	}
-	req := &Param{}
+	req := &model.SocketHandleReq{}
 	_ = json.Unmarshal(data, req)
 	switch req.OpType {
 	case 1:

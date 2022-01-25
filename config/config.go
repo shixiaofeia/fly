@@ -11,7 +11,7 @@ import (
 
 var (
 	configPath string
-	Config     = jsonConfig{}
+	Config     = JsonConfig{}
 )
 
 // Init 初始化函数

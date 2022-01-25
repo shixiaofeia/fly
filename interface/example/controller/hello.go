@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fly/interface/example/model"
 	"fly/pkg/httpcode"
 	"fmt"
 	"github.com/kataras/iris/v12"
@@ -8,20 +9,12 @@ import (
 
 // Hello 请求示例
 func Hello(ctx iris.Context) {
-	type (
-		Param struct {
-			Name string `json:"name" validate:"nonzero"`
-		}
-		Response struct {
-			Name string `json:"name"`
-		}
-	)
-	req := &Param{}
+	req := &model.HelloReq{}
 	r, ok := httpcode.NewRequest(ctx, req)
 	if !ok {
 		return
 	}
-	res := Response{
+	res := model.HelloRes{
 		Name: fmt.Sprintf("hello, %s", req.Name),
 	}
 	r.Log.Info(res.Name)
@@ -34,12 +27,7 @@ func Export(ctx iris.Context) {
 	if !ok {
 		return
 	}
-	type Response struct {
-		Id   int    `json:"id"`
-		Name string `json:"name" excel:"-"`
-		Age  int    `json:"age"`
-	}
-	dataList := []*Response{
+	dataList := []*model.ExportRes{
 		{1, "1", 2},
 		{2, "3", 4},
 	}
