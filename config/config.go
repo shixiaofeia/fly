@@ -54,7 +54,5 @@ func ShowConfig() {
 	logging.Log.Info("-------------------------------------------------------")
 	logging.Log.Info("   服务地址:           " + Config.ServerAddress)
 	logging.Log.Info("   服务端口:           " + Config.ServerPort)
-	logging.Log.Infof("   健康监测:           http://%s%s", Config.ServerAddress, Config.ServerPort)
-	logging.Log.Infof("   服务监控:           http://%s%s/debug/pprof", Config.ServerAddress, Config.ServerPort)
 	logging.Log.Info("-------------------------------------------------------")
 }

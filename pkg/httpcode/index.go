@@ -26,33 +26,33 @@ type Req struct {
 }
 
 // JsonOk 正确的json返回
-func (r *Req) JsonOk(data interface{}) {
-	r.JsonCode(Code200, data)
+func (slf *Req) JsonOk(data interface{}) {
+	slf.JsonCode(Code200, data)
 }
 
 // JsonParamError json返回参数错误
-func (r *Req) JsonParamError() {
-	r.JsonCode(ParamErr, nil)
+func (slf *Req) JsonParamError() {
+	slf.JsonCode(ParamErr, nil)
 }
 
 // JsonServiceError 通用错误处理
-func (r *Req) JsonServiceError() {
-	r.JsonCode(ServiceErr, nil)
+func (slf *Req) JsonServiceError() {
+	slf.JsonCode(ServiceErr, nil)
 }
 
 // JsonCode 自定义code码返回
-func (r *Req) JsonCode(code ErrCode, data interface{}) {
+func (slf *Req) JsonCode(code ErrCode, data interface{}) {
 	if data == nil {
 		data = map[string]interface{}{}
 	}
 	var runTime string
-	if startTime, ok := r.ctx.Values().Get(CtxStartTime).(time.Time); ok {
+	if startTime, ok := slf.ctx.Values().Get(CtxStartTime).(time.Time); ok {
 		runTime = time.Now().Sub(startTime).String()
 	}
 
-	r.ctx.Header(CtxRequestId, r.requestId)
-	_, _ = r.ctx.JSON(map[string]interface{}{"code": code.Code, "message": code.Msg, "run": runTime, "data": data})
-	r.Log.Infof("api: %s, run: %s, param: %s, code: %d", r.ctx.Request().RequestURI, runTime, r.body, code.Code)
+	slf.ctx.Header(CtxRequestId, slf.requestId)
+	_, _ = slf.ctx.JSON(map[string]interface{}{"code": code.Code, "message": code.Msg, "run": runTime, "data": data})
+	slf.Log.Infof("api: %s, run: %s, param: %s, code: %d", slf.ctx.Request().RequestURI, runTime, slf.body, code.Code)
 }
 
 // NewRequest 解析post传参
@@ -100,15 +100,15 @@ func NewRequest(ctx iris.Context, params interface{}) (r *Req, b bool) {
 }
 
 // ToExcel 数据导出excel
-func (r *Req) ToExcel(titleList []string, dataList interface{}, fileName string) {
+func (slf *Req) ToExcel(titleList []string, dataList interface{}, fileName string) {
 	buf, _ := ExportExcel(titleList, dataList)
 	content := bytes.NewReader(buf.Bytes())
-	_ = r.ctx.ServeContent(content, fileName, time.Now(), true)
+	_ = slf.ctx.ServeContent(content, fileName, time.Now(), true)
 }
 
 // ToSecondaryTitleExcel 导出二级标题
-func (r *Req) ToSecondaryTitleExcel(firstTitle []string, secondTitle [][]string, dataList interface{}, fileName string) {
+func (slf *Req) ToSecondaryTitleExcel(firstTitle []string, secondTitle [][]string, dataList interface{}, fileName string) {
 	buf, _ := ExportSecondaryTitleExcel(firstTitle, secondTitle, dataList)
 	content := bytes.NewReader(buf.Bytes())
-	_ = r.ctx.ServeContent(content, fileName, time.Now(), true)
+	_ = slf.ctx.ServeContent(content, fileName, time.Now(), true)
 }
