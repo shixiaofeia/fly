@@ -2,7 +2,7 @@ package controller
 
 import (
 	"encoding/json"
-	"fly/interface/example/model"
+	"fly/api/example/model"
 	"fly/pkg/ws"
 	"github.com/gorilla/websocket"
 	"github.com/kataras/iris/v12"

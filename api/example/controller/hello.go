@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"fly/interface/example/model"
+	"fly/api/example/model"
 	"fly/pkg/httpcode"
 	"fmt"
 	"github.com/kataras/iris/v12"

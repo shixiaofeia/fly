@@ -53,6 +53,7 @@ func WatchConfig() {
 func ShowConfig() {
 	logging.Log.Info("-------------------------------------------------------")
 	logging.Log.Info("   服务地址:           " + Config.ServerAddress)
-	logging.Log.Info("   服务端口:           " + Config.ServerPort)
+	logging.Log.Info("   WEB端口:           " + Config.ServerPort)
+	logging.Log.Info("   RPC端口:           " + Config.RpcPort)
 	logging.Log.Info("-------------------------------------------------------")
 }

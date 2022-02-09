@@ -1,7 +1,6 @@
-package httpcode
+package jwt
 
 import (
-	"fly/internal/const"
 	"github.com/dgrijalva/jwt-go"
 )
 
@@ -16,16 +15,16 @@ func CreateJWTToken(data map[string]interface{}) (string, error) {
 		claims[index] = val
 	}
 	token.Claims = claims
-	tokenString, err := token.SignedString([]byte(constants.JwtSecretKey))
+	tokenString, err := token.SignedString([]byte(SecretKey))
 	return tokenString, err
 }
 
 // ParseToken 解析token
-func ParseToken(token string) (userId uint32, err error) {
+func ParseToken(token string) (userId string, err error) {
 	var tokenInfo *jwt.Token
 
 	if tokenInfo, err = jwt.Parse(token, func(token *jwt.Token) (i interface{}, e error) {
-		return []byte(constants.JwtSecretKey), err
+		return []byte(SecretKey), err
 	}); err != nil {
 		return
 	}
@@ -34,8 +33,8 @@ func ParseToken(token string) (userId uint32, err error) {
 	}
 	tokenMap := tokenInfo.Claims.(jwt.MapClaims)
 	if val, ok := tokenMap["user_id"]; ok {
-		if uid, ok := val.(float64); ok {
-			userId = uint32(uid)
+		if uid, ok := val.(string); ok {
+			userId = uid
 		}
 	}
 	return

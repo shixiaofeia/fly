@@ -3,7 +3,6 @@ package httpcode
 import (
 	"bytes"
 	"encoding/json"
-	"fly/internal/const"
 	"fly/pkg/logging"
 	"github.com/kataras/iris/v12"
 	uuid "github.com/satori/go.uuid"
@@ -11,11 +10,6 @@ import (
 	"gopkg.in/validator.v2"
 	"reflect"
 	"time"
-)
-
-const (
-	CtxStartTime = "startTime"    // 运行起始时间
-	CtxRequestId = "X-Request-Id" // 请求唯一id
 )
 
 type Req struct {
@@ -61,7 +55,7 @@ func NewRequest(ctx iris.Context, params interface{}) (r *Req, b bool) {
 	r = &Req{
 		ctx:       ctx,
 		requestId: uid,
-		Log:       logging.NewWithField("X-Request-Id", uid),
+		Log:       logging.NewWithField(CtxRequestId, uid),
 	}
 	if params != nil {
 		body, err := ctx.GetBody()
@@ -79,12 +73,12 @@ func NewRequest(ctx iris.Context, params interface{}) (r *Req, b bool) {
 			r.body = body
 		}
 		// 页数限制
-		if page := reflect.Indirect(reflect.ValueOf(params)).FieldByName("Page"); page.String() != "<invalid Value>" && page.Int() > constants.MaxPage {
+		if page := reflect.Indirect(reflect.ValueOf(params)).FieldByName("Page"); page.IsValid() && page.Int() > MaxPage {
 			r.JsonCode(PageErr, nil)
 			return
 		}
 		// 条数限制
-		if size := reflect.Indirect(reflect.ValueOf(params)).FieldByName("Size"); size.String() != "<invalid Value>" && size.Int() > constants.MaxSize {
+		if size := reflect.Indirect(reflect.ValueOf(params)).FieldByName("Size"); size.IsValid() && size.Int() > MaxSize {
 			r.JsonCode(SizeErr, nil)
 			return
 		}

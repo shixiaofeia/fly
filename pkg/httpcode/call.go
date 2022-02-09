@@ -3,7 +3,6 @@ package httpcode
 import (
 	"bytes"
 	"encoding/json"
-	constants "fly/internal/const"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -133,7 +132,7 @@ func call(request *http.Request, headers map[string]string) (respBytes []byte, e
 	}
 
 	client := &http.Client{}
-	client.Timeout = constants.CallInnerTimeOut
+	client.Timeout = CallInnerTimeOut
 	resp, err = client.Do(request)
 	if err != nil {
 		return

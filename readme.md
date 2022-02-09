@@ -16,8 +16,8 @@
 |  ├── dev.json         // 各环境配置文件
 |  └── config.go        // 配置初始化
 |  └── model.go         // 配置结构体
-├── interface           // 对外接口
-|  ├── v1               // api版本
+├── api                 // 对外接口
+|  ├── v1               // 版本号
 |  |  ├── router.go     // 主路由
 |  |  └── user          // 模块分组
 |  |     ├── controller // 控制器
@@ -35,7 +35,7 @@
 |  |     ├── router.go  // 模块子路由
 ├── internal            // 私有程序
 |  ├── cache            // 缓存相关
-|  ├── const            // 常量
+|  ├── constvar         // 常量
 |  └── monitor          // 监控定时服务相关
 |  └── models           // 公用结构体
 |  └── utils            // 公用方法(不能调用任何内部对象)
@@ -46,6 +46,7 @@
 |  ├── email            // 邮件组件
 |  ├── es               // es组件
 |  ├── httpcode         // 请求处理组件
+|  ├── jwt              // jwt组件
 |  ├── logging          // 日志组件
 |  ├── mongo            // mongo组件
 |  └── mq               // mq组件
@@ -58,7 +59,7 @@
 ├── Dockerfile          // Dockerfile     
 
 
-├── cmd                 // 如果该项目有多个入口文件, 则舍弃main文件根据业务存放在cmd里
+├── cmd                 // 如果该项目有多个入口文件, 则根据业务存放在cmd里
 |  ├── xxx-interface
 |  |   ├── main.go      // 入口文件
 |  |   ├── Dockerfile   // Dockerfile  

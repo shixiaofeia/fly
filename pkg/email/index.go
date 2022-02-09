@@ -6,19 +6,20 @@ import (
 )
 
 // 定义发送邮件内容的结构体
-type SenEmailMsg struct {
-	To    string
-	Title string
-	Msg   string
-}
-
-type Conf struct {
-	Website  string
-	User     string
-	NickName string
-	Password string
-	Logo     string
-}
+type (
+	Conf struct {
+		Website  string
+		User     string
+		NickName string
+		Password string
+		Logo     string
+	}
+	SenEmailMsg struct {
+		To    string
+		Title string
+		Msg   string
+	}
+)
 
 var (
 	c = Conf{}

@@ -2,9 +2,9 @@ package main
 
 import (
 	"context"
+	"fly/api"
 	"fly/config"
 	"fly/domain"
-	api "fly/interface"
 	"fly/internal/monitor"
 	"fly/pkg/logging"
 	"fly/pkg/mq"
@@ -45,9 +45,9 @@ func main() {
 	initRpc()
 
 	// 监听端口
-	logging.Log.Info("Start Fly Server API ")
+	logging.Log.Info("Start Web Server ")
 	if err = app.Run(iris.Addr(config.Config.ServerPort), iris.WithoutInterruptHandler); err != nil {
-		logging.Log.Fatal("Start Fly Server API err: " + err.Error())
+		logging.Log.Fatal("Start Web Server err: " + err.Error())
 	}
 }
 
@@ -88,11 +88,11 @@ func initRpc() {
 	safe.Go(func() {
 		lis, err := net.Listen("tcp", config.Config.RpcPort)
 		if err != nil {
-			logging.Log.Fatal("Start Fly Rpc Listen err: " + err.Error())
+			logging.Log.Fatal("Start Rpc Listen err: " + err.Error())
 		}
-		logging.Log.Info("Start Fly Rpc Server ")
+		logging.Log.Info("Start Rpc Server ")
 		if err = gServer.Serve(lis); err != nil {
-			logging.Log.Fatal("Start Fly Rpc Server err: " + err.Error())
+			logging.Log.Fatal("Start Rpc Server err: " + err.Error())
 		}
 	})
 }
