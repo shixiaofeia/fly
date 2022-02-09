@@ -1,11 +1,12 @@
 package httpcode
 
 import (
-	"github.com/kataras/iris/v12"
 	"time"
+
+	"github.com/kataras/iris/v12"
 )
 
-// HeaderMiddleware 设置请求头
+// HeaderMiddleware 设置请求头.
 func HeaderMiddleware(ctx iris.Context) {
 	ctx.Header("Access-Control-Allow-Origin", "*")
 	ctx.Header("Access-Control-Allow-Headers", "Authorization")

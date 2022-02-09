@@ -4,10 +4,11 @@ import (
 	"fly/api/example/model"
 	"fly/pkg/httpcode"
 	"fmt"
+
 	"github.com/kataras/iris/v12"
 )
 
-// Hello 请求示例
+// Hello 请求示例.
 func Hello(ctx iris.Context) {
 	req := &model.HelloReq{}
 	r, ok := httpcode.NewRequest(ctx, req)
@@ -21,7 +22,7 @@ func Hello(ctx iris.Context) {
 	r.JsonOk(res)
 }
 
-// Export 导出示例
+// Export 导出示例.
 func Export(ctx iris.Context) {
 	r, ok := httpcode.NewRequest(ctx, nil)
 	if !ok {

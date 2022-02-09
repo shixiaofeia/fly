@@ -4,7 +4,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-// CreateJWTToken 生成token
+// CreateJWTToken 生成token.
 func CreateJWTToken(data map[string]interface{}) (string, error) {
 	var (
 		token  = jwt.New(jwt.SigningMethodHS256)
@@ -19,7 +19,7 @@ func CreateJWTToken(data map[string]interface{}) (string, error) {
 	return tokenString, err
 }
 
-// ParseToken 解析token
+// ParseToken 解析token.
 func ParseToken(token string) (userId string, err error) {
 	var tokenInfo *jwt.Token
 

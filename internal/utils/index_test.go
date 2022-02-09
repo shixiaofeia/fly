@@ -32,3 +32,23 @@ func TestAssign(t *testing.T) {
 	Assign(u, i, "Age")
 	t.Log(i)
 }
+
+func TestToMd5(t *testing.T) {
+	t.Log(ToMd5("123"))
+}
+
+func TestDeepCopy(t *testing.T) {
+	c1 := map[string]int{
+		"tom": 11,
+	}
+	c2 := c1
+	c2["tom"] = 1
+	t.Log(c1, c2)
+	c3 := make(map[string]int)
+	if err := DeepCopy(c1, &c3); err != nil {
+		t.Error(err)
+	}
+	c3["tom"] = 2
+	t.Log(c1, c2, c3)
+
+}

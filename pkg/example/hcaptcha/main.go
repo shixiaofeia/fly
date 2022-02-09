@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/kataras/hcaptcha"
 	"html/template"
 	"net/http"
+
+	"github.com/kataras/hcaptcha"
 )
 
 // Get the following values from: https://dashboard.hcaptcha.com

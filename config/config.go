@@ -4,9 +4,10 @@ import (
 	"flag"
 	"fly/pkg/logging"
 	"fly/pkg/safego/safe"
+	"path"
+
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
-	"path"
 )
 
 var (
@@ -14,7 +15,7 @@ var (
 	Config     = JsonConfig{}
 )
 
-// Init 初始化函数
+// Init 初始化函数.
 func Init() {
 	flag.StringVar(&configPath, "config", "./config/config.json", "配置文件路径以及文件名(必填)")
 	flag.Parse()
@@ -27,7 +28,7 @@ func Init() {
 	safe.Go(WatchConfig)
 }
 
-// parseConfig 解析配置
+// parseConfig 解析配置.
 func parseConfig() {
 	err := viper.ReadInConfig()
 	if err != nil {
@@ -39,7 +40,7 @@ func parseConfig() {
 	ShowConfig()
 }
 
-// WatchConfig 热监听
+// WatchConfig 热监听.
 func WatchConfig() {
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
@@ -49,7 +50,7 @@ func WatchConfig() {
 	})
 }
 
-// ShowConfig 展示服务器运行参数
+// ShowConfig 展示服务器运行参数.
 func ShowConfig() {
 	logging.Log.Info("-------------------------------------------------------")
 	logging.Log.Info("   服务地址:           " + Config.ServerAddress)

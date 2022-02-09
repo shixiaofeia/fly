@@ -3,11 +3,12 @@ package main
 import (
 	"fly/pkg/safego/safe"
 	"fmt"
-	"github.com/gorilla/websocket"
-	"github.com/kataras/iris/v12"
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/gorilla/websocket"
+	"github.com/kataras/iris/v12"
 )
 
 func main() {
@@ -35,7 +36,7 @@ func Hello(ctx iris.Context) {
 	})
 }
 
-// production 生产
+// production 生产.
 func production(conn *websocket.Conn) {
 	for {
 		time.Sleep(1 * time.Second)
@@ -49,7 +50,7 @@ func production(conn *websocket.Conn) {
 	}
 }
 
-// consumer 消费
+// consumer 消费.
 func consumer(conn *websocket.Conn) {
 	for {
 		_, data, err := conn.ReadMessage()

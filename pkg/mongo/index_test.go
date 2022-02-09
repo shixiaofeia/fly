@@ -1,9 +1,10 @@
 package mongo
 
 import (
-	"gopkg.in/mgo.v2/bson"
 	"log"
 	"testing"
+
+	"gopkg.in/mgo.v2/bson"
 )
 
 type Person struct {

@@ -2,6 +2,7 @@ package mq
 
 import (
 	"fmt"
+
 	"github.com/streadway/amqp"
 )
 
@@ -35,7 +36,7 @@ type AmqpC struct {
 	channel *amqp.Channel
 }
 
-// NewChannel 获取新的连接
+// NewChannel 获取新的连接.
 func NewChannel() (r *AmqpC, err error) {
 	r = &AmqpC{}
 	if DefaultConn == nil || DefaultConn.IsClosed() {
@@ -52,29 +53,29 @@ func NewChannel() (r *AmqpC, err error) {
 	return r, nil
 }
 
-// ExchangeDeclare 创建交换机
+// ExchangeDeclare 创建交换机.
 func (a *AmqpC) ExchangeDeclare(name string, kind string) (err error) {
 	return a.channel.ExchangeDeclare(name, kind, true, false, false, false, nil)
 }
 
-// Publish 发布订阅
+// Publish 发布订阅.
 func (a *AmqpC) Publish(exchange, key string, body []byte) (err error) {
 	return a.channel.Publish(exchange, key, false, false,
 		amqp.Publishing{ContentType: "text/plain", Body: body})
 }
 
-// QueueDeclare 创建队列
+// QueueDeclare 创建队列.
 func (a *AmqpC) QueueDeclare(name string) (err error) {
 	_, err = a.channel.QueueDeclare(name, true, false, false, false, nil)
 	return
 }
 
-// QueueBind 绑定队列
+// QueueBind 绑定队列.
 func (a *AmqpC) QueueBind(name, key, exchange string) (err error) {
 	return a.channel.QueueBind(name, key, exchange, false, nil)
 }
 
-// Consume 消费队列
+// Consume 消费队列.
 func (a *AmqpC) Consume(queue, consumer string, handler func([]byte) error) (err error) {
 	var msgList <-chan amqp.Delivery
 	msgList, err = a.channel.Consume(queue, consumer, false, false, false, false, nil)

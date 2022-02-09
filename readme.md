@@ -65,6 +65,15 @@
 |  |   ├── Dockerfile   // Dockerfile  
 ```
 
+## 优雅的代码
+
+[请先参阅一遍官方的代码规范指南](https://github.com/golang/go/wiki/CodeReviewComments)
+
+[gofmt](https://golang.org/cmd/gofmt/)
+
+[goimports](https://pkg.go.dev/golang.org/x/tools/cmd/goimports)
+
+
 ## 技术选型
 
 ### web框架

@@ -2,6 +2,7 @@ package mongo
 
 import (
 	"fmt"
+
 	"gopkg.in/mgo.v2"
 )
 
@@ -14,7 +15,7 @@ var (
 	session *mgo.Session
 )
 
-// Init 初始化
+// Init 初始化.
 func Init(c Conf) (err error) {
 	if c.Address == "" {
 		return
@@ -36,7 +37,7 @@ func Init(c Conf) (err error) {
 	return nil
 }
 
-// NewCollection  实例一个连接
+// NewCollection  实例一个连接.
 func NewCollection(database, table string) *mgo.Collection {
 	return session.DB(database).C(table)
 }

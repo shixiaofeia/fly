@@ -50,7 +50,7 @@ func NewRequestPostForm(url string, body map[string]string) RequestCall {
 		body}
 }
 
-// AddHeader 添加header头
+// AddHeader 添加header头.
 func (slf *RequestParam) AddHeader(key, val string) {
 	if slf.headers == nil {
 		slf.headers = make(map[string]string)
@@ -119,7 +119,7 @@ func (slf *RequestPostForm) Call() (respBytes []byte, err error) {
 	return call(request, slf.headers)
 }
 
-// call 发送请求
+// call 发送请求.
 func call(request *http.Request, headers map[string]string) (respBytes []byte, err error) {
 	var (
 		resp *http.Response

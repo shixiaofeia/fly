@@ -3,6 +3,7 @@ package example
 import (
 	"fly/api/example/controller"
 	"fly/pkg/safego/safe"
+
 	"github.com/kataras/iris/v12"
 )
 

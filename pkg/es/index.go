@@ -2,12 +2,13 @@ package es
 
 import (
 	"context"
+
 	"github.com/olivere/elastic/v6"
 )
 
 var client *elastic.Client
 
-// Init 初始化es
+// Init 初始化es.
 func Init(address ...string) (err error) {
 	if client, err = elastic.NewClient(elastic.SetSniff(false), elastic.SetURL(address...)); err != nil {
 		return

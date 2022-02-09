@@ -16,12 +16,12 @@ type Domo struct {
 	DeleteTime int64           `gorm:"column:delete_time;type:bigint(20);default:0;comment:删除时间" json:"-"`
 }
 
-// TableName 指定表名
+// TableName 指定表名.
 func (d *Domo) TableName() string {
 	return "demo"
 }
 
-// CreateTable 创建表
+// CreateTable 创建表.
 func (d *Domo) CreateTable(db *gorm.DB) {
 	_ = db.Set("gorm:table_options", "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='demo'").AutoMigrate(&Domo{})
 }

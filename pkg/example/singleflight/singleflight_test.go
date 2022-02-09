@@ -2,10 +2,11 @@ package singleflight
 
 import (
 	"fmt"
-	"go.uber.org/atomic"
 	"sync"
 	"testing"
 	"time"
+
+	"go.uber.org/atomic"
 )
 
 type City struct {
@@ -38,7 +39,7 @@ func TestNewSingleFlight(t *testing.T) {
 	t.Log(time.Since(now))
 }
 
-// getData 获取数据
+// getData 获取数据.
 func getData(key string) (val interface{}, err error) {
 	if val, err = getCityFromCache(key); err != nil {
 		// 使用单程
@@ -52,7 +53,7 @@ func getData(key string) (val interface{}, err error) {
 	return
 }
 
-// getDbAndSetCache 从db获取信息并且同步到缓存
+// getDbAndSetCache 从db获取信息并且同步到缓存.
 func getDbAndSetCache(key string) (val interface{}, err error) {
 	if val, err = getCityFromDb(key); err == nil {
 		// set cache
@@ -61,7 +62,7 @@ func getDbAndSetCache(key string) (val interface{}, err error) {
 	return val, err
 }
 
-// getCityFromDb 从db获取信息
+// getCityFromDb 从db获取信息.
 func getCityFromDb(key string) (interface{}, error) {
 	dbNum.Add(1)
 	cityList := make([]City, 0)
@@ -73,7 +74,7 @@ func getCityFromDb(key string) (interface{}, error) {
 	return cityList, nil
 }
 
-// getCityFromCache 从缓存获取信息
+// getCityFromCache 从缓存获取信息.
 func getCityFromCache(key string) (interface{}, error) {
 	if cacheCity == nil {
 		return "", fmt.Errorf("not found")

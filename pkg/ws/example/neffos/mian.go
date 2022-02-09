@@ -3,6 +3,10 @@ package main
 import (
 	"fly/pkg/safego/safe"
 	"fmt"
+	"log"
+	"net/http"
+	"time"
+
 	websocket2 "github.com/gorilla/websocket"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/context"
@@ -10,9 +14,6 @@ import (
 	"github.com/kataras/neffos"
 	"github.com/kataras/neffos/gorilla"
 	uuid "github.com/satori/go.uuid"
-	"log"
-	"net/http"
-	"time"
 )
 
 var ws *neffos.Server
@@ -45,7 +46,7 @@ func Hello(ctx iris.Context) {
 
 }
 
-// production 生产
+// production 生产.
 func production(conn *neffos.Conn) {
 	for {
 		time.Sleep(1 * time.Second)
@@ -58,7 +59,7 @@ func production(conn *neffos.Conn) {
 	}
 }
 
-// consumer 消费 TODO 存在漏接消息的情况, 已提[issues](https://github.com/kataras/neffos/issues/58)
+// consumer 消费 TODO 存在漏接消息的情况, 已提[issues](https://github.com/kataras/neffos/issues/58).
 func consumer(conn *neffos.Conn) {
 	for {
 		data, _, err := conn.Socket().ReadData(0)

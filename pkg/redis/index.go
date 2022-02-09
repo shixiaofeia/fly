@@ -2,6 +2,7 @@ package redis
 
 import (
 	"fmt"
+
 	"github.com/go-redis/redis"
 )
 
@@ -14,7 +15,7 @@ type Conf struct {
 	AddressList []string // 集群地址
 }
 
-// Init 初始化redis服务
+// Init 初始化redis服务.
 func Init(c Conf) (err error) {
 	if err = InitCluster(c.AddressList, c.Password); err != nil {
 		return
@@ -35,7 +36,7 @@ func NewStandAloneClient() *redis.Client {
 	return standAloneClient
 }
 
-// InitCluster  // 初始化redis集群模式
+// InitCluster  // 初始化redis集群模式.
 func InitCluster(address []string, passWord string) (err error) {
 	if len(address) == 0 {
 		return
@@ -51,7 +52,7 @@ func InitCluster(address []string, passWord string) (err error) {
 	return
 }
 
-// InitStandAlone 初始化redis单机模式
+// InitStandAlone 初始化redis单机模式.
 func InitStandAlone(address string, passWord string) (err error) {
 	if address == "" {
 		return

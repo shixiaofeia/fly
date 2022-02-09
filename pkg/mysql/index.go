@@ -2,12 +2,13 @@ package mysql
 
 import (
 	"fmt"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 	"log"
 	"os"
 	"time"
+
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 var (
@@ -30,7 +31,7 @@ var (
 	)
 )
 
-// Init 初始化db
+// Init 初始化db.
 func Init(readConf, writeConf Conf) (err error) {
 	if err = InitReadDB(readConf); err != nil {
 		return
@@ -51,7 +52,7 @@ func NewWriteDB() *gorm.DB {
 	return writeDB
 }
 
-// InitReadDB 初始化读
+// InitReadDB 初始化读.
 func InitReadDB(c Conf) (err error) {
 	if c.Address == "" {
 		return
@@ -69,7 +70,7 @@ func InitReadDB(c Conf) (err error) {
 	return
 }
 
-// InitWriteDB 初始化写
+// InitWriteDB 初始化写.
 func InitWriteDB(c Conf) (err error) {
 	if c.Address == "" {
 		return
@@ -90,13 +91,13 @@ func InitWriteDB(c Conf) (err error) {
 	return
 }
 
-// beforeCreateUpTime 在插入之前更新时间戳
+// beforeCreateUpTime 在插入之前更新时间戳.
 func beforeCreateUpTime(tx *gorm.DB) {
 	tx.Statement.SetColumn("create_time", time.Now().Unix())
 	tx.Statement.SetColumn("update_time", time.Now().Unix())
 }
 
-// beforeUpdateUpTime 在更新之前更新时间戳
+// beforeUpdateUpTime 在更新之前更新时间戳.
 func beforeUpdateUpTime(tx *gorm.DB) {
 	tx.Statement.SetColumn("update_time", time.Now().Unix())
 }

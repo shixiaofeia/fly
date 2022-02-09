@@ -12,11 +12,12 @@ import (
 	"fly/pkg/redis"
 	"fly/pkg/safego/safe"
 	"fly/rpc"
-	"github.com/kataras/iris/v12"
-	"google.golang.org/grpc"
 	"net"
 	"sync"
 	"time"
+
+	"github.com/kataras/iris/v12"
+	"google.golang.org/grpc"
 )
 
 var (
@@ -82,7 +83,7 @@ func init() {
 	})
 }
 
-// initRpc 初始化rpc
+// initRpc 初始化rpc.
 func initRpc() {
 	rpc.Index(gServer)
 	safe.Go(func() {

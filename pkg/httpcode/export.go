@@ -3,10 +3,11 @@ package httpcode
 import (
 	"bytes"
 	"fmt"
-	"github.com/360EntSecGroup-Skylar/excelize/v2"
 	"go/ast"
 	"reflect"
 	"strings"
+
+	"github.com/360EntSecGroup-Skylar/excelize/v2"
 )
 
 // ExportExcel
@@ -84,7 +85,7 @@ func ExportExcel(thead []string, tbody interface{}) (r *bytes.Buffer, err error)
 	return
 }
 
-// ExportSecondaryTitleExcel 导出二级标题
+// ExportSecondaryTitleExcel 导出二级标题.
 func ExportSecondaryTitleExcel(firstTitleList []string, secondTitleList [][]string, tbody interface{}) (r *bytes.Buffer, err error) {
 	// make sure 'tbody' is a Slice
 	valTbody := reflect.ValueOf(tbody)
@@ -187,7 +188,7 @@ func ExportSecondaryTitleExcel(firstTitleList []string, secondTitleList [][]stri
 	return
 }
 
-// ParseTagSetting get model's field tags
+// ParseTagSetting get model's field tags.
 func ParseTagSetting(tags reflect.StructTag, key ...string) map[string]string {
 	setting := map[string]string{}
 	for _, v := range key {

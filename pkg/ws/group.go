@@ -1,6 +1,6 @@
 package ws
 
-// NewGroup 获取组
+// NewGroup 获取组.
 func NewGroup(groupId GroupId) *SocketGroup {
 	sockets.groupMu.Lock()
 	defer sockets.groupMu.Unlock()
@@ -14,7 +14,7 @@ func NewGroup(groupId GroupId) *SocketGroup {
 	return sockets.Groups[groupId]
 }
 
-// Exist 组是否存在
+// Exist 组是否存在.
 func (g *SocketGroup) Exist(groupId GroupId) bool {
 	sockets.groupMu.RLock()
 	defer sockets.groupMu.RUnlock()
@@ -24,21 +24,21 @@ func (g *SocketGroup) Exist(groupId GroupId) bool {
 	return false
 }
 
-// Join 加入组
+// Join 加入组.
 func (g *SocketGroup) Join(connId ConnId) {
 	g.mu.Lock()
 	defer g.mu.Unlock()
 	g.ConnIds[connId] = struct{}{}
 }
 
-// Exit 退出组
+// Exit 退出组.
 func (g *SocketGroup) Exit(connId ConnId) {
 	g.mu.Lock()
 	defer g.mu.Unlock()
 	delete(g.ConnIds, connId)
 }
 
-// SendMsg 组内发送消息
+// SendMsg 组内发送消息.
 func (g *SocketGroup) SendMsg(msg interface{}) {
 	g.mu.RLock()
 	defer g.mu.RUnlock()

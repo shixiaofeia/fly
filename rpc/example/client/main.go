@@ -3,9 +3,10 @@ package main
 import (
 	"context"
 	"fly/rpc/example/pb"
-	"google.golang.org/grpc"
 	"log"
 	"time"
+
+	"google.golang.org/grpc"
 )
 
 func main() {

@@ -5,7 +5,7 @@ type ErrCode struct {
 	Msg  string
 }
 
-// UpMsg 自定义错误返回
+// UpMsg 自定义错误返回.
 func (c ErrCode) UpMsg(msg string) ErrCode {
 	c.Msg = msg
 	return c

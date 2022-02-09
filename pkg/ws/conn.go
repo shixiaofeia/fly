@@ -3,11 +3,12 @@ package ws
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/websocket"
 	"time"
+
+	"github.com/gorilla/websocket"
 )
 
-// GetConnById 获取指定连接
+// GetConnById 获取指定连接.
 func (c *SocketConn) GetConnById(connId ConnId) (*SocketConn, error) {
 	sockets.clientMu.RLock()
 	defer sockets.clientMu.RUnlock()
@@ -17,7 +18,7 @@ func (c *SocketConn) GetConnById(connId ConnId) (*SocketConn, error) {
 	return nil, fmt.Errorf("connId not exist")
 }
 
-// Close 关闭连接
+// Close 关闭连接.
 func (c *SocketConn) Close() {
 	c.mu.Lock()
 	defer c.mu.Unlock()
@@ -37,7 +38,7 @@ func (c *SocketConn) Close() {
 	return
 }
 
-// JoinGroup 加入组
+// JoinGroup 加入组.
 func (c *SocketConn) JoinGroup(groupId GroupId) error {
 	if !new(SocketGroup).Exist(groupId) {
 		return fmt.Errorf("groupId not exist")
@@ -49,7 +50,7 @@ func (c *SocketConn) JoinGroup(groupId GroupId) error {
 	return nil
 }
 
-// ExitGroup 退出组
+// ExitGroup 退出组.
 func (c *SocketConn) ExitGroup(groupId GroupId) {
 	NewGroup(groupId).Exit(c.ConnId)
 	c.mu.Lock()
@@ -58,13 +59,13 @@ func (c *SocketConn) ExitGroup(groupId GroupId) {
 	return
 }
 
-// SendMsg 发送消息
+// SendMsg 发送消息.
 func (c *SocketConn) SendMsg(msg interface{}) {
 	b, _ := json.Marshal(msg)
 	c.sendCh <- b
 }
 
-// production 生产
+// production 生产.
 func (c *SocketConn) production() {
 	for {
 		select {
@@ -77,7 +78,7 @@ func (c *SocketConn) production() {
 	}
 }
 
-// consumer 消费
+// consumer 消费.
 func (c *SocketConn) consumer(handle func(*SocketConn, []byte)) {
 	for {
 		// 1分钟收不到心跳自动断开

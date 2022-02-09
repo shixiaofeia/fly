@@ -4,10 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/olivere/elastic/v6"
-	"github.com/shopspring/decimal"
 	"testing"
 	"time"
+
+	"github.com/olivere/elastic/v6"
+	"github.com/shopspring/decimal"
 )
 
 type Fly struct {
@@ -63,7 +64,7 @@ func TestNewClient(t *testing.T) {
 	}
 }
 
-// getMapping 获取mapping
+// getMapping 获取mapping.
 func getMapping() string {
 	return `
 {

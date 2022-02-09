@@ -14,7 +14,7 @@ type InviteCode struct {
 	len     int    // code最小长度
 }
 
-// NewInviteCode 邀请码
+// NewInviteCode 邀请码.
 func NewInviteCode() *InviteCode {
 	return &InviteCode{
 		base:    "W7PD9CZS2VE8N6LH1XMJ4TUK3ARG5YQI",
@@ -24,7 +24,7 @@ func NewInviteCode() *InviteCode {
 	}
 }
 
-// IdToCode id转code
+// IdToCode id转code.
 func (c *InviteCode) IdToCode(id uint32) string {
 	mod := uint32(0)
 	res := ""
@@ -44,7 +44,7 @@ func (c *InviteCode) IdToCode(id uint32) string {
 	return res
 }
 
-// CodeToId code转id
+// CodeToId code转id.
 func (c *InviteCode) CodeToId(code string) uint32 {
 	res := uint32(0)
 	lenCode := len(code)
@@ -78,7 +78,7 @@ func (c *InviteCode) CodeToId(code string) uint32 {
 	return res
 }
 
-// initCheck 初始化检查
+// initCheck 初始化检查.
 func (c *InviteCode) initCheck() (bool, error) {
 	lenBase := len(c.base)
 	// 检查进制字符

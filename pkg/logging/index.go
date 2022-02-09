@@ -1,12 +1,13 @@
 package logging
 
 import (
+	"os"
+	"time"
+
 	"go.uber.org/zap"
 	"go.uber.org/zap/buffer"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
-	"os"
-	"time"
 )
 
 var (
@@ -16,7 +17,7 @@ var (
 	_pool      = buffer.NewPool()
 )
 
-// Init 初始化日志
+// Init 初始化日志.
 func Init(logPath string, maxAge int, compress bool) {
 	Log = NewLogger(logPath, zap.InfoLevel, MaxSize, MaxBackups, maxAge, compress).Sugar()
 }
@@ -75,7 +76,7 @@ func NewLogger(logPath string, level zapcore.Level, maxSize int, maxBackups int,
 	return logger
 }
 
-// getFilePath 自定义获取文件路径
+// getFilePath 自定义获取文件路径.
 func getFilePath(ec zapcore.EntryCaller) string {
 	if !ec.Defined {
 		return "undefined"

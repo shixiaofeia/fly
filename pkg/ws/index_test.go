@@ -3,19 +3,20 @@ package ws
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/websocket"
 	"log"
 	"net/url"
 	"os"
 	"os/signal"
 	"testing"
 	"time"
+
+	"github.com/gorilla/websocket"
 )
 
 func TestNewClient(t *testing.T) {
 	for i := 0; i < 10000; i++ {
 		go client()
-		time.Sleep( time.Millisecond)
+		time.Sleep(time.Millisecond)
 		fmt.Println(i)
 	}
 	client()

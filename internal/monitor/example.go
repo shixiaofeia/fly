@@ -2,11 +2,12 @@ package monitor
 
 import (
 	"context"
-	"github.com/robfig/cron"
 	"time"
+
+	"github.com/robfig/cron"
 )
 
-// StartCron 启动定时任务
+// StartCron 启动定时任务.
 func StartCron() {
 	c := cron.New()
 	_ = c.AddFunc("0 0 0 */1 * ?", handle)
@@ -26,7 +27,7 @@ func StartTicker(ctx context.Context) {
 	}
 }
 
-// handle 逻辑处理
+// handle 逻辑处理.
 func handle() {
 
 }

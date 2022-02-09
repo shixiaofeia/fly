@@ -2,11 +2,12 @@ package clickhouse
 
 import (
 	"fmt"
-	_ "github.com/mailru/go-clickhouse"
-	"github.com/shopspring/decimal"
 	"log"
 	"testing"
 	"time"
+
+	_ "github.com/mailru/go-clickhouse"
+	"github.com/shopspring/decimal"
 )
 
 type (

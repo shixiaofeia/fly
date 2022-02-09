@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-// addUser 添加用户
+// addUser 添加用户.
 func (c *SocketConn) addUser() {
 	if c.UserId == "" {
 		return
@@ -14,7 +14,7 @@ func (c *SocketConn) addUser() {
 	sockets.Users[c.UserId] = c.ConnId
 }
 
-// delUser 删除用户
+// delUser 删除用户.
 func (c *SocketConn) delUser() {
 	if c.UserId == "" {
 		return
@@ -24,7 +24,7 @@ func (c *SocketConn) delUser() {
 	delete(sockets.Users, c.UserId)
 }
 
-// GetConnByUserId 获取指定用户连接
+// GetConnByUserId 获取指定用户连接.
 func (c *SocketConn) GetConnByUserId(userId UserId) (*SocketConn, error) {
 	sockets.userMu.RLock()
 	defer sockets.userMu.RUnlock()

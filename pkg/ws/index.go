@@ -2,6 +2,7 @@ package ws
 
 import (
 	"fly/pkg/safego/safe"
+
 	"github.com/gorilla/websocket"
 )
 
@@ -13,7 +14,7 @@ var (
 	}
 )
 
-// NewClient 新的连接
+// NewClient 新的连接.
 func NewClient(connId ConnId, userId UserId, conn *websocket.Conn, handle func(*SocketConn, []byte)) {
 	client := &SocketConn{
 		ConnId:  connId,

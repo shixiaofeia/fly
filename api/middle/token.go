@@ -3,10 +3,11 @@ package middle
 import (
 	"fly/pkg/httpcode"
 	"fly/pkg/jwt"
+
 	"github.com/kataras/iris/v12"
 )
 
-// AuthMiddle 验证中间件
+// AuthMiddle 验证中间件.
 func AuthMiddle(ctx iris.Context) {
 	token := ctx.GetHeader(jwt.Authorization)
 	if token == "" {

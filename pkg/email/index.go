@@ -2,6 +2,7 @@ package email
 
 import (
 	"fmt"
+
 	"github.com/go-gomail/gomail"
 )
 
@@ -25,12 +26,12 @@ var (
 	c = Conf{}
 )
 
-// Init 初始化Email配置
+// Init 初始化Email配置.
 func Init(conf Conf) {
 	c = conf
 }
 
-// SendEmail 发送邮件
+// SendEmail 发送邮件.
 func (s *SenEmailMsg) SendEmail() (err error) {
 	m := gomail.NewMessage()
 	m.SetAddressHeader("From", c.User, c.NickName)

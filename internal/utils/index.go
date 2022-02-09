@@ -19,7 +19,7 @@ const (
 	NumberPlusCase                   // 数字加大小写字母
 )
 
-// KRand 生成随机字符串
+// KRand 生成随机字符串.
 func KRand(size int, kind KindType) []byte {
 	iKind, kinds, result := kind, [][]int{{10, 48}, {26, 97}, {26, 65}}, make([]byte, size)
 	isAll := kind > 2 || kind < 0
@@ -34,14 +34,14 @@ func KRand(size int, kind KindType) []byte {
 	return result
 }
 
-// ToMd5 生成md5
+// ToMd5 生成md5.
 func ToMd5(text string) string {
 	ctx := md5.New()
 	ctx.Write([]byte(text))
 	return hex.EncodeToString(ctx.Sum(nil))
 }
 
-// Assign 批量赋值
+// Assign 批量赋值.
 func Assign(origin, target interface{}, excludes ...string) {
 	valOrigin := reflect.ValueOf(origin).Elem()
 	valTarget := reflect.ValueOf(target).Elem()
@@ -69,7 +69,7 @@ func Assign(origin, target interface{}, excludes ...string) {
 	}
 }
 
-// DeepCopy 深拷贝
+// DeepCopy 深拷贝.
 func DeepCopy(source, target interface{}) error {
 	var buf bytes.Buffer
 	if err := gob.NewEncoder(&buf).Encode(source); err != nil {

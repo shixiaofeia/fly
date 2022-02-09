@@ -4,14 +4,15 @@ import (
 	"encoding/json"
 	"fly/api/example/model"
 	"fly/pkg/ws"
+	"net/http"
+	"time"
+
 	"github.com/gorilla/websocket"
 	"github.com/kataras/iris/v12"
 	uuid "github.com/satori/go.uuid"
-	"net/http"
-	"time"
 )
 
-// SocketHealth socket
+// SocketHealth socket.
 func SocketHealth(ctx iris.Context) {
 	upgrade := websocket.Upgrader{
 		// 允许跨域
@@ -28,7 +29,7 @@ func SocketHealth(ctx iris.Context) {
 	ws.NewClient(ws.ConnId(connId), "", conn, socketHandle)
 }
 
-// socketHandle socket处理
+// socketHandle socket处理.
 func socketHandle(conn *ws.SocketConn, data []byte) {
 	req := &model.SocketHandleReq{}
 	_ = json.Unmarshal(data, req)
@@ -42,7 +43,7 @@ func socketHandle(conn *ws.SocketConn, data []byte) {
 	}
 }
 
-// GroupSend 测试组发送
+// GroupSend 测试组发送.
 func GroupSend() {
 	g := ws.NewGroup("10010")
 	for {

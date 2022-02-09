@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fly/pkg/logging"
+	"reflect"
+	"time"
+
 	"github.com/kataras/iris/v12"
 	uuid "github.com/satori/go.uuid"
 	"go.uber.org/zap"
 	"gopkg.in/validator.v2"
-	"reflect"
-	"time"
 )
 
 type Req struct {
@@ -19,22 +20,22 @@ type Req struct {
 	Log       *zap.SugaredLogger
 }
 
-// JsonOk 正确的json返回
+// JsonOk 正确的json返回.
 func (slf *Req) JsonOk(data interface{}) {
 	slf.JsonCode(Code200, data)
 }
 
-// JsonParamError json返回参数错误
+// JsonParamError json返回参数错误.
 func (slf *Req) JsonParamError() {
 	slf.JsonCode(ParamErr, nil)
 }
 
-// JsonServiceError 通用错误处理
+// JsonServiceError 通用错误处理.
 func (slf *Req) JsonServiceError() {
 	slf.JsonCode(ServiceErr, nil)
 }
 
-// JsonCode 自定义code码返回
+// JsonCode 自定义code码返回.
 func (slf *Req) JsonCode(code ErrCode, data interface{}) {
 	if data == nil {
 		data = map[string]interface{}{}
@@ -49,7 +50,7 @@ func (slf *Req) JsonCode(code ErrCode, data interface{}) {
 	slf.Log.Infof("api: %s, run: %s, param: %s, code: %d", slf.ctx.Request().RequestURI, runTime, slf.body, code.Code)
 }
 
-// NewRequest 解析post传参
+// NewRequest 解析post传参.
 func NewRequest(ctx iris.Context, params interface{}) (r *Req, b bool) {
 	uid := uuid.NewV4().String()
 	r = &Req{
@@ -93,14 +94,14 @@ func NewRequest(ctx iris.Context, params interface{}) (r *Req, b bool) {
 	return
 }
 
-// ToExcel 数据导出excel
+// ToExcel 数据导出excel.
 func (slf *Req) ToExcel(titleList []string, dataList interface{}, fileName string) {
 	buf, _ := ExportExcel(titleList, dataList)
 	content := bytes.NewReader(buf.Bytes())
 	_ = slf.ctx.ServeContent(content, fileName, time.Now(), true)
 }
 
-// ToSecondaryTitleExcel 导出二级标题
+// ToSecondaryTitleExcel 导出二级标题.
 func (slf *Req) ToSecondaryTitleExcel(firstTitle []string, secondTitle [][]string, dataList interface{}, fileName string) {
 	buf, _ := ExportSecondaryTitleExcel(firstTitle, secondTitle, dataList)
 	content := bytes.NewReader(buf.Bytes())
