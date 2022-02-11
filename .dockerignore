@@ -3,5 +3,6 @@ Dockerfile
 .idea/*
 logs
 *_test.go
-readme.md
+*.md
 .gitignore
+build

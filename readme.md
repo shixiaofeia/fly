@@ -11,36 +11,26 @@
 参考 [Go程序布局](https://github.com/golang-standards/project-layout/blob/master/README_zh.md)
 
 ```
-├── README.md
-├── config
-|  ├── dev.json         // 各环境配置文件
-|  └── config.go        // 配置初始化
-|  └── model.go         // 配置结构体
-├── api                 // 对外接口
-|  ├── v1               // 版本号
-|  |  ├── router.go     // 主路由
-|  |  └── user          // 模块分组
-|  |     ├── controller // 控制器
-|  |     ├── service    // 接口逻辑
-|  |     └── models     // 结构体存放
-|  |     ├── router.go  // 模块子路由
-├── rpc                 // grpc
-|  ├── v1               // grpc版本
-|  |  ├── router.go     // 主路由
-|  |  └── user          // 模块分组
-|  |     ├── controller // 控制器
-|  |     ├── service    // 接口逻辑
-|  |     └── models     // 结构体存放
-|  |     └── pb         // proto文件
-|  |     ├── router.go  // 模块子路由
+├── build               // 打包/集成
+|  ├── app              // 应用程序名
+|  |  ├── Dockerfile    // 集成的配置/脚本
+├── cmd                 // 可执行目录
+|  ├── app              // 应用程序名
+|  |  ├── main.go       // 入口文件
+├── configs             // 配置文件
+|  ├── config.json      
+├── doc                 // 项目文档
+├── example             // 示例目录
 ├── internal            // 私有程序
+|  ├── api              // 接口
+|  ├── config           // 配置文件解析
 |  ├── cache            // 缓存相关
 |  ├── constvar         // 常量
+|  ├── domain           // 表结构
 |  └── monitor          // 监控定时服务相关
-|  └── models           // 公用结构体
+|  └── rpc              // rpc
 |  └── utils            // 公用方法(不能调用任何内部对象)
-├── domain              // 数据库相关
-|  ├── sqldb            // mysql相关, 包含对sql相关的操作
+├── logs                // 日志存放
 ├── pkg                 // 安全导入的包(可以被任何项目直接导入使用)
 |  ├── clickhouse       // ck组件
 |  ├── email            // 邮件组件
@@ -54,15 +44,10 @@
 |  └── redis            // redis组件
 |  └── safego           // 安全运行组件
 |  └── ws               // socket组件
+├── .dockerignore       // docker忽略文件    
+├── .gitignore          // git忽略文件    
 ├── go.mod              // 包管理    
-├── main.go             // 入口文件     
-├── Dockerfile          // Dockerfile     
-
-
-├── cmd                 // 如果该项目有多个入口文件, 则根据业务存放在cmd里
-|  ├── xxx-interface
-|  |   ├── main.go      // 入口文件
-|  |   ├── Dockerfile   // Dockerfile  
+├── README.md
 ```
 
 ## 优雅的代码
@@ -72,7 +57,6 @@
 [gofmt](https://golang.org/cmd/gofmt/)
 
 [goimports](https://pkg.go.dev/golang.org/x/tools/cmd/goimports)
-
 
 ## 技术选型
 
@@ -125,12 +109,12 @@
 ### 命令行启动
 
 ```
-go run main.go
+go run cmd/app/main.go
 ```
 
 ### Docker启动
 
 ```
-docker build -t fly:v1.0.0 .
+docker build -f build/app/Dockerfile -t fly:v1.0.0 .
 docker run --rm -it -p 8888:8888 -p 9999:9999 --name fly fly:v1.0.0
 ```

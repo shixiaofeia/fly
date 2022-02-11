@@ -2,7 +2,7 @@ package monitor
 
 import (
 	"context"
-	"fly/config"
+	"fly/internal/config"
 )
 
 // InitMonitor 初始化定时监控服务.
