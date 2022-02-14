@@ -4,6 +4,7 @@ import (
 	"fly/pkg/logging"
 	"fly/pkg/safego/safe"
 	"path"
+	"strings"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
@@ -15,11 +16,16 @@ var (
 
 // Init 初始化函数.
 func Init(configPath string) {
-
 	// 初始化日志
 	logging.Init("./logs/fly.log", 30, true)
+
 	viper.SetConfigName(path.Base(configPath))
-	viper.SetConfigType("json")
+	paths := strings.Split(configPath, ".")
+	if len(paths) == 0 {
+		logging.Log.Fatal("config path err")
+		return
+	}
+	viper.SetConfigType(paths[len(paths)-1])
 	viper.AddConfigPath(path.Dir(configPath))
 	parseConfig()
 	safe.Go(WatchConfig)

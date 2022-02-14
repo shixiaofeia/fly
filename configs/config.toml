@@ -1,0 +1,21 @@
+ServerAddress = "0.0.0.0"
+ServerPort = ":8888"
+RpcPort = ":9999"
+IsMonitor = true
+
+[Mysql]
+[Mysql.Write]
+Address = ""
+Port = "3306"
+User = "root"
+Password = "root"
+DBName = "fly"
+MaxIdleCoon = 50
+MaxOpenCoon = 500
+
+[Email]
+Website = "https://blog.csdn.net/ywdhzxf"
+User = ""
+NickName = "Fly运营团队"
+Password = ""
+Logo = "https://profile.csdnimg.cn/8/9/2/3_ywdhzxf"

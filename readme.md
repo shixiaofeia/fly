@@ -2,7 +2,7 @@
 
 ## 简介
 
-一个简单而优雅的后端框架, 封装常用数据库组件及应用示例, 助力后端人员快速开发
+一个简单而优雅的后端项目, 封装常用数据库组件及应用示例, 助力后端人员快速开发
 
 [个人博客](https://blog.csdn.net/ywdhzxf/)
 
@@ -109,7 +109,7 @@
 ### 命令行启动
 
 ```
-go run cmd/app/main.go
+go run cmd/app/main.go -config ./configs/config.toml
 ```
 
 ### Docker启动

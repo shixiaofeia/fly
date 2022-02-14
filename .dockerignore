@@ -6,3 +6,4 @@ logs
 *.md
 .gitignore
 build
+example
