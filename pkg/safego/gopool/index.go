@@ -9,6 +9,9 @@ type Pool struct {
 
 // NewGoPool 实例化一个go程池
 func NewGoPool(i int) *Pool {
+	if i < 1 {
+		i = 1
+	}
 	return &Pool{queue: make(chan struct{}, i)}
 }
 
