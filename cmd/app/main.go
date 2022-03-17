@@ -31,7 +31,10 @@ var (
 )
 
 func main() {
-	defer wg.Wait()
+	defer func() {
+		wg.Wait()
+		logging.Sync()
+	}()
 
 	// 初始化业务表
 	domain.InitDomain()
@@ -48,31 +51,33 @@ func main() {
 	initRpc()
 
 	// 监听端口
-	logging.Log.Info("Start Web Server ")
+	logging.Info("Start Web Server ")
 	if err = app.Run(iris.Addr(config.Config.ServerPort), iris.WithoutInterruptHandler); err != nil {
-		logging.Log.Fatal("Start Web Server err: " + err.Error())
+		logging.Fatal("Start Web Server err: " + err.Error())
 	}
 }
 
 func init() {
 	flag.StringVar(&configPath, "config", "./configs/config.json", "配置文件路径以及文件名(必填)")
 	flag.Parse()
+	// 初始化日志
+	logging.Init("./logs/fly.log")
 	// 初始化配置
 	config.Init(configPath)
 
 	// 注册mysql
 	if err = mysql.Init(config.Config.Mysql.Read, config.Config.Mysql.Write); err != nil {
-		logging.Log.Fatal("init mysql service err: " + err.Error())
+		logging.Fatal("init mysql service err: " + err.Error())
 	}
 
 	// 注册redis
 	if err = redis.Init(config.Config.Redis); err != nil {
-		logging.Log.Fatal("init redis service err: " + err.Error())
+		logging.Fatal("init redis service err: " + err.Error())
 	}
 
 	// 注册RabbitMQ
 	if err = mq.Init(config.Config.RabbitMq); err != nil {
-		logging.Log.Fatal("init rabbit mq err: " + err.Error())
+		logging.Fatal("init rabbit mq err: " + err.Error())
 	}
 
 	// 优雅的关闭程序
@@ -93,11 +98,11 @@ func initRpc() {
 	safe.Go(func() {
 		lis, err := net.Listen("tcp", config.Config.RpcPort)
 		if err != nil {
-			logging.Log.Fatal("Start Rpc Listen err: " + err.Error())
+			logging.Fatal("Start Rpc Listen err: " + err.Error())
 		}
-		logging.Log.Info("Start Rpc Server ")
+		logging.Info("Start Rpc Server ")
 		if err = gServer.Serve(lis); err != nil {
-			logging.Log.Fatal("Start Rpc Server err: " + err.Error())
+			logging.Fatal("Start Rpc Server err: " + err.Error())
 		}
 	})
 }

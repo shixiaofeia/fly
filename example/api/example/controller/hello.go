@@ -11,8 +11,8 @@ import (
 // Hello 请求示例.
 func Hello(ctx iris.Context) {
 	req := &model.HelloReq{}
-	r, ok := httpcode.NewRequest(ctx, req)
-	if !ok {
+	r, err := httpcode.NewRequest(ctx, req)
+	if err != nil {
 		return
 	}
 	res := model.HelloRes{
@@ -24,8 +24,8 @@ func Hello(ctx iris.Context) {
 
 // Export 导出示例.
 func Export(ctx iris.Context) {
-	r, ok := httpcode.NewRequest(ctx, nil)
-	if !ok {
+	r, err := httpcode.NewRequest(ctx, nil)
+	if err != nil {
 		return
 	}
 	dataList := []*model.ExportRes{
