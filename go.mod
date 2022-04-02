@@ -5,6 +5,7 @@ go 1.15
 require (
 	github.com/360EntSecGroup-Skylar/excelize/v2 v2.3.2
 	github.com/ajg/form v1.5.1 // indirect
+	github.com/dlclark/regexp2 v1.4.0
 	github.com/fasthttp-contrib/websocket v0.0.0-20160511215533-1f3b11f56072 // indirect
 	github.com/fsnotify/fsnotify v1.4.9
 	github.com/go-gomail/gomail v0.0.0-20160411212932-81ebce5c23df
@@ -44,6 +45,7 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.7.1
 	github.com/streadway/amqp v1.0.0
+	github.com/stretchr/testify v1.6.1
 	github.com/valyala/fasthttp v1.24.0 // indirect
 	github.com/xeipuuv/gojsonschema v1.2.0 // indirect
 	github.com/yalp/jsonpath v0.0.0-20180802001716-5cc68e5049a0 // indirect

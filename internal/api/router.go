@@ -18,7 +18,7 @@ func Index(app *iris.Application) {
 	})
 	app.Get("/", func(ctx iris.Context) {
 		r, _ := httpcode.NewRequest(ctx, nil)
-		r.JsonOk("Welcome To Fly")
+		r.Ok("Welcome To Fly")
 	})
 	// 记载主路由
 	app.Any("/debug/pprof", pprof.New())

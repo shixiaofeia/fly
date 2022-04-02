@@ -24,9 +24,10 @@ var (
 	newLogger = logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		logger.Config{
-			SlowThreshold: time.Second,   // 慢 SQL 阈值
-			LogLevel:      logger.Silent, // Log level
-			Colorful:      false,         // 禁用彩色打印
+			SlowThreshold:             time.Second,   // 慢 SQL 阈值
+			LogLevel:                  logger.Silent, // Log level
+			Colorful:                  true,          // 彩色打印
+			IgnoreRecordNotFoundError: true,          // 忽略记录为空的错误
 		},
 	)
 )
@@ -42,12 +43,12 @@ func Init(readConf, writeConf Conf) (err error) {
 	return
 }
 
-// NewReadDB
+// NewReadDB 只读.
 func NewReadDB() *gorm.DB {
 	return readDB
 }
 
-// NewWriteDB
+// NewWriteDB 写.
 func NewWriteDB() *gorm.DB {
 	return writeDB
 }

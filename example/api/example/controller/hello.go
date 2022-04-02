@@ -19,7 +19,7 @@ func Hello(ctx iris.Context) {
 		Name: fmt.Sprintf("hello, %s", req.Name),
 	}
 	r.Log.Info(res.Name)
-	r.JsonOk(res)
+	r.Ok(res)
 }
 
 // Export 导出示例.

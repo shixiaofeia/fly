@@ -12,13 +12,13 @@ func AuthMiddle(ctx iris.Context) {
 	token := ctx.GetHeader(jwt.Authorization)
 	if token == "" {
 		r, _ := httpcode.NewRequest(ctx, nil)
-		r.JsonCode(httpcode.TokenNotFound, nil)
+		r.Code(httpcode.TokenNotFound, nil)
 		return
 	}
 	userId, err := jwt.ParseToken(token)
 	if err != nil {
 		r, _ := httpcode.NewRequest(ctx, nil)
-		r.JsonCode(httpcode.TokenNotValid, nil)
+		r.Code(httpcode.TokenNotValid, nil)
 		return
 	}
 	// TODO 单点登录增加token校验

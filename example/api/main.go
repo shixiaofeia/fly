@@ -3,7 +3,9 @@ package main
 import (
 	"context"
 	"fly/internal/config"
+	"fly/internal/domain"
 	"fly/pkg/logging"
+	"fly/pkg/mysql"
 	"sync"
 	"time"
 
@@ -27,6 +29,8 @@ func main() {
 	}()
 	// 初始化路由
 	Index(app)
+	// 初始化业务表
+	domain.InitDomain()
 
 	// 监听端口
 	logging.Info("Start Web Server ")
@@ -40,6 +44,11 @@ func init() {
 	logging.Init("./logs/fly.log")
 	// 初始化配置
 	config.Init(configPath)
+
+	// 注册mysql
+	if err = mysql.Init(config.Config.Mysql.Read, config.Config.Mysql.Write); err != nil {
+		logging.Fatal("init mysql service err: " + err.Error())
+	}
 
 	// 优雅的关闭程序
 	iris.RegisterOnInterrupt(func() {

@@ -9,7 +9,7 @@ import (
 	"github.com/kataras/iris/v12/middleware/recover"
 )
 
-// Index
+// Index 路由
 func Index(app *iris.Application) {
 	app.Use(recover.New())
 	app.Use(httpcode.HeaderMiddleware)
@@ -19,7 +19,7 @@ func Index(app *iris.Application) {
 	})
 	app.Get("/", func(ctx iris.Context) {
 		r, _ := httpcode.NewRequest(ctx, nil)
-		r.JsonOk("Welcome To Fly")
+		r.Ok("Welcome To Fly")
 	})
 	// 记载主路由
 	app.Any("/debug/pprof", pprof.New())

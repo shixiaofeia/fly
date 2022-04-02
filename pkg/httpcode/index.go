@@ -20,23 +20,23 @@ type Req struct {
 	Log       *logging.FieldLog
 }
 
-// JsonOk 正确的json返回.
-func (slf *Req) JsonOk(data interface{}) {
-	slf.JsonCode(Code200, data)
+// Ok 正确的json返回.
+func (slf *Req) Ok(data interface{}) {
+	slf.Code(Code200, data)
 }
 
-// JsonParamError json返回参数错误.
-func (slf *Req) JsonParamError() {
-	slf.JsonCode(ParamErr, nil)
+// ParamError json返回参数错误.
+func (slf *Req) ParamError() {
+	slf.Code(ParamErr, nil)
 }
 
-// JsonServiceError 通用错误处理.
-func (slf *Req) JsonServiceError() {
-	slf.JsonCode(ServiceErr, nil)
+// ServiceError 通用错误处理.
+func (slf *Req) ServiceError() {
+	slf.Code(ServiceErr, nil)
 }
 
-// JsonCode 自定义code码返回.
-func (slf *Req) JsonCode(code ErrCode, data interface{}) {
+// Code 自定义code码返回.
+func (slf *Req) Code(code ErrCode, data interface{}) {
 	if data == nil {
 		data = map[string]interface{}{}
 	}
@@ -62,7 +62,7 @@ func NewRequest(ctx iris.Context, params interface{}) (r *Req, err error) {
 		defer func() {
 			if err != nil {
 				r.Log.Error(err.Error())
-				r.JsonParamError()
+				r.ParamError()
 			}
 		}()
 
