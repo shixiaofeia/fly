@@ -7,7 +7,7 @@ import (
 func TestCallApi(t *testing.T) {
 
 	var (
-		url  = "http://baidu.com"
+		url  = "https://baidu.com"
 		rg   = NewRequestGet(url)
 		rj   = NewRequestPostJson(url, map[string]interface{}{})
 		rf   = NewRequestPostForm(url, map[string]string{})

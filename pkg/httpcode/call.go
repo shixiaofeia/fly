@@ -58,7 +58,7 @@ func (slf *RequestParam) AddHeader(key, val string) {
 	slf.headers[key] = val
 }
 
-// Call
+// Call 调用.
 func (slf *RequestGet) Call() (respBytes []byte, err error) {
 	// 构建请求
 	request, err := http.NewRequest(slf.method, slf.url, nil)
@@ -70,7 +70,7 @@ func (slf *RequestGet) Call() (respBytes []byte, err error) {
 	return call(request, slf.headers)
 }
 
-// Call
+// Call 调用.
 func (slf *RequestPostJson) Call() (respBytes []byte, err error) {
 	var (
 		reader io.Reader
@@ -93,7 +93,7 @@ func (slf *RequestPostJson) Call() (respBytes []byte, err error) {
 	return call(request, slf.headers)
 }
 
-// Call
+// Call 调用.
 func (slf *RequestPostForm) Call() (respBytes []byte, err error) {
 	var (
 		reader io.Reader

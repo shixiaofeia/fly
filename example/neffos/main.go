@@ -32,7 +32,7 @@ func main() {
 	log.Fatal(app.Run(iris.Addr(":9999")))
 }
 
-// Hello
+// Hello socket test.
 func Hello(ctx iris.Context) {
 	conn := websocket.Upgrade(ctx, func(ctx context.Context) string {
 		return uuid.NewV4().String()

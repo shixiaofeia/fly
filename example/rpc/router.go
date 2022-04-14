@@ -7,7 +7,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-// Index
+// Index router.
 func Index(s *grpc.Server) {
 	hc := &controller.HelloController{}
 	pb.RegisterHelloWorldServiceServer(s, hc)

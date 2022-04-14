@@ -80,7 +80,7 @@ func init() {
 		logging.Fatal("init rabbit mq err: " + err.Error())
 	}
 
-	// 优雅的关闭程序
+	// 优雅关闭程序
 	iris.RegisterOnInterrupt(func() {
 		wg.Add(1)
 		defer wg.Done()

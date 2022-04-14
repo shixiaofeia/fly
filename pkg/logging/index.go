@@ -50,7 +50,7 @@ func Init(logPath string) {
 	NewLogger(items)
 }
 
-// NewLogger
+// NewLogger 日志.
 func NewLogger(items []logItem) {
 	var (
 		cfg   = zap.NewProductionEncoderConfig()

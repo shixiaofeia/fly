@@ -9,7 +9,7 @@ import (
 
 type HelloController struct{}
 
-// SayHello
+// SayHello test router.
 func (*HelloController) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
 	msg := fmt.Sprintf("hello id: %d, name: %s", in.Id, in.Name)
 	logging.Infof("SayHello: %s", msg)

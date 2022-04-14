@@ -26,12 +26,12 @@ func Init(c Conf) (err error) {
 	return
 }
 
-// NewClusterClient
+// NewClusterClient 获取集群连接
 func NewClusterClient() *redis.ClusterClient {
 	return clusterClient
 }
 
-// NewStandAloneClient
+// NewStandAloneClient 获取单机连接
 func NewStandAloneClient() *redis.Client {
 	return standAloneClient
 }

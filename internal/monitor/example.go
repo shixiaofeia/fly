@@ -14,7 +14,7 @@ func StartCron() {
 	c.Start()
 }
 
-// StartTicker
+// StartTicker 启动定时器.
 func StartTicker(ctx context.Context) {
 	ticker := time.NewTicker(time.Minute * 1)
 	for range ticker.C {

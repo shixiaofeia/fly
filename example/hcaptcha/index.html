@@ -1,4 +1,4 @@
-<html>
+<html lang="">
 
 <head>
     <title>hCaptcha Demo</title>
@@ -7,8 +7,12 @@
 
 <body>
 <form action="/page" method="POST">
-    <input type="text" name="email" placeholder="Email"/>
-    <input type="password" name="password" placeholder="Password"/>
+    <label>
+        <input type="text" name="email" placeholder="Email"/>
+    </label>
+    <label>
+        <input type="password" name="password" placeholder="Password"/>
+    </label>
     <div class="h-captcha" data-sitekey="{{ .SiteKey }}"></div>
     <br/>
     <input type="submit" value="Submit"/>

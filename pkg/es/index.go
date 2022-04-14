@@ -19,7 +19,7 @@ func Init(address ...string) (err error) {
 	return
 }
 
-// NewClient
+// NewClient 获取client
 func NewClient() *elastic.Client {
 	return client
 }

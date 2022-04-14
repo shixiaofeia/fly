@@ -4,7 +4,7 @@ import (
 	"log"
 )
 
-// Go
+// Go 安全go程.
 func Go(f func()) {
 	go func() {
 		defer func() {

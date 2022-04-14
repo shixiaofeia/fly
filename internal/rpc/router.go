@@ -4,6 +4,6 @@ import (
 	"google.golang.org/grpc"
 )
 
-// Index
+// Index router.
 func Index(s *grpc.Server) {
 }

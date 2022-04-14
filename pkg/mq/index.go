@@ -19,7 +19,7 @@ var (
 	ReCoon      reCoon
 )
 
-// Init
+// Init 初始化
 func Init(c Conf) (err error) {
 	ReCoon = func() (*amqp.Connection, error) {
 		coon, err := amqp.Dial(fmt.Sprintf("amqp://%s:%s@%s:%s/",

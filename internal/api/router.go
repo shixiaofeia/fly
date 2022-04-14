@@ -8,7 +8,7 @@ import (
 	"github.com/kataras/iris/v12/middleware/recover"
 )
 
-// Index
+// Index router.
 func Index(app *iris.Application) {
 	app.Use(recover.New())
 	app.Use(httpcode.HeaderMiddleware)

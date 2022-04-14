@@ -10,7 +10,7 @@ import (
 	"github.com/360EntSecGroup-Skylar/excelize/v2"
 )
 
-// ExportExcel
+// ExportExcel 导出excel.
 func ExportExcel(thead []string, tbody interface{}) (r *bytes.Buffer, err error) {
 	// make sure 'tbody' is a Slice
 	valTbody := reflect.ValueOf(tbody)
