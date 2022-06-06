@@ -15,3 +15,15 @@ func Go(f func()) {
 		f()
 	}()
 }
+
+// GoWithField 安全go程且携带参数
+func GoWithField(f func(val interface{}), val interface{}) {
+	go func(val interface{}) {
+		defer func() {
+			if msg := recover(); msg != nil {
+				log.Println(msg)
+			}
+		}()
+		f(val)
+	}(val)
+}
