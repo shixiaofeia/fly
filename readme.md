@@ -29,7 +29,6 @@
 |  ├── domain           // 表结构
 |  └── monitor          // 监控定时服务相关
 |  └── rpc              // rpc
-|  └── utils            // 公用方法(不能调用任何内部对象)
 ├── logs                // 日志存放
 ├── pkg                 // 安全导入的包(可以被任何项目直接导入使用)
 |  ├── clickhouse       // ck组件
@@ -37,6 +36,7 @@
 |  ├── es               // es组件
 |  ├── httpcode         // 请求处理组件
 |  ├── jwt              // jwt组件
+|  ├── libs             // 封装的公用方法
 |  ├── logging          // 日志组件
 |  ├── mongo            // mongo组件
 |  └── mq               // mq组件

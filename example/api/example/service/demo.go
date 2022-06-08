@@ -3,8 +3,8 @@ package service
 import (
 	"fly/example/api/example/model"
 	"fly/internal/domain/sqldb"
-	"fly/internal/utils"
 	"fly/pkg/httpcode"
+	"fly/pkg/libs/structf"
 	"fmt"
 )
 
@@ -20,7 +20,7 @@ func (slf *DemoService) DemoCreate(req *model.DemoCreateReq) error {
 		factory = sqldb.NewDemoSearch(nil)
 		recordM = new(sqldb.Demo)
 	)
-	utils.Assign(req, recordM)
+	structf.Assign(req, recordM)
 
 	if _, err := factory.Create(recordM); err != nil {
 		return fmt.Errorf("demo create err: %v", err)
@@ -34,8 +34,8 @@ func (slf *DemoService) DemoRecords(req *model.DemoRecordReq, res *model.DemoRec
 	var (
 		factory = sqldb.NewDemoSearch(nil)
 	)
-	utils.Assign(req, res)
-	utils.Assign(req, factory)
+	structf.Assign(req, res)
+	structf.Assign(req, factory)
 
 	records, total, err := factory.Find()
 	if err != nil {
@@ -44,7 +44,7 @@ func (slf *DemoService) DemoRecords(req *model.DemoRecordReq, res *model.DemoRec
 
 	for _, v := range records {
 		recordM := new(model.DemoRecordItem)
-		utils.Assign(v, recordM)
+		structf.Assign(v, recordM)
 		res.List = append(res.List, recordM)
 	}
 
@@ -65,7 +65,7 @@ func (slf *DemoService) DemoInfo(req *model.DemoInfoReq, res *model.DemoInfoResp
 		return fmt.Errorf("demo info err: %v", err)
 	}
 
-	utils.Assign(recordM, res)
+	structf.Assign(recordM, res)
 
 	return nil
 }

@@ -1,4 +1,4 @@
-package utils
+package stringf
 
 import (
 	"fmt"
@@ -25,12 +25,12 @@ func NewInviteCode() *InviteCode {
 }
 
 // IdToCode id转code.
-func (c *InviteCode) IdToCode(id uint32) string {
+func (c *InviteCode) IdToCode(uid uint32) string {
 	mod := uint32(0)
 	res := ""
-	for id != 0 {
-		mod = id % c.decimal
-		id = id / c.decimal
+	for uid != 0 {
+		mod = uid % c.decimal
+		uid = uid / c.decimal
 		res += string(c.base[mod])
 	}
 	resLen := len(res)
