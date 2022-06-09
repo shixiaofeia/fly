@@ -1,15 +1,18 @@
 package safe
 
 import (
+	"fmt"
 	"log"
+	"runtime"
 )
 
 // Go 安全go程.
 func Go(f func()) {
 	go func() {
 		defer func() {
-			if msg := recover(); msg != nil {
-				log.Println(msg)
+			if err := recover(); err != nil {
+				_, file, line, _ := runtime.Caller(3)
+				log.Println(fmt.Sprintf("recover err: %v, line: %s", err, fmt.Sprintf("%s:%d", file, line)))
 			}
 		}()
 		f()
@@ -20,8 +23,9 @@ func Go(f func()) {
 func GoWithField(f func(val interface{}), val interface{}) {
 	go func(val interface{}) {
 		defer func() {
-			if msg := recover(); msg != nil {
-				log.Println(msg)
+			if err := recover(); err != nil {
+				_, file, line, _ := runtime.Caller(3)
+				log.Println(fmt.Sprintf("recover err: %v, line: %s", err, fmt.Sprintf("%s:%d", file, line)))
 			}
 		}()
 		f(val)
