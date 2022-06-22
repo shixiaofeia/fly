@@ -3,6 +3,7 @@ package config
 import (
 	"fly/pkg/clickhouse"
 	"fly/pkg/email"
+	"fly/pkg/logging"
 	"fly/pkg/mongo"
 	"fly/pkg/mq"
 	"fly/pkg/mysql"
@@ -16,6 +17,7 @@ type (
 		ServerPort    string // 对外服务端口
 		RpcPort       string // rpc端口
 		IsMonitor     bool   // 是否启动monitor
+		Log           logging.Conf
 		Mysql         MySqlConf
 		Mongo         mongo.Conf
 		Redis         redis.Conf

@@ -17,7 +17,7 @@ type Req struct {
 	ctx       iris.Context
 	body      []byte
 	requestId string
-	Log       *logging.FieldLog
+	Log       logging.Encoder
 }
 
 // Ok 正确的json返回.
@@ -56,7 +56,7 @@ func NewRequest(ctx iris.Context, params interface{}) (r *Req, err error) {
 	r = &Req{
 		ctx:       ctx,
 		requestId: uid,
-		Log:       logging.NewField().WithString(CtxRequestId, uid),
+		Log:       logging.GetEncoder().WithField(CtxRequestId, uid),
 	}
 	if params != nil {
 		defer func() {

@@ -40,8 +40,6 @@ func main() {
 }
 
 func init() {
-	// 初始化日志
-	logging.Init("./logs/fly.log")
 	// 初始化配置
 	config.Init(configPath)
 

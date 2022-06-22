@@ -3,6 +3,10 @@
   "ServerPort": ":8888",
   "RpcPort": ":9999",
   "IsMonitor": true,
+  "Log": {
+    "Path": "./logs/fly.log",
+    "Encoder": "json"
+  },
   "Mysql": {
     "Write": {
       "Address": "",

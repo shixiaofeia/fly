@@ -3,6 +3,7 @@ package config
 import (
 	"fly/pkg/logging"
 	"fly/pkg/safego/safe"
+	"log"
 	"path"
 	"strings"
 
@@ -19,7 +20,7 @@ func Init(configPath string) {
 	viper.SetConfigName(path.Base(configPath))
 	paths := strings.Split(configPath, ".")
 	if len(paths) == 0 {
-		logging.Fatal("config path err")
+		log.Fatalln("conf path err")
 		return
 	}
 	viper.SetConfigType(paths[len(paths)-1])
@@ -32,11 +33,13 @@ func Init(configPath string) {
 func parseConfig() {
 	err := viper.ReadInConfig()
 	if err != nil {
-		logging.Fatal("Init config err: " + err.Error())
+		log.Fatalln("Init config err: " + err.Error())
 	}
 	if err = viper.Unmarshal(&Config); err != nil {
-		logging.Fatal("Unmarshal config err: " + err.Error())
+		log.Fatalln("Unmarshal config err: " + err.Error())
 	}
+
+	logging.Init(Config.Log)
 	ShowConfig()
 }
 

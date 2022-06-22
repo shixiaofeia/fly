@@ -60,8 +60,7 @@ func main() {
 func init() {
 	flag.StringVar(&configPath, "config", "./configs/config.json", "配置文件路径以及文件名(必填)")
 	flag.Parse()
-	// 初始化日志
-	logging.Init("./logs/fly.log")
+
 	// 初始化配置
 	config.Init(configPath)
 
