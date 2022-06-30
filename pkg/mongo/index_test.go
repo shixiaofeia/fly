@@ -1,47 +1,56 @@
 package mongo
 
 import (
-	"log"
 	"testing"
 
 	"gopkg.in/mgo.v2/bson"
 )
 
 type Person struct {
+	ID    bson.ObjectId `bson:"_id,omitempty"`
 	Name  string
 	Phone string
 }
 
-func TestInit(t *testing.T) {
-	var err error
+func TestNewCollection(t *testing.T) {
+	var (
+		err  error
+		conf = Conf{
+			Host:        "127.0.0.1",
+			Port:        "27017",
+			DataBase:    "file",
+			MaxPoolSize: 10,
+		}
+		recordM = &Person{ID: bson.NewObjectId(), Name: "fly", Phone: "+86 123456"}
+	)
 
-	if err = Init(Conf{Address: "127.0.0.1:27017"}); err != nil {
-		log.Fatal(err)
+	if err = Init(conf); err != nil {
+		t.Fatalf("init err: %v", err)
 	}
 
-	c := NewCollection("test", "people")
-	if err = c.Insert(&Person{"Ale", "+55 53 8116 9639"},
-		&Person{"Cla", "+55 53 8402 8510"}); err != nil {
-		log.Fatal(err)
+	cli := NewCollection("people")
+	if err = cli.Insert(recordM); err != nil {
+		t.Fatalf("insert err: %v", err)
 	}
 
-	if err = c.Update(bson.M{"name": "Ale"}, bson.M{"$set": bson.M{"phone": "123456"}}); err != nil {
-		log.Fatal(err)
+	if err = cli.Update(bson.M{"name": "fly"}, bson.M{"$set": bson.M{"phone": "+86 23456789"}}); err != nil {
+		t.Fatalf("update err: %v", err)
 	}
 
 	result := Person{}
-	if err = c.Find(bson.M{"name": "Ale"}).One(&result); err != nil {
-		log.Fatal(err)
-	}
-	log.Println("Phone:", result.Phone)
-
-	if _, err = c.RemoveAll(bson.M{"name": "Ale"}); err != nil {
-		log.Fatal(err)
+	if err = cli.Find(bson.M{"_id": recordM.ID}).One(&result); err != nil {
+		t.Fatalf("find err: %v", err)
 	}
 
-	countNum, err := c.Count()
+	t.Logf("update after phone: %s", result.Phone)
+
+	if _, err = cli.RemoveAll(bson.M{"name": "fly"}); err != nil {
+		t.Fatalf("remove err: %v", err)
+	}
+
+	countNum, err := cli.Count()
 	if err != nil {
-		log.Fatal(err)
+		t.Fatalf("count err: %v", err)
 	}
-	log.Println(countNum)
+	t.Logf("count num: %d", countNum)
 }

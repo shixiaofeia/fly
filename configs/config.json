@@ -5,7 +5,7 @@
   "IsMonitor": true,
   "Log": {
     "Path": "./logs/fly.log",
-    "Encoder": "json"
+    "Encoder": "console"
   },
   "Mysql": {
     "Write": {

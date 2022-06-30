@@ -51,9 +51,9 @@ func main() {
 	initRpc()
 
 	// 监听端口
-	logging.Info("Start Web Server ")
+	logging.Info("start Web Server")
 	if err = app.Run(iris.Addr(config.Config.ServerPort), iris.WithoutInterruptHandler); err != nil {
-		logging.Fatal("Start Web Server err: " + err.Error())
+		logging.Fatal("start Web Server err: " + err.Error())
 	}
 }
 
@@ -97,11 +97,11 @@ func initRpc() {
 	safe.Go(func() {
 		lis, err := net.Listen("tcp", config.Config.RpcPort)
 		if err != nil {
-			logging.Fatal("Start Rpc Listen err: " + err.Error())
+			logging.Fatal("start Rpc Listen err: " + err.Error())
 		}
-		logging.Info("Start Rpc Server ")
+		logging.Info("start Rpc Server ")
 		if err = gServer.Serve(lis); err != nil {
-			logging.Fatal("Start Rpc Server err: " + err.Error())
+			logging.Fatal("start Rpc Server err: " + err.Error())
 		}
 	})
 }
