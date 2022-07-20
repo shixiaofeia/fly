@@ -91,11 +91,11 @@ func getSetFunc(objName, fName, fType string) string {
 		fType = "decimal.Decimal"
 	}
 	str := fmt.Sprintf(`
-func (slf *%sSearch) Set%s(%s %s) *DemoSearch {
+func (slf *%sSearch) Set%s(%s %s) *%sSearch {
 	slf.%s = %s
 	return slf
 }
-`, objName, fName, param, fType, fName, param)
+`, objName, fName, param, fType, objName, fName, param)
 
 	return str
 }
@@ -123,19 +123,16 @@ func NewDemoSearch(db *gorm.DB) *DemoSearch {
 	if db == nil {
 		db = mysql.NewWriteDB()
 	}
-
 	return &DemoSearch{Orm: db}
 }
 
 func (slf *DemoSearch) SetOrm(tx *gorm.DB) *DemoSearch {
 	slf.Orm = tx
-
 	return slf
 }
 
 func (slf *DemoSearch) SetPager(page, size int) *DemoSearch {
 	slf.Page, slf.Size = page, size
-
 	return slf
 }
 
