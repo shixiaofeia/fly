@@ -4,34 +4,76 @@ import (
 	"testing"
 )
 
-func TestCallApi(t *testing.T) {
-
+func TestNewRequestGet(t *testing.T) {
 	var (
-		url  = "https://baidu.com"
-		rg   = NewRequestGet(url)
-		rj   = NewRequestPostJson(url, map[string]interface{}{})
-		rf   = NewRequestPostForm(url, map[string]string{})
-		resp []byte
-		err  error
+		url     = ""
+		factory = NewRequestGet(url)
 	)
-	rg.AddHeader("t", "1")
-	resp, err = rg.Call()
+	factory.AddHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36")
+	resp, err := factory.Call()
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Error(err.Error())
+		return
 	}
-	t.Log(string(resp))
 
-	rj.AddHeader("t", "2")
-	resp, err = rj.Call()
-	if err != nil {
-		t.Errorf(err.Error())
-	}
-	t.Log(string(resp))
+	t.Logf("resp: %s", resp)
 
-	rf.AddHeader("t", "3")
-	resp, err = rf.Call()
+}
+
+func TestNewRequestPostJson(t *testing.T) {
+	var (
+		url  = ""
+		data = map[string]interface{}{
+			"name": "fly",
+		}
+		factory = NewRequestPostJson(url, data)
+	)
+	factory.AddHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36")
+	resp, err := factory.Call()
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Error(err.Error())
+		return
 	}
-	t.Log(string(resp))
+
+	t.Logf("resp: %s", resp)
+}
+
+func TestNewRequestPostForm(t *testing.T) {
+	var (
+		url  = ""
+		data = map[string]string{
+			"name": "fly",
+		}
+		factory = NewRequestPostForm(url, data)
+	)
+	factory.AddHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36")
+	resp, err := factory.Call()
+	if err != nil {
+		t.Error(err.Error())
+		return
+	}
+
+	t.Logf("resp: %s", resp)
+}
+
+func TestNewRequestPostFormWithFile(t *testing.T) {
+	var (
+		url  = ""
+		data = map[string]string{
+			"name": "fly",
+		}
+		files = map[string][]byte{
+			"content": []byte("this is content"),
+		}
+		factory = NewRequestPostFormWithFile(url, data, files)
+	)
+	factory.AddHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36")
+	resp, err := factory.Call()
+	if err != nil {
+		t.Error(err.Error())
+		return
+	}
+
+	t.Logf("resp: %s", resp)
+
 }
