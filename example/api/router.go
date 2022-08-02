@@ -2,6 +2,7 @@ package main
 
 import (
 	"fly/example/api/example"
+	"fly/internal/api/middle"
 	"fly/pkg/httpcode"
 
 	"github.com/kataras/iris/v12"
@@ -26,6 +27,7 @@ func Index(app *iris.Application) {
 	// 加载子路由
 	app.Any("/debug/pprof/{action:path}", pprof.New())
 	v1 := app.Party("/v1")
+	v1.Use(middle.StandAloneLimiterMiddle)
 	{
 		example.InitApi(v1)
 	}

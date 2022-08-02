@@ -192,7 +192,7 @@ func (slf *DemoSearch) First() (*Demo, error) {
 	)
 
 	if err := db.First(recordM).Error; err != nil {
-		return recordM, fmt.Errorf("frist recordM err: %v", err)
+		return recordM, err
 	}
 
 	return recordM, nil
