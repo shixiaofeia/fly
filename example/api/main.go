@@ -27,6 +27,7 @@ func main() {
 		wg.Wait()
 		logging.Sync()
 	}()
+
 	// 初始化路由
 	Index(app)
 	// 初始化业务表
