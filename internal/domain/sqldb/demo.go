@@ -177,6 +177,19 @@ func (slf *DemoSearch) Find() ([]*Demo, int64, error) {
 	return records, total, nil
 }
 
+// FindByQuery 指定条件查询.
+func (slf *DemoSearch) FindByQuery(query string, args []interface{}) ([]*Demo, error) {
+	var (
+		records = make([]*Demo, 0)
+	)
+
+	if err := slf.Orm.Table(slf.TableName()).Where(query, args...).Find(&records).Error; err != nil {
+		return records, fmt.Errorf("find by query records err: %v, query: %s, args: %+v", err, query, args)
+	}
+
+	return records, nil
+}
+
 // First 单条查询.
 func (slf *DemoSearch) First() (*Demo, error) {
 	var (
@@ -207,7 +220,7 @@ func (slf *DemoSearch) Update(upMap map[string]interface{}) error {
 // UpdateByQuery 指定条件更新.
 func (slf *DemoSearch) UpdateByQuery(query string, args []interface{}, upMap map[string]interface{}) error {
 	var (
-		db = slf.Orm.Where(query, args...)
+		db = slf.Orm.Table(slf.TableName()).Where(query, args...)
 	)
 
 	if err := db.Updates(upMap).Error; err != nil {
