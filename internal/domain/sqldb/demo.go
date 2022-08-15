@@ -54,6 +54,12 @@ func (slf *DemoSearch) SetPager(page, size int) *DemoSearch {
 	return slf
 }
 
+func (slf *DemoSearch) SetOrder(order string) *DemoSearch {
+	slf.Order = order
+
+	return slf
+}
+
 func (slf *DemoSearch) SetId(id uint) *DemoSearch {
 	slf.Id = id
 	return slf
@@ -178,12 +184,37 @@ func (slf *DemoSearch) Find() ([]*Demo, int64, error) {
 }
 
 // FindByQuery 指定条件查询.
-func (slf *DemoSearch) FindByQuery(query string, args []interface{}) ([]*Demo, error) {
+func (slf *DemoSearch) FindByQuery(query string, args []interface{}) ([]*Demo, int64, error) {
 	var (
 		records = make([]*Demo, 0)
+		total   int64
+		db      = slf.Orm.Table(slf.TableName()).Where(query, args...)
 	)
 
-	if err := slf.Orm.Table(slf.TableName()).Where(query, args...).Find(&records).Error; err != nil {
+	if err := db.Count(&total).Error; err != nil {
+		return records, total, fmt.Errorf("find by query count err: %v", err)
+	}
+	if slf.Page*slf.Size > 0 {
+		db = db.Offset((slf.Page - 1) * slf.Size).Limit(slf.Size)
+	}
+	if err := db.Find(&records).Error; err != nil {
+		return records, total, fmt.Errorf("find by query records err: %v, query: %s, args: %+v", err, query, args)
+	}
+
+	return records, total, nil
+}
+
+// FindByQueryNotTotal 指定条件查询&不查询总条数.
+func (slf *DemoSearch) FindByQueryNotTotal(query string, args []interface{}) ([]*Demo, error) {
+	var (
+		records = make([]*Demo, 0)
+		db      = slf.Orm.Table(slf.TableName()).Where(query, args...)
+	)
+
+	if slf.Page*slf.Size > 0 {
+		db = db.Offset((slf.Page - 1) * slf.Size).Limit(slf.Size)
+	}
+	if err := db.Find(&records).Error; err != nil {
 		return records, fmt.Errorf("find by query records err: %v, query: %s, args: %+v", err, query, args)
 	}
 
