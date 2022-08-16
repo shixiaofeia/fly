@@ -8,6 +8,8 @@ import (
 	amqp "github.com/binlaniua/amqp091-go"
 )
 
+// 参阅 https://github.com/rabbitmq/amqp091-go/commit/4ce2c8e4e371338add82c3dc2df56f70d0dca601
+
 const delay = 3 // reconnect after delay seconds
 
 // Connection amqp.Connection wrapper
@@ -58,7 +60,7 @@ func (c *Connection) Channel() (*Channel, error) {
 	return channel, nil
 }
 
-// Dial wrap amqp.Dial, dial and get a reconnect connection
+// Dial wrap amqp.Dial, dial and get reconnect connection
 func Dial(url string) (*Connection, error) {
 	conn, err := amqp.Dial(url)
 	if err != nil {
@@ -121,8 +123,8 @@ func (ch *Channel) Close() error {
 	return ch.Channel.Close()
 }
 
-// consume wrap amqp.Channel.consume, the returned delivery will end only when channel closed by developer
-func (ch *Channel) consume(queue, consumer string, autoAck, exclusive, noLocal, noWait bool, args amqp.Table) (<-chan amqp.Delivery, error) {
+// Consume wrap amqp.Channel.Consume, the returned delivery will end only when channel closed by developer
+func (ch *Channel) Consume(queue, consumer string, autoAck, exclusive, noLocal, noWait bool, args amqp.Table) (<-chan amqp.Delivery, error) {
 	deliveries := make(chan amqp.Delivery)
 
 	go func() {

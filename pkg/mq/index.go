@@ -64,9 +64,14 @@ func (ch *Channel) QueueBind(name, key, exchange string) (err error) {
 	return ch.Channel.QueueBind(name, key, exchange, false, nil)
 }
 
-// Consume 消费队列.
-func (ch *Channel) Consume(queue, consumer string, handler func([]byte) error) error {
-	deliveries, err := ch.consume(queue, consumer, false, false, false, false, nil)
+// NewConsumer 实例化一个消费者, 会单独用一个channel.
+func NewConsumer(queue string, handler func([]byte) error) error {
+	ch, err := defaultConn.Channel()
+	if err != nil {
+		return fmt.Errorf("new mq channel err: %v", err)
+	}
+
+	deliveries, err := ch.Consume(queue, "", false, false, false, false, nil)
 	if err != nil {
 		return fmt.Errorf("consume err: %v, queue: %s", err, queue)
 	}
@@ -79,5 +84,6 @@ func (ch *Channel) Consume(queue, consumer string, handler func([]byte) error) e
 		}
 		_ = msg.Ack(false)
 	}
+
 	return nil
 }

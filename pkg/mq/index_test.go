@@ -39,7 +39,7 @@ func TestInit(t *testing.T) {
 	}
 
 	go func() {
-		if err := ch.Consume(queueName, "", func(body []byte) error {
+		if err := NewConsumer(queueName, func(body []byte) error {
 			fmt.Println("consume msg :" + string(body))
 			return nil
 		}); err != nil {
