@@ -2,7 +2,7 @@ package mq
 
 import (
 	"fmt"
-	amqp "github.com/binlaniua/amqp091-go"
+	amqp "github.com/rabbitmq/amqp091-go"
 )
 
 type (

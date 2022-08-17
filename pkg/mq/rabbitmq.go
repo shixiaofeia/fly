@@ -5,7 +5,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	amqp "github.com/binlaniua/amqp091-go"
+	amqp "github.com/rabbitmq/amqp091-go"
 )
 
 // 参阅 https://github.com/rabbitmq/amqp091-go/commit/4ce2c8e4e371338add82c3dc2df56f70d0dca601

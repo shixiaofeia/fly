@@ -5,7 +5,6 @@ go 1.15
 require (
 	github.com/360EntSecGroup-Skylar/excelize/v2 v2.3.2
 	github.com/ajg/form v1.5.1 // indirect
-	github.com/binlaniua/amqp091-go v1.3.5
 	github.com/dlclark/regexp2 v1.4.0
 	github.com/fasthttp-contrib/websocket v0.0.0-20160511215533-1f3b11f56072 // indirect
 	github.com/fsnotify/fsnotify v1.4.9
@@ -40,6 +39,7 @@ require (
 	github.com/olivere/elastic/v6 v6.2.1
 	github.com/onsi/ginkgo v1.16.5 // indirect
 	github.com/onsi/gomega v1.20.0 // indirect
+	github.com/rabbitmq/amqp091-go v1.4.0
 	github.com/robfig/cron v1.2.0
 	github.com/satori/go.uuid v1.2.0
 	github.com/sergi/go-diff v1.2.0 // indirect
