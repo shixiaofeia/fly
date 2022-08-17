@@ -1,8 +1,10 @@
 package mq
 
 import (
+	"context"
 	"fmt"
 	amqp "github.com/rabbitmq/amqp091-go"
+	"time"
 )
 
 type (
@@ -47,15 +49,32 @@ func (ch *Channel) ExchangeDeclare(name string, kind string) (err error) {
 	return ch.Channel.ExchangeDeclare(name, kind, true, false, false, false, nil)
 }
 
-// Publish 发布订阅.
+// Publish 发布消息.
 func (ch *Channel) Publish(exchange, key string, body []byte) (err error) {
-	return ch.Channel.Publish(exchange, key, false, false,
+	_, err = ch.Channel.PublishWithDeferredConfirmWithContext(context.Background(), exchange, key, false, false,
 		amqp.Publishing{ContentType: "text/plain", Body: body})
+	return err
+}
+
+// PublishWithDelay 发布延迟消息.
+func (ch *Channel) PublishWithDelay(exchange, key string, body []byte, timer time.Duration) (err error) {
+	_, err = ch.Channel.PublishWithDeferredConfirmWithContext(context.Background(), exchange, key, false, false,
+		amqp.Publishing{ContentType: "text/plain", Body: body, Expiration: fmt.Sprintf("%d", timer.Milliseconds())})
+	return err
 }
 
 // QueueDeclare 创建队列.
 func (ch *Channel) QueueDeclare(name string) (err error) {
 	_, err = ch.Channel.QueueDeclare(name, true, false, false, false, nil)
+	return
+}
+
+// QueueDeclareWithDelay 创建延迟队列.
+func (ch *Channel) QueueDeclareWithDelay(name, exchange, key string) (err error) {
+	_, err = ch.Channel.QueueDeclare(name, true, false, false, false, amqp.Table{
+		"x-dead-letter-exchange":    exchange,
+		"x-dead-letter-routing-key": key,
+	})
 	return
 }
 
