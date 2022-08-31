@@ -1,5 +1,7 @@
 # Welcome To Fly
 
+[![OSCS Status](https://www.oscs1024.com/platform/badge/shixiaofeia/fly.svg?size=small)](https://www.oscs1024.com/project/shixiaofeia/fly?ref=badge_small)
+
 ## 简介
 
 一个简单而优雅的后端项目, 封装常用数据库组件及应用示例, 助力后端人员快速开发

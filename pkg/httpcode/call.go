@@ -10,7 +10,6 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 )
 
 type (
@@ -192,7 +191,7 @@ func call(request *http.Request, headers map[string]string, basic *BasicAuth) (r
 	}
 
 	client := &http.Client{}
-	client.Timeout = 30 * time.Second
+	client.Timeout = CallTimeOut
 	resp, err = client.Do(request)
 	if err != nil {
 		return

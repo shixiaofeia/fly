@@ -46,7 +46,7 @@ func (slf *Req) Code(code ErrCode, data interface{}) {
 	}
 
 	slf.ctx.Header(CtxRequestId, slf.requestId)
-	_, _ = slf.ctx.JSON(map[string]interface{}{"code": code.Code, "message": code.Msg, "run": runTime, "data": data})
+	_ = slf.ctx.JSON(map[string]interface{}{"code": code.Code, "message": code.Msg, "run": runTime, "data": data})
 	slf.Log.Infof("api: %s, run: %s, param: %s, code: %d", slf.ctx.Request().RequestURI, runTime, slf.body, code.Code)
 }
 
@@ -96,12 +96,12 @@ func NewRequest(ctx iris.Context, params interface{}) (r *Req, err error) {
 func (slf *Req) ToExcel(titleList []string, dataList interface{}, fileName string) {
 	buf, _ := ExportExcel(titleList, dataList)
 	content := bytes.NewReader(buf.Bytes())
-	_ = slf.ctx.ServeContent(content, fileName, time.Now(), true)
+	slf.ctx.ServeContent(content, fileName, time.Now())
 }
 
 // ToSecondaryTitleExcel 导出二级标题.
 func (slf *Req) ToSecondaryTitleExcel(firstTitle []string, secondTitle [][]string, dataList interface{}, fileName string) {
 	buf, _ := ExportSecondaryTitleExcel(firstTitle, secondTitle, dataList)
 	content := bytes.NewReader(buf.Bytes())
-	_ = slf.ctx.ServeContent(content, fileName, time.Now(), true)
+	slf.ctx.ServeContent(content, fileName, time.Now())
 }
