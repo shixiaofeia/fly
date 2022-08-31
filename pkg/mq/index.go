@@ -23,6 +23,9 @@ var (
 
 // Init 初始化
 func Init(c Conf) (err error) {
+	if c.Address == "" {
+		return nil
+	}
 	defaultConn, err = Dial(fmt.Sprintf("amqp://%s:%s@%s:%s/",
 		c.User,
 		c.Password,
