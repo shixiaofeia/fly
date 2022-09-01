@@ -9,10 +9,10 @@ import (
 
 type (
 	Conf struct {
-		Address  string
-		Port     string
-		User     string
-		Password string
+		Addr string
+		Port string
+		User string
+		Pwd  string
 	}
 )
 
@@ -23,13 +23,13 @@ var (
 
 // Init 初始化
 func Init(c Conf) (err error) {
-	if c.Address == "" {
+	if c.Addr == "" {
 		return nil
 	}
 	defaultConn, err = Dial(fmt.Sprintf("amqp://%s:%s@%s:%s/",
 		c.User,
-		c.Password,
-		c.Address,
+		c.Pwd,
+		c.Addr,
 		c.Port))
 	if err != nil {
 		return fmt.Errorf("new mq conn err: %v", err)

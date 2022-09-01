@@ -37,11 +37,11 @@ func main() {
 	}()
 
 	// 初始化业务表
-	domain.InitDomain()
+	domain.Init()
 
 	// 监控服务
 	safe.Go(func() {
-		monitor.InitMonitor(ctx)
+		monitor.Start(ctx)
 	})
 
 	// 初始化路由
@@ -52,7 +52,7 @@ func main() {
 
 	// 监听端口
 	logging.Info("start Web Server")
-	if err = app.Run(iris.Addr(config.Config.ServerPort), iris.WithoutInterruptHandler); err != nil {
+	if err = app.Run(iris.Addr(":"+config.Config.Port), iris.WithoutInterruptHandler); err != nil {
 		logging.Fatal("start Web Server err: " + err.Error())
 	}
 }
@@ -75,7 +75,7 @@ func init() {
 	}
 
 	// 注册RabbitMQ
-	if err = mq.Init(config.Config.RabbitMq); err != nil {
+	if err = mq.Init(config.Config.Mq); err != nil {
 		logging.Fatal("init rabbit mq err: " + err.Error())
 	}
 
@@ -95,7 +95,7 @@ func init() {
 func initRpc() {
 	rpc.Index(gServer)
 	safe.Go(func() {
-		lis, err := net.Listen("tcp", config.Config.RpcPort)
+		lis, err := net.Listen("tcp", ":"+config.Config.RpcPort)
 		if err != nil {
 			logging.Fatal("start Rpc Listen err: " + err.Error())
 		}

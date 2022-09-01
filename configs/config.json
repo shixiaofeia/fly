@@ -1,42 +1,42 @@
 {
-  "ServerAddress": "0.0.0.0",
-  "ServerPort": ":8888",
-  "RpcPort": ":9999",
-  "IsMonitor": true,
-  "Log": {
-    "Path": "./logs/fly.log",
-    "Encoder": "console"
+  "addr": "0.0.0.0",
+  "port": "8888",
+  "rpcPort": "9999",
+  "isMonitor": true,
+  "log": {
+    "path": "./logs/fly.log",
+    "encoder": "console"
   },
-  "Mysql": {
-    "Write": {
-      "Address": "",
-      "Port": "3306",
-      "User": "root",
-      "Password": "123456",
-      "DBName": "fly",
-      "MaxIdleCoon": 50,
-      "MaxOpenCoon": 500
+  "mysql": {
+    "write": {
+      "addr": "",
+      "port": "3306",
+      "user": "root",
+      "pwd": "root",
+      "name": "fly",
+      "maxIdleCoon": 50,
+      "maxOpenCoon": 500
     },
-    "Read": {
+    "read": {
     }
   },
-  "Redis": {
+  "redis": {
     "地址格式": "127.0.0.1:6379",
-    "Address": "",
-    "Password": "",
-    "AddressList": []
+    "addr": "",
+    "pwd": "",
+    "addrList": []
   },
-  "RabbitMq": {
-    "Address": "",
-    "Port": "5672",
-    "User": "admin",
-    "Password": "admin"
+  "mq": {
+    "addr": "",
+    "port": "5672",
+    "user": "admin",
+    "pwd": "admin"
   },
-  "Email": {
-    "Website": "https://blog.csdn.net/ywdhzxf",
-    "User": "",
-    "NickName": "Fly运营团队",
-    "Password": "",
-    "Logo": "https://profile.csdnimg.cn/8/9/2/3_ywdhzxf"
+  "email": {
+    "website": "https://blog.csdn.net/ywdhzxf",
+    "user": "",
+    "nickName": "Fly运营团队",
+    "pwd": "",
+    "logo": "https://profile.csdnimg.cn/8/9/2/3_ywdhzxf"
   }
 }

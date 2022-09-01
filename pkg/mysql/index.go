@@ -55,10 +55,10 @@ func NewWriteDB() *gorm.DB {
 
 // InitReadDB 初始化读.
 func InitReadDB(c Conf) (err error) {
-	if c.Address == "" {
+	if c.Addr == "" {
 		return
 	}
-	dsn := c.User + ":" + c.Password + "@tcp(" + c.Address + ":" + c.Port + ")/" + c.DBName + "?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := c.User + ":" + c.Pwd + "@tcp(" + c.Addr + ":" + c.Port + ")/" + c.Name + "?charset=utf8mb4&parseTime=True&loc=Local"
 	mysqlConfig.DSN = dsn
 	db, err := gorm.Open(mysql.New(mysqlConfig), &gorm.Config{Logger: newLogger})
 	if err != nil {
@@ -73,10 +73,10 @@ func InitReadDB(c Conf) (err error) {
 
 // InitWriteDB 初始化写.
 func InitWriteDB(c Conf) (err error) {
-	if c.Address == "" {
+	if c.Addr == "" {
 		return
 	}
-	dsn := c.User + ":" + c.Password + "@tcp(" + c.Address + ":" + c.Port + ")/" + c.DBName + "?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := c.User + ":" + c.Pwd + "@tcp(" + c.Addr + ":" + c.Port + ")/" + c.Name + "?charset=utf8mb4&parseTime=True&loc=Local"
 	mysqlConfig.DSN = dsn
 	db, err := gorm.Open(mysql.New(mysqlConfig), &gorm.Config{Logger: newLogger})
 	if err != nil {

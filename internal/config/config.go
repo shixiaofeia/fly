@@ -56,8 +56,8 @@ func WatchConfig() {
 // ShowConfig 展示服务器运行参数.
 func ShowConfig() {
 	logging.Info("-------------------------------------------------------")
-	logging.Info("   服务地址:           " + Config.ServerAddress)
-	logging.Info("   WEB端口:           " + Config.ServerPort)
+	logging.Info("   服务地址:           " + Config.Addr)
+	logging.Info("   WEB端口:           " + Config.Port)
 	logging.Info("   RPC端口:           " + Config.RpcPort)
 	logging.Info("-------------------------------------------------------")
 }

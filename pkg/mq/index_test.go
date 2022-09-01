@@ -14,10 +14,10 @@ func nowTime() string {
 func TestChannel_Publish(t *testing.T) {
 	var (
 		conf = Conf{
-			User:     "guest",
-			Password: "guest",
-			Address:  "127.0.0.1",
-			Port:     "5672",
+			User: "guest",
+			Pwd:  "guest",
+			Addr: "127.0.0.1",
+			Port: "5672",
 		}
 
 		exchangeName = "user.register.direct"
@@ -66,10 +66,10 @@ func TestChannel_Publish(t *testing.T) {
 func TestChannel_PublishWithDelay(t *testing.T) {
 	var (
 		conf = Conf{
-			User:     "guest",
-			Password: "guest",
-			Address:  "127.0.0.1",
-			Port:     "5672",
+			User: "guest",
+			Pwd:  "guest",
+			Addr: "127.0.0.1",
+			Port: "5672",
 		}
 
 		exchangeName   = "user.delay.direct"

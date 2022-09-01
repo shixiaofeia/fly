@@ -22,7 +22,7 @@ func main() {
 	}()
 
 	Index(gServer)
-	lis, err := net.Listen("tcp", config.Config.RpcPort)
+	lis, err := net.Listen("tcp", ":"+config.Config.RpcPort)
 	if err != nil {
 		logging.Fatal("Start Rpc Listen err: " + err.Error())
 	}
@@ -34,8 +34,6 @@ func main() {
 }
 
 func init() {
-	// 初始化日志
-	logging.Init("./logs/fly.log")
 	// 初始化配置
 	config.Init(configPath)
 }

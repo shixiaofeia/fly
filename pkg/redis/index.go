@@ -10,17 +10,17 @@ var clusterClient *redis.ClusterClient
 var standAloneClient *redis.Client
 
 type Conf struct {
-	Address     string   // 单机地址
-	Password    string   // 密码
-	AddressList []string // 集群地址
+	Addr     string   // 单机地址
+	Pwd      string   // 密码
+	AddrList []string // 集群地址
 }
 
 // Init 初始化redis服务.
 func Init(c Conf) (err error) {
-	if err = InitCluster(c.AddressList, c.Password); err != nil {
+	if err = InitCluster(c.AddrList, c.Pwd); err != nil {
 		return
 	}
-	if err = InitStandAlone(c.Address, c.Password); err != nil {
+	if err = InitStandAlone(c.Addr, c.Pwd); err != nil {
 		return
 	}
 	return

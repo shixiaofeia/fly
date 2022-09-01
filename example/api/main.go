@@ -31,11 +31,11 @@ func main() {
 	// 初始化路由
 	Index(app)
 	// 初始化业务表
-	domain.InitDomain()
+	domain.Init()
 
 	// 监听端口
 	logging.Info("Start Web Server ")
-	if err = app.Run(iris.Addr(config.Config.ServerPort), iris.WithoutInterruptHandler); err != nil {
+	if err = app.Run(iris.Addr(":"+config.Config.Port), iris.WithoutInterruptHandler); err != nil {
 		logging.Fatal("Start Web Server err: " + err.Error())
 	}
 }

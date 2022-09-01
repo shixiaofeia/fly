@@ -1,25 +1,25 @@
-ServerAddress = "0.0.0.0"
-ServerPort = ":8888"
-RpcPort = ":9999"
-IsMonitor = true
+addr = "0.0.0.0"
+port = ":8888"
+rpcPort = ":9999"
+isMonitor = true
 
-[Log]
-Path = "./logs/fly.log"
-Encoder = "console"
+[log]
+path = "./logs/fly.log"
+encoder = "console"
 
-[Mysql]
-[Mysql.Write]
-Address = ""
-Port = "3306"
-User = "root"
-Password = "123456"
-DBName = "fly"
-MaxIdleCoon = 50
-MaxOpenCoon = 500
+[mysql]
+[mysql.write]
+addr = ""
+port = "3306"
+user = "root"
+pwd = "123456"
+name = "fly"
+maxIdleCoon = 50
+maxOpenCoon = 500
 
-[Email]
-Website = "https://blog.csdn.net/ywdhzxf"
-User = ""
-NickName = "Fly运营团队"
-Password = ""
-Logo = "https://profile.csdnimg.cn/8/9/2/3_ywdhzxf"
+[email]
+website = "https://blog.csdn.net/ywdhzxf"
+user = ""
+nickName = "Fly运营团队"
+pwd = ""
+logo = "https://profile.csdnimg.cn/8/9/2/3_ywdhzxf"

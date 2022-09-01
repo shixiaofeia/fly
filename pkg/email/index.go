@@ -12,7 +12,7 @@ type (
 		Website  string
 		User     string
 		NickName string
-		Password string
+		Pwd      string
 		Logo     string
 	}
 	SenEmailMsg struct {
@@ -39,7 +39,7 @@ func (s *SenEmailMsg) SendEmail() (err error) {
 	m.SetHeader("Subject", s.Title)
 	m.SetBody("text/html", s.Msg)
 
-	d := gomail.NewDialer("smtpdm.aliyun.com", 80, c.User, c.Password)
+	d := gomail.NewDialer("smtpdm.aliyun.com", 80, c.User, c.Pwd)
 	if err = d.DialAndSend(m); err != nil {
 		return fmt.Errorf("SendEmail error: %v", err)
 	}

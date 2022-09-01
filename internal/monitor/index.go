@@ -5,8 +5,8 @@ import (
 	"fly/internal/config"
 )
 
-// InitMonitor 初始化定时监控服务.
-func InitMonitor(ctx context.Context) {
+// Start 启动定时监控服务.
+func Start(ctx context.Context) {
 	if !config.Config.IsMonitor {
 		return
 	}
