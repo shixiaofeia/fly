@@ -1,6 +1,19 @@
 # Welcome To Fly
 
-[![OSCS Status](https://www.oscs1024.com/platform/badge/shixiaofeia/fly.svg?size=small)](https://www.oscs1024.com/project/shixiaofeia/fly?ref=badge_small)
+<p>
+<a href="https://www.oscs1024.com/project/shixiaofeia/fly?ref=badge_small">
+    <img src="https://www.oscs1024.com/platform/badge/shixiaofeia/fly.svg?size=small" alt="">
+</a>
+<a href="https://github.com/shixiaofeia/fly">
+    <img src="https://badgen.net/badge/Github/fly?icon=github" alt="">
+</a>
+<a href="https://github.com/shixiaofeia/fly/LICENSE">
+    <img alt="GitHub" src="https://img.shields.io/github/license/shixiaofeia/fly?style=flat-square">
+</a>
+<img src="https://img.shields.io/github/go-mod/go-version/shixiaofeia/fly.svg?style=flat-square" alt="">
+<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/shixiaofeia/fly?style=flat-square">
+<img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/shixiaofeia/fly?style=social">
+</p>
 
 ## 简介
 

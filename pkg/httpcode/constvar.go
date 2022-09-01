@@ -8,5 +8,5 @@ const (
 	MaxPage      = 100              // 最大请求页数
 	MaxSize      = 100              // 最大请求条数
 	CtxStartTime = "startTime"      // 运行起始时间
-	CtxRequestId = "X-Request-Id"   // 请求唯一id
+	CtxRequestId = "trace-id"       // 请求唯一id
 )
