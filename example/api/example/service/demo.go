@@ -94,7 +94,7 @@ func (slf *DemoService) DemoUpdate(req *model.DemoUpdateReq) (httpcode.ErrCode, 
 		return httpcode.ParamErr, fmt.Errorf("upmap is nil")
 	}
 
-	if err := factory.Update(upMap); err != nil {
+	if err := factory.UpdateByMap(upMap); err != nil {
 		return httpcode.ServiceErr, fmt.Errorf("demo update err: %v", err)
 	}
 

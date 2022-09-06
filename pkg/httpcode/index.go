@@ -78,12 +78,12 @@ func NewRequest(ctx iris.Context, params interface{}) (r *Req, err error) {
 			r.body = body
 		}
 		// 页数限制
-		if page := reflect.Indirect(reflect.ValueOf(params)).FieldByName("Page"); page.IsValid() && page.Int() > MaxPage {
-			return r, fmt.Errorf("page greater than limit")
+		if page := reflect.Indirect(reflect.ValueOf(params)).FieldByName("PageNum"); page.IsValid() && page.Int() > MaxPage {
+			return r, fmt.Errorf("page num greater than limit")
 		}
 		// 条数限制
-		if size := reflect.Indirect(reflect.ValueOf(params)).FieldByName("Size"); size.IsValid() && size.Int() > MaxSize {
-			return r, fmt.Errorf("size greater than limit ")
+		if size := reflect.Indirect(reflect.ValueOf(params)).FieldByName("PageSize"); size.IsValid() && size.Int() > MaxSize {
+			return r, fmt.Errorf("page size greater than limit ")
 		}
 		// 参数校验
 		if err = validator.Validate(params); err != nil {

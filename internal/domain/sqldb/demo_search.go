@@ -1,108 +1,13 @@
-package main
+package sqldb
 
 import (
-	"fly/internal/domain/sqldb"
+	"fly/internal/domain/types"
+	"fly/pkg/mysql"
 	"fmt"
-	"reflect"
-	"strings"
+	"github.com/shopspring/decimal"
+	"gorm.io/gorm"
+	"time"
 )
-
-func main() {
-	var (
-		obj       = sqldb.Demo{}
-		objName   string
-		buildFunc string
-		setFunc   string
-	)
-
-	filedT := reflect.TypeOf(obj)
-	objName = filedT.Name()
-	filedNum := filedT.NumField()
-
-	for i := 0; i < filedNum; i++ {
-		val := filedT.Field(i)
-		fName := val.Name
-		gName := ColumnName(val.Tag.Get("gorm"))
-		fType := val.Type.Name()
-		//fmt.Println(fName, fType, gName)
-		if v := getWhere(fName, fType, gName); v != "" {
-			buildFunc += v
-		}
-		setFunc += getSetFunc(objName, fName, fType)
-	}
-
-	buildFunc = fmt.Sprintf(`
-// build 构建条件.
-func (slf *%sSearch) build() *gorm.DB {
-	var db = slf.Orm.Table(slf.TableName()).Model(%s{})
-	%s
-	if slf.Order != "" {
-		db = db.Order(slf.Order)
-	}
-
-	return db
-}
-`, objName, objName, buildFunc)
-
-	template := strings.Replace(getFormat(objName), "buildFunc", buildFunc, 1)
-	template = strings.Replace(template, "setFunc", setFunc, 1)
-
-	fmt.Println(template)
-}
-
-func ColumnName(s string) string {
-	for _, name := range strings.Split(s, ";") {
-		if strings.Index(name, "column") == -1 {
-			continue
-		}
-		return strings.Replace(name, "column:", "", 1)
-	}
-
-	return ""
-}
-
-func getWhere(fName, fType, gName string) string {
-	if strings.Contains(fType, "int") {
-		return fmt.Sprintf(`
-	if slf.%s > 0 {
-		db = db.Where("%s = ?", slf.%s)
-	}			
-		`, fName, gName, fName)
-	} else if strings.Contains(fType, "string") {
-		return fmt.Sprintf(`
-	if slf.%s != "" {
-		db = db.Where("%s = ?", slf.%s)
-	}			
-		`, fName, gName, fName)
-	} else if strings.Contains(fType, "Decimal") {
-		return fmt.Sprintf(`
-	if slf.%s.IsPositive() {
-		db = db.Where("%s = ?", slf.%s)
-	}			
-		`, fName, gName, fName)
-	}
-
-	return ""
-}
-
-func getSetFunc(objName, fName, fType string) string {
-	param := strings.ToLower(fName[:1]) + fName[1:]
-	if fType == "Decimal" {
-		fType = "decimal.Decimal"
-	}
-	str := fmt.Sprintf(`
-func (slf *%sSearch) Set%s(%s %s) *%sSearch {
-	slf.%s = %s
-	return slf
-}
-`, objName, fName, param, fType, objName, fName, param)
-
-	return str
-}
-
-func getFormat(objName string) string {
-	tableName := strings.ToLower(objName)
-	str := `
 
 type (
 	DemoSearch struct {
@@ -142,7 +47,45 @@ func (slf *DemoSearch) SetOrder(order string) *DemoSearch {
 	return slf
 }
 
-setFunc
+func (slf *DemoSearch) SetId(id uint) *DemoSearch {
+	slf.Id = id
+	return slf
+}
+
+func (slf *DemoSearch) SetName(name string) *DemoSearch {
+	slf.Name = name
+	return slf
+}
+
+func (slf *DemoSearch) SetAmount(amount decimal.Decimal) *DemoSearch {
+	slf.Amount = amount
+	return slf
+}
+
+func (slf *DemoSearch) SetIsFree(isFree int) *DemoSearch {
+	slf.IsFree = isFree
+	return slf
+}
+
+func (slf *DemoSearch) SetRemark(remark string) *DemoSearch {
+	slf.Remark = remark
+	return slf
+}
+
+func (slf *DemoSearch) SetCreateTime(createTime int64) *DemoSearch {
+	slf.CreateTime = createTime
+	return slf
+}
+
+func (slf *DemoSearch) SetUpdateTime(updateTime int64) *DemoSearch {
+	slf.UpdateTime = updateTime
+	return slf
+}
+
+func (slf *DemoSearch) SetDeleteTime(deleteTime int64) *DemoSearch {
+	slf.DeleteTime = deleteTime
+	return slf
+}
 
 // CreateTable 创建表.
 func (slf *DemoSearch) CreateTable() {
@@ -167,8 +110,48 @@ func (slf *DemoSearch) CreateBatch(records []*Demo) error {
 	return nil
 }
 
-buildFunc
+// build 构建条件.
+func (slf *DemoSearch) build() *gorm.DB {
+	var db = slf.Orm.Table(slf.TableName()).Model(Demo{})
 
+	if slf.Id > 0 {
+		db = db.Where("id = ?", slf.Id)
+	}
+
+	if slf.Name != "" {
+		db = db.Where("name = ?", slf.Name)
+	}
+
+	if slf.Amount.IsPositive() {
+		db = db.Where("amount = ?", slf.Amount)
+	}
+
+	if slf.IsFree > 0 {
+		db = db.Where("is_free = ?", slf.IsFree)
+	}
+
+	if slf.Remark != "" {
+		db = db.Where("remark = ?", slf.Remark)
+	}
+
+	if slf.CreateTime > 0 {
+		db = db.Where("create_time = ?", slf.CreateTime)
+	}
+
+	if slf.UpdateTime > 0 {
+		db = db.Where("update_time = ?", slf.UpdateTime)
+	}
+
+	if slf.DeleteTime > 0 {
+		db = db.Where("delete_time = ?", slf.DeleteTime)
+	}
+
+	if slf.Order != "" {
+		db = db.Order(slf.Order)
+	}
+
+	return db
+}
 
 // Find 多条查询.
 func (slf *DemoSearch) Find() ([]*Demo, int64, error) {
@@ -310,10 +293,4 @@ func (slf *DemoSearch) Delete() error {
 	}
 
 	return nil
-}
-
-`
-	str = strings.ReplaceAll(str, "Demo", objName)
-	str = strings.ReplaceAll(str, "demo", tableName)
-	return str
 }

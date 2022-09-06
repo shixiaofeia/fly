@@ -1,7 +1,7 @@
 package model
 
 import (
-	"fly/internal/constvar"
+	"fly/internal/domain/types"
 	"github.com/shopspring/decimal"
 )
 
@@ -15,7 +15,7 @@ type (
 
 	DemoRecordReq struct {
 		Name string `json:"name" validate:"nonzero"`
-		constvar.Pager
+		types.Pager
 	}
 	DemoRecordItem struct {
 		Name   string          `json:"name"`
@@ -25,7 +25,7 @@ type (
 	}
 	DemoRecordResp struct {
 		List []*DemoRecordItem `json:"list"`
-		constvar.Pager
+		types.Pager
 	}
 
 	DemoInfoReq struct {

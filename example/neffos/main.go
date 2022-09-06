@@ -34,7 +34,7 @@ func main() {
 
 // Hello socket test.
 func Hello(ctx iris.Context) {
-	conn := websocket.Upgrade(ctx, func(ctx context.Context) string {
+	conn := websocket.Upgrade(ctx, func(ctx *context.Context) string {
 		return uuid.NewV4().String()
 	}, ws)
 	safe.Go(func() {
