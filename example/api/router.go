@@ -4,6 +4,7 @@ import (
 	"fly/example/api/example"
 	"fly/internal/api/middle"
 	"fly/pkg/httpcode"
+	"github.com/kataras/iris/v12/middleware/logger"
 
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/middleware/pprof"
@@ -14,6 +15,7 @@ import (
 func Index(app *iris.Application) {
 	app.Use(recover.New())
 	app.Use(httpcode.HeaderMiddleware)
+	app.Use(logger.New(logger.DefaultConfig()))
 
 	app.Options("/*", func(ctx iris.Context) {
 		ctx.Next()

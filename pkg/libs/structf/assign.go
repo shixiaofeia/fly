@@ -1,6 +1,9 @@
 package structf
 
-import "reflect"
+import (
+	"encoding/json"
+	"reflect"
+)
 
 // Assign 赋值结构体并忽略指定字段.
 func Assign(src, dst interface{}, excludes ...string) {
@@ -28,4 +31,10 @@ func Assign(src, dst interface{}, excludes ...string) {
 		}
 		dstValue.Set(value)
 	}
+}
+
+// AssignUnmarshal json赋值.
+func AssignUnmarshal(src, dst interface{}) {
+	b, _ := json.Marshal(src)
+	_ = json.Unmarshal(b, dst)
 }

@@ -3,6 +3,7 @@ package middle
 import (
 	"fly/pkg/httpcode"
 	"fly/pkg/redis"
+	"fmt"
 	"github.com/go-redis/redis_rate"
 	"github.com/kataras/iris/v12"
 	"golang.org/x/time/rate"
@@ -37,7 +38,7 @@ func LimiterMiddle(ctx iris.Context) {
 		limiter := redis_rate.NewLimiter(client)
 		if _, _, b := limiter.Allow(key, conf.Limit, conf.Timer); !b {
 			r, _ := httpcode.NewRequest(ctx, nil)
-			r.Code(httpcode.TooManyReq, nil)
+			r.Code(httpcode.TooManyReq, fmt.Errorf("req rate limit"), nil)
 			return
 		}
 	}
@@ -54,7 +55,7 @@ func StandAloneLimiterMiddle(ctx iris.Context) {
 	if ok {
 		if b := limiter.Allow(); !b {
 			r, _ := httpcode.NewRequest(ctx, nil)
-			r.Code(httpcode.TooManyReq, nil)
+			r.Code(httpcode.TooManyReq, fmt.Errorf("req rate limit"), nil)
 			return
 		}
 	}

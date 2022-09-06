@@ -18,8 +18,7 @@ func (slf *DemoController) DemoCreate(ctx iris.Context) {
 	}
 
 	if err = demoService.DemoCreate(req); err != nil {
-		r.Log.Error(err.Error())
-		r.ServiceError()
+		r.ServiceError(err)
 		return
 	}
 
@@ -39,8 +38,7 @@ func (slf *DemoController) DemoRecords(ctx iris.Context) {
 	}
 
 	if err = demoService.DemoRecords(req, res); err != nil {
-		r.Log.Error(err.Error())
-		r.ServiceError()
+		r.ServiceError(err)
 		return
 	}
 
@@ -60,8 +58,7 @@ func (slf *DemoController) DemoInfo(ctx iris.Context) {
 	}
 
 	if err = demoService.DemoInfo(req, res); err != nil {
-		r.Log.Error(err.Error())
-		r.ServiceError()
+		r.ServiceError(err)
 		return
 	}
 
@@ -80,8 +77,7 @@ func (slf *DemoController) DemoUpdate(ctx iris.Context) {
 	}
 
 	if code, err := demoService.DemoUpdate(req); err != nil {
-		r.Log.Error(err.Error())
-		r.Code(code, err)
+		r.Code(code, err, nil)
 		return
 	}
 
@@ -100,8 +96,7 @@ func (slf *DemoController) DemoDelete(ctx iris.Context) {
 	}
 
 	if err = demoService.DemoDelete(req); err != nil {
-		r.Log.Error(err.Error())
-		r.ServiceError()
+		r.ServiceError(err)
 		return
 	}
 

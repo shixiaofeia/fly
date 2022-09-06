@@ -22,23 +22,26 @@ type Req struct {
 
 // Ok 正确的json返回.
 func (slf *Req) Ok(data interface{}) {
-	slf.Code(Code200, data)
+	slf.Code(Code200, nil, data)
 }
 
 // ParamError json返回参数错误.
-func (slf *Req) ParamError() {
-	slf.Code(ParamErr, nil)
+func (slf *Req) ParamError(err error) {
+	slf.Code(ParamErr, err, nil)
 }
 
 // ServiceError 通用错误处理.
-func (slf *Req) ServiceError() {
-	slf.Code(ServiceErr, nil)
+func (slf *Req) ServiceError(err error) {
+	slf.Code(ServiceErr, err, nil)
 }
 
 // Code 自定义code码返回.
-func (slf *Req) Code(code ErrCode, data interface{}) {
+func (slf *Req) Code(code ErrCode, err error, data interface{}) {
 	if data == nil {
 		data = map[string]interface{}{}
+	}
+	if err != nil {
+		slf.Log.Warnf("api: %s, param: %s, err: %v", slf.ctx.Request().RequestURI, slf.body, err)
 	}
 	var runTime string
 	if startTime, ok := slf.ctx.Values().Get(CtxStartTime).(time.Time); ok {
@@ -47,7 +50,6 @@ func (slf *Req) Code(code ErrCode, data interface{}) {
 
 	slf.ctx.Header(CtxRequestId, slf.requestId)
 	_ = slf.ctx.JSON(map[string]interface{}{"code": code.Code, "message": code.Msg, "run": runTime, "data": data})
-	slf.Log.Infof("api: %s, run: %s, param: %s, code: %d", slf.ctx.Request().RequestURI, runTime, slf.body, code.Code)
 }
 
 // NewRequest 解析post传参.
@@ -61,8 +63,7 @@ func NewRequest(ctx iris.Context, params interface{}) (r *Req, err error) {
 	if params != nil {
 		defer func() {
 			if err != nil {
-				r.Log.Error(err.Error())
-				r.ParamError()
+				r.ParamError(err)
 			}
 		}()
 
