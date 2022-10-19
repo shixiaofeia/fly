@@ -5,17 +5,21 @@ type ErrCode struct {
 	Msg  string
 }
 
+// NewErrCode 实例化错误码
+func NewErrCode(code int, msg string) ErrCode {
+	return ErrCode{code, msg}
+}
+
 // UpMsg 自定义错误返回.
 func (c ErrCode) UpMsg(msg string) ErrCode {
-	c.Msg = msg
-	return c
+	return NewErrCode(c.Code, msg)
 }
 
 var (
-	Code200       = ErrCode{Code: 200, Msg: "Success"}
-	ParamErr      = ErrCode{Code: 400, Msg: "参数异常"}
-	TokenNotValid = ErrCode{Code: 401, Msg: "登陆已失效"}
-	TokenNotFound = ErrCode{Code: 403, Msg: "Token丢失"}
-	TooManyReq    = ErrCode{Code: 429, Msg: "超出请求速率"}
-	ServiceErr    = ErrCode{Code: 500, Msg: "服务内部异常"}
+	Code200       = NewErrCode(200, "Success")
+	ParamErr      = NewErrCode(400, "参数异常")
+	TokenNotValid = NewErrCode(401, "登陆已失效")
+	TokenNotFound = NewErrCode(403, "Token丢失")
+	TooManyReq    = NewErrCode(429, "超出请求速率")
+	ServiceErr    = NewErrCode(500, "服务内部异常")
 )
