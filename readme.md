@@ -50,6 +50,7 @@
 |  ├── email            // 邮件组件
 |  ├── es               // es组件
 |  ├── httpcode         // 请求处理组件
+|  ├── kafka            // kafka组件
 |  ├── jwt              // jwt组件
 |  ├── libs             // 封装的公用方法
 |  ├── logging          // 日志组件
@@ -98,6 +99,10 @@
 ### es
 
 [elastic](https://github.com/olivere/elastic/v6)
+
+### kafka
+
+[kafka-go](https://github.com/segmentio/kafka-go)
 
 ### mongo
 
