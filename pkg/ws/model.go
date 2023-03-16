@@ -33,6 +33,6 @@ type (
 		UserId  UserId
 		Groups  map[GroupId]struct{} // 加入的群组
 		sendCh  chan []byte          // 发送消息队列
-		closeCh chan uint8           // 关闭通道
+		closeCh chan struct{}        // 关闭通道
 	}
 )

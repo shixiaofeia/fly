@@ -2,8 +2,9 @@ package ws
 
 import (
 	"fly/pkg/safego/safe"
-
+	"fmt"
 	"github.com/gorilla/websocket"
+	"time"
 )
 
 var (
@@ -22,7 +23,7 @@ func NewClient(connId ConnId, userId UserId, conn *websocket.Conn, handle func(*
 		UserId:  userId,
 		Groups:  make(map[GroupId]struct{}),
 		sendCh:  make(chan []byte, 20),
-		closeCh: make(chan uint8, 2),
+		closeCh: make(chan struct{}),
 	}
 	sockets.clientMu.Lock()
 	sockets.Clients[client.ConnId] = client
@@ -33,4 +34,13 @@ func NewClient(connId ConnId, userId UserId, conn *websocket.Conn, handle func(*
 	})
 	safe.Go(client.production)
 	return
+}
+
+func PrintSocketLength() {
+	for {
+		time.Sleep(10 * time.Second)
+		sockets.clientMu.RLock()
+		fmt.Println(fmt.Sprintf("clinets: %d, groups: %d, users: %d", len(sockets.Clients), len(sockets.Groups), len(sockets.Users)))
+		sockets.clientMu.RUnlock()
+	}
 }

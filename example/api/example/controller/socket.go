@@ -26,7 +26,7 @@ func SocketHealth(ctx iris.Context) {
 	}
 	// 生产环境要保证Id唯一
 	connId := uuid.NewV4().String()
-	ws.NewClient(ws.ConnId(connId), "", conn, socketHandle)
+	ws.NewClient(ws.ConnId(connId), ws.UserId(connId), conn, socketHandle)
 }
 
 // socketHandle socket处理.

@@ -6,6 +6,8 @@ import (
 	"fly/internal/domain"
 	"fly/pkg/logging"
 	"fly/pkg/mysql"
+	"fly/pkg/safego/safe"
+	"fly/pkg/ws"
 	"sync"
 	"time"
 
@@ -27,7 +29,7 @@ func main() {
 		wg.Wait()
 		logging.Sync()
 	}()
-
+	safe.Go(ws.PrintSocketLength)
 	// 初始化路由
 	Index(app)
 	// 初始化业务表
