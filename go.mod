@@ -20,9 +20,10 @@ require (
 	github.com/rabbitmq/amqp091-go v1.4.0
 	github.com/robfig/cron v1.2.0
 	github.com/satori/go.uuid v1.2.0
+	github.com/segmentio/kafka-go v0.4.39
 	github.com/shopspring/decimal v1.2.0
 	github.com/spf13/viper v1.8.1
-	github.com/stretchr/testify v1.7.5
+	github.com/stretchr/testify v1.8.0
 	github.com/xuri/excelize/v2 v2.6.1
 	go.uber.org/atomic v1.7.0
 	go.uber.org/zap v1.17.0
@@ -68,7 +69,7 @@ require (
 	github.com/kataras/pio v0.0.10 // indirect
 	github.com/kataras/sitemap v0.0.5 // indirect
 	github.com/kataras/tunnel v0.0.4 // indirect
-	github.com/klauspost/compress v1.15.8 // indirect
+	github.com/klauspost/compress v1.15.9 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/lib/pq v1.0.0 // indirect
 	github.com/magiconair/properties v1.8.5 // indirect
@@ -88,6 +89,7 @@ require (
 	github.com/onsi/ginkgo v1.16.5 // indirect
 	github.com/onsi/gomega v1.20.0 // indirect
 	github.com/pelletier/go-toml v1.9.3 // indirect
+	github.com/pierrec/lz4/v4 v4.1.15 // indirect
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/richardlehane/mscfb v1.0.4 // indirect
