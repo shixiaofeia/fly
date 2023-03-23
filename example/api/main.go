@@ -8,11 +8,9 @@ import (
 	"fly/pkg/mysql"
 	"fly/pkg/safego/safe"
 	"fly/pkg/ws"
-	"sync"
-	"time"
-
 	"github.com/kataras/iris/v12"
 	"google.golang.org/grpc"
+	"sync"
 )
 
 var (
@@ -25,10 +23,6 @@ var (
 )
 
 func main() {
-	defer func() {
-		wg.Wait()
-		logging.Sync()
-	}()
 	safe.Go(ws.PrintSocketLength)
 	// 初始化路由
 	Index(app)
@@ -53,12 +47,11 @@ func init() {
 
 	// 优雅的关闭程序
 	iris.RegisterOnInterrupt(func() {
-		wg.Add(1)
-		defer wg.Done()
 		cancel()
-		time.Sleep(5 * time.Second)
 		// 关闭所有主机
 		gServer.Stop()
 		_ = app.Shutdown(ctx)
+		wg.Wait()
+		logging.Sync()
 	})
 }

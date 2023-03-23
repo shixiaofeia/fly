@@ -3,23 +3,17 @@ package main
 import (
 	"fly/internal/config"
 	"fly/pkg/logging"
-	"net"
-	"sync"
-
 	"google.golang.org/grpc"
+	"net"
 )
 
 var (
 	configPath = "configs/config.json"
-	wg         = new(sync.WaitGroup)
 	gServer    = grpc.NewServer()
 )
 
 func main() {
-	defer func() {
-		wg.Wait()
-		logging.Sync()
-	}()
+	defer logging.Sync()
 
 	Index(gServer)
 	lis, err := net.Listen("tcp", ":"+config.Config.RpcPort)

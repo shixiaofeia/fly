@@ -13,12 +13,10 @@ import (
 	"fly/pkg/mysql"
 	"fly/pkg/redis"
 	"fly/pkg/safego/safe"
-	"net"
-	"sync"
-	"time"
-
 	"github.com/kataras/iris/v12"
 	"google.golang.org/grpc"
+	"net"
+	"sync"
 )
 
 var (
@@ -31,17 +29,12 @@ var (
 )
 
 func main() {
-	defer func() {
-		wg.Wait()
-		logging.Sync()
-	}()
-
 	// 初始化业务表
 	domain.Init()
 
 	// 监控服务
 	safe.Go(func() {
-		monitor.Start(ctx)
+		monitor.Start(ctx, wg)
 	})
 
 	// 初始化路由
@@ -81,13 +74,12 @@ func init() {
 
 	// 优雅关闭程序
 	iris.RegisterOnInterrupt(func() {
-		wg.Add(1)
-		defer wg.Done()
 		cancel()
-		time.Sleep(5 * time.Second)
 		// 关闭所有主机
 		gServer.Stop()
 		_ = app.Shutdown(ctx)
+		wg.Wait()
+		logging.Sync()
 	})
 }
 
