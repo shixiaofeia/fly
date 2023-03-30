@@ -20,12 +20,13 @@ func NewTickerHandle(ctx context.Context, wg *sync.WaitGroup) *TickerHandle {
 func (slf *TickerHandle) Run() {
 	slf.wg.Add(1)
 	defer slf.wg.Done()
-	ticker := time.NewTicker(time.Minute * 1)
-	for range ticker.C {
+	ticker := time.NewTicker(time.Minute)
+
+	for {
 		select {
 		case <-slf.ctx.Done():
 			return
-		default:
+		case <-ticker.C:
 			slf.handle()
 		}
 	}
