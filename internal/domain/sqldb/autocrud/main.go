@@ -28,7 +28,9 @@ func main() {
 		if v := getWhere(fName, fType, gName); v != "" {
 			buildFunc += v
 		}
-		setFunc += getSetFunc(objName, fName, fType)
+		if v := getSetFunc(objName, fName, fType); v != "" {
+			setFunc += v
+		}
 	}
 
 	buildFunc = fmt.Sprintf(`
@@ -86,7 +88,13 @@ func getWhere(fName, fType, gName string) string {
 }
 
 func getSetFunc(objName, fName, fType string) string {
-	param := strings.ToLower(fName[:1]) + fName[1:]
+	if fName == "DeletedAt" {
+		return ""
+	}
+	var param = strings.ToLower(fName[:1]) + fName[1:]
+	if fName == "ID" {
+		param = strings.ToLower(fName)
+	}
 	if fType == "Decimal" {
 		fType = "decimal.Decimal"
 	}
@@ -141,7 +149,6 @@ func (slf *DemoSearch) SetOrder(order string) *DemoSearch {
 
 	return slf
 }
-
 setFunc
 
 // CreateTable 创建表.
@@ -150,12 +157,12 @@ func (slf *DemoSearch) CreateTable() {
 }
 
 // Create 单条插入
-func (slf *DemoSearch) Create(recordM *Demo) (uint, error) {
+func (slf *DemoSearch) Create(recordM *Demo) (int64, error) {
 	if err := slf.Orm.Create(recordM).Error; err != nil {
 		return 0, fmt.Errorf("create recordM err: %v, recordM: %+v", err, recordM)
 	}
 
-	return recordM.Id, nil
+	return recordM.ID, nil
 }
 
 // CreateBatch 批量插入
@@ -169,6 +176,19 @@ func (slf *DemoSearch) CreateBatch(records []*Demo) error {
 
 buildFunc
 
+// Count 统计查询.
+func (slf *DemoSearch) Count() (int64, error) {
+	var (
+		total   int64
+		db      = slf.build()
+	)
+
+	if err := db.Count(&total).Error; err != nil {
+		return total, fmt.Errorf("count err: %v", err)
+	}
+
+	return total, nil
+}
 
 // Find 多条查询.
 func (slf *DemoSearch) Find() ([]*Demo, int64, error) {
@@ -299,13 +319,26 @@ func (slf *DemoSearch) UpdateByQuery(query string, args []interface{}, upMap map
 	return nil
 }
 
+// SaveByStruct 更新整个结构体(带ID为更新否则新增).
+func (slf *DemoSearch) SaveByStruct(recordM *Demo) error {
+	var (
+		db = slf.build()
+	)
+
+	if err := db.Save(recordM).Error; err != nil {
+		return fmt.Errorf("save by struct err: %v, record: %+v", err, recordM)
+	}
+
+	return nil
+}
+
 // Delete 删除.
 func (slf *DemoSearch) Delete() error {
 	var (
 		db = slf.build()
 	)
 
-	if err := db.Updates(map[string]interface{}{"delete_time": time.Now().Unix()}).Error; err != nil {
+	if err := db.Delete(&Demo{}).Error; err != nil {
 		return fmt.Errorf("delete err: %v", err)
 	}
 

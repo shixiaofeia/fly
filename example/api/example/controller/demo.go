@@ -9,7 +9,7 @@ import (
 // DemoCreate demo创建.
 func (slf *DemoController) DemoCreate(ctx iris.Context) {
 	var (
-		req    = &model.DemoCreateReq{}
+		req    = new(model.DemoCreateReq)
 		r, err = httpcode.NewRequest(ctx, req)
 	)
 
@@ -28,8 +28,7 @@ func (slf *DemoController) DemoCreate(ctx iris.Context) {
 // DemoRecords demo列表.
 func (slf *DemoController) DemoRecords(ctx iris.Context) {
 	var (
-		req    = &model.DemoRecordReq{}
-		res    = &model.DemoRecordResp{List: []*model.DemoRecordItem{}}
+		req    = new(model.DemoRecordReq)
 		r, err = httpcode.NewRequest(ctx, req)
 	)
 
@@ -37,7 +36,8 @@ func (slf *DemoController) DemoRecords(ctx iris.Context) {
 		return
 	}
 
-	if err = demoService.DemoRecords(req, res); err != nil {
+	res, err := demoService.DemoRecords(req)
+	if err != nil {
 		r.ServiceError(err)
 		return
 	}
@@ -48,8 +48,7 @@ func (slf *DemoController) DemoRecords(ctx iris.Context) {
 // DemoInfo demo详情.
 func (slf *DemoController) DemoInfo(ctx iris.Context) {
 	var (
-		req    = &model.DemoInfoReq{}
-		res    = &model.DemoInfoResp{}
+		req    = new(model.DemoInfoReq)
 		r, err = httpcode.NewRequest(ctx, req)
 	)
 
@@ -57,7 +56,8 @@ func (slf *DemoController) DemoInfo(ctx iris.Context) {
 		return
 	}
 
-	if err = demoService.DemoInfo(req, res); err != nil {
+	res, err := demoService.DemoInfo(req)
+	if err != nil {
 		r.ServiceError(err)
 		return
 	}
@@ -68,7 +68,7 @@ func (slf *DemoController) DemoInfo(ctx iris.Context) {
 // DemoUpdate demo更新.
 func (slf *DemoController) DemoUpdate(ctx iris.Context) {
 	var (
-		req    = &model.DemoUpdateReq{}
+		req    = new(model.DemoUpdateReq)
 		r, err = httpcode.NewRequest(ctx, req)
 	)
 
@@ -87,7 +87,7 @@ func (slf *DemoController) DemoUpdate(ctx iris.Context) {
 // DemoDelete demo删除.
 func (slf *DemoController) DemoDelete(ctx iris.Context) {
 	var (
-		req    = &model.DemoDeleteReq{}
+		req    = new(model.DemoDeleteReq)
 		r, err = httpcode.NewRequest(ctx, req)
 	)
 

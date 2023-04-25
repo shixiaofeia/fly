@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fly/internal/domain/sqldb"
 	"fly/internal/domain/types"
 	"github.com/shopspring/decimal"
 )
@@ -14,7 +15,7 @@ type (
 	}
 
 	DemoRecordReq struct {
-		Name string `json:"name" validate:"nonzero"`
+		Name string `json:"name"`
 		types.Pager
 	}
 	DemoRecordItem struct {
@@ -29,14 +30,14 @@ type (
 	}
 
 	DemoInfoReq struct {
-		DemoId uint `json:"demoId" validate:"nonzero"`
+		DemoID int64 `json:"demoID" validate:"nonzero"`
 	}
 	DemoInfoResp struct {
-		DemoRecordItem
+		sqldb.Demo
 	}
 
 	DemoUpdateReq struct {
-		DemoId uint            `json:"demoId" validate:"nonzero"`
+		DemoID int64           `json:"demoID" validate:"nonzero"`
 		Name   string          `json:"name"`
 		Amount decimal.Decimal `json:"amount"`
 		IsFree int             `json:"isFree" validate:"min=0,max=2"`
@@ -44,6 +45,6 @@ type (
 	}
 
 	DemoDeleteReq struct {
-		DemoId uint `json:"demoId" validate:"nonzero"`
+		DemoID int64 `json:"demoID" validate:"nonzero"`
 	}
 )

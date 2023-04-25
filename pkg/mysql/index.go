@@ -85,20 +85,6 @@ func InitWriteDB(c Conf) (err error) {
 	sqlDB, _ := db.DB()
 	sqlDB.SetMaxIdleConns(c.MaxIdleCoon)
 	sqlDB.SetMaxOpenConns(c.MaxOpenCoon)
-	// 回调函数
-	_ = db.Callback().Create().Before("gorm:create").Register("beforeCreateUpTime", beforeCreateUpTime)
-	_ = db.Callback().Update().Before("gorm:update").Register("beforeUpdateUpTime", beforeUpdateUpTime)
 	writeDB = db
 	return
-}
-
-// beforeCreateUpTime 在插入之前更新时间戳.
-func beforeCreateUpTime(tx *gorm.DB) {
-	tx.Statement.SetColumn("create_time", time.Now().Unix())
-	tx.Statement.SetColumn("update_time", time.Now().Unix())
-}
-
-// beforeUpdateUpTime 在更新之前更新时间戳.
-func beforeUpdateUpTime(tx *gorm.DB) {
-	tx.Statement.SetColumn("update_time", time.Now().Unix())
 }

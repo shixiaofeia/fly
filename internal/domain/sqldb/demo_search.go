@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"github.com/shopspring/decimal"
 	"gorm.io/gorm"
-	"time"
 )
 
 type (
@@ -47,8 +46,8 @@ func (slf *DemoSearch) SetOrder(order string) *DemoSearch {
 	return slf
 }
 
-func (slf *DemoSearch) SetId(id uint) *DemoSearch {
-	slf.Id = id
+func (slf *DemoSearch) SetID(id int64) *DemoSearch {
+	slf.ID = id
 	return slf
 }
 
@@ -72,18 +71,13 @@ func (slf *DemoSearch) SetRemark(remark string) *DemoSearch {
 	return slf
 }
 
-func (slf *DemoSearch) SetCreateTime(createTime int64) *DemoSearch {
-	slf.CreateTime = createTime
+func (slf *DemoSearch) SetCreatedAt(createdAt int64) *DemoSearch {
+	slf.CreatedAt = createdAt
 	return slf
 }
 
-func (slf *DemoSearch) SetUpdateTime(updateTime int64) *DemoSearch {
-	slf.UpdateTime = updateTime
-	return slf
-}
-
-func (slf *DemoSearch) SetDeleteTime(deleteTime int64) *DemoSearch {
-	slf.DeleteTime = deleteTime
+func (slf *DemoSearch) SetUpdatedAt(updatedAt int64) *DemoSearch {
+	slf.UpdatedAt = updatedAt
 	return slf
 }
 
@@ -93,12 +87,12 @@ func (slf *DemoSearch) CreateTable() {
 }
 
 // Create 单条插入
-func (slf *DemoSearch) Create(recordM *Demo) (uint, error) {
+func (slf *DemoSearch) Create(recordM *Demo) (int64, error) {
 	if err := slf.Orm.Create(recordM).Error; err != nil {
 		return 0, fmt.Errorf("create recordM err: %v, recordM: %+v", err, recordM)
 	}
 
-	return recordM.Id, nil
+	return recordM.ID, nil
 }
 
 // CreateBatch 批量插入
@@ -114,8 +108,8 @@ func (slf *DemoSearch) CreateBatch(records []*Demo) error {
 func (slf *DemoSearch) build() *gorm.DB {
 	var db = slf.Orm.Table(slf.TableName()).Model(Demo{})
 
-	if slf.Id > 0 {
-		db = db.Where("id = ?", slf.Id)
+	if slf.ID > 0 {
+		db = db.Where("id = ?", slf.ID)
 	}
 
 	if slf.Name != "" {
@@ -134,16 +128,12 @@ func (slf *DemoSearch) build() *gorm.DB {
 		db = db.Where("remark = ?", slf.Remark)
 	}
 
-	if slf.CreateTime > 0 {
-		db = db.Where("create_time = ?", slf.CreateTime)
+	if slf.CreatedAt > 0 {
+		db = db.Where("created_at = ?", slf.CreatedAt)
 	}
 
-	if slf.UpdateTime > 0 {
-		db = db.Where("update_time = ?", slf.UpdateTime)
-	}
-
-	if slf.DeleteTime > 0 {
-		db = db.Where("delete_time = ?", slf.DeleteTime)
+	if slf.UpdatedAt > 0 {
+		db = db.Where("updated_at = ?", slf.UpdatedAt)
 	}
 
 	if slf.Order != "" {
@@ -151,6 +141,20 @@ func (slf *DemoSearch) build() *gorm.DB {
 	}
 
 	return db
+}
+
+// Count 统计查询.
+func (slf *DemoSearch) Count() (int64, error) {
+	var (
+		total int64
+		db    = slf.build()
+	)
+
+	if err := db.Count(&total).Error; err != nil {
+		return total, fmt.Errorf("count err: %v", err)
+	}
+
+	return total, nil
 }
 
 // Find 多条查询.
@@ -282,13 +286,26 @@ func (slf *DemoSearch) UpdateByQuery(query string, args []interface{}, upMap map
 	return nil
 }
 
+// SaveByStruct 更新整个结构体(带ID为更新否则新增).
+func (slf *DemoSearch) SaveByStruct(recordM *Demo) error {
+	var (
+		db = slf.build()
+	)
+
+	if err := db.Save(recordM).Error; err != nil {
+		return fmt.Errorf("save by struct err: %v, record: %+v", err, recordM)
+	}
+
+	return nil
+}
+
 // Delete 删除.
 func (slf *DemoSearch) Delete() error {
 	var (
 		db = slf.build()
 	)
 
-	if err := db.Updates(map[string]interface{}{"delete_time": time.Now().Unix()}).Error; err != nil {
+	if err := db.Delete(&Demo{}).Error; err != nil {
 		return fmt.Errorf("delete err: %v", err)
 	}
 
