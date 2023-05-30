@@ -17,6 +17,19 @@ func Init(c *Config) {
 	cfg = c
 }
 
+// CreateTopic 创建主题.
+func CreateTopic(topic string, partition int) (*kafkago.Conn, error) {
+	if cfg == nil || len(cfg.Addr) == 0 {
+		return nil, fmt.Errorf("cfg is nil")
+	}
+	conn, err := kafkago.DialLeader(context.Background(), "tcp", cfg.Addr[0], topic, partition)
+	if err != nil {
+		return nil, fmt.Errorf("dial leader err: %v", err)
+	}
+
+	return conn, nil
+}
+
 // NewWriterAsync 异步写入, 高性能, WriteMessages不会阻塞, 错误异步处理.
 func NewWriterAsync(topic string, Completion func([]kafkago.Message, error)) *kafkago.Writer {
 	w := &kafkago.Writer{

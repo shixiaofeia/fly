@@ -16,6 +16,13 @@ var (
 	topic = "fly"
 )
 
+func TestCreateTopic(t *testing.T) {
+	Init(conf())
+	if _, err := CreateTopic(topic, 0); err != nil {
+		t.Error(err.Error())
+	}
+}
+
 func TestNewWriterAsync(t *testing.T) {
 	Init(conf())
 	w := NewWriterAsync(topic, func(messages []kafkago.Message, err error) {
