@@ -3,7 +3,7 @@ package service
 import (
 	"fly/example/api/example/model"
 	"fly/internal/domain/sqldb"
-	"fly/pkg/httpcode"
+	"fly/internal/httpcode"
 	"fly/pkg/libs/structf"
 	"fmt"
 )

@@ -1,7 +1,7 @@
 package middle
 
 import (
-	"fly/pkg/httpcode"
+	"fly/internal/httpcode"
 	"fly/pkg/jwt"
 	"fmt"
 

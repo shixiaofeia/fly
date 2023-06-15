@@ -2,7 +2,7 @@ package controller
 
 import (
 	"fly/example/api/example/model"
-	"fly/pkg/httpcode"
+	"fly/internal/httpcode"
 	"github.com/kataras/iris/v12"
 )
 

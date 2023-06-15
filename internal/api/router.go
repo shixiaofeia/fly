@@ -1,8 +1,7 @@
 package api
 
 import (
-	"fly/pkg/httpcode"
-
+	"fly/internal/httpcode"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/middleware/pprof"
 	"github.com/kataras/iris/v12/middleware/recover"

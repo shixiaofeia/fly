@@ -1,7 +1,7 @@
 package middle
 
 import (
-	"fly/pkg/httpcode"
+	"fly/internal/httpcode"
 	"fly/pkg/redis"
 	"fmt"
 	"github.com/go-redis/redis_rate"

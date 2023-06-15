@@ -3,7 +3,7 @@ package main
 import (
 	"fly/example/api/example"
 	"fly/internal/api/middle"
-	"fly/pkg/httpcode"
+	"fly/internal/httpcode"
 	"github.com/kataras/iris/v12/middleware/logger"
 
 	"github.com/kataras/iris/v12"
