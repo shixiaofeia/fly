@@ -87,7 +87,7 @@ func (ch *Channel) QueueBind(name, key, exchange string) (err error) {
 }
 
 // NewConsumer 实例化一个消费者, 会单独用一个channel.
-func NewConsumer(queue string, handler func([]byte) error) error {
+func NewConsumer(ctx context.Context, queue string, handler func([]byte) error) error {
 	ch, err := defaultConn.Channel()
 	if err != nil {
 		return fmt.Errorf("new mq channel err: %v", err)
@@ -99,6 +99,12 @@ func NewConsumer(queue string, handler func([]byte) error) error {
 	}
 
 	for msg := range deliveries {
+		select {
+		case <-ctx.Done():
+			_ = msg.Reject(true)
+			return fmt.Errorf("context cancel")
+		default:
+		}
 		err = handler(msg.Body)
 		if err != nil {
 			_ = msg.Reject(true)

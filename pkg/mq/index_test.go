@@ -1,6 +1,7 @@
 package mq
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"testing"
@@ -41,7 +42,7 @@ func TestChannel_Publish(t *testing.T) {
 	}
 
 	go func() {
-		if err := NewConsumer(queueName, func(body []byte) error {
+		if err := NewConsumer(context.Background(), queueName, func(body []byte) error {
 			fmt.Println("consume msg :" + string(body))
 			return nil
 		}); err != nil {
@@ -102,7 +103,7 @@ func TestChannel_PublishWithDelay(t *testing.T) {
 	}
 
 	go func() {
-		if err := NewConsumer(queueName, func(body []byte) error {
+		if err := NewConsumer(context.Background(), queueName, func(body []byte) error {
 			fmt.Println(fmt.Sprintf("consumer msg: %s, ts: %s", string(body), nowTime()))
 			return nil
 		}); err != nil {

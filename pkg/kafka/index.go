@@ -13,8 +13,8 @@ type Config struct {
 
 var cfg *Config
 
-func Init(c *Config) {
-	cfg = c
+func Init(c Config) {
+	cfg = &c
 }
 
 // CreateTopic 创建主题.

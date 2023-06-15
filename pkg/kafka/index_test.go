@@ -8,8 +8,8 @@ import (
 	"time"
 )
 
-func conf() *Config {
-	return &Config{Addr: []string{"127.0.0.1:9092"}}
+func conf() Config {
+	return Config{Addr: []string{"127.0.0.1:9092"}}
 }
 
 var (

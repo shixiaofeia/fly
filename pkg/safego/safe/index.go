@@ -19,7 +19,7 @@ func Go(f func()) {
 	}()
 }
 
-// GoWithField 安全go程且携带参数
+// GoWithField 安全go程且携带参数.
 func GoWithField(f func(val interface{}), val interface{}) {
 	go func(val interface{}) {
 		defer func() {
