@@ -1,0 +1,63 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sag
+    ports:
+      - "3306:3306"
+    volumes:
+      - /tmp/mysql/data:/var/lib/mysql
+  redis:
+    image: redis:6.0.3
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - /tmp/redis/data:/data
+  mq:
+    image: rabbitmq:3.10-management
+    container_name: mq
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - /tmp/rabbitmq/data:/var/lib/rabbitmq
+  zookeeper:
+    image: zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 0
+      KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CREATE_TOPICS: "test:1:1"
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://127.0.0.1:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+    volumes:
+      - /tmp/kafka/data:/kafka
+    depends_on:
+      - zookeeper
+  clickhouse:
+    image: yandex/clickhouse-server
+    container_name: ck
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - /tmp/ck/data:/var/lib/clickhouse
+
