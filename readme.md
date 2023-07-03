@@ -39,9 +39,10 @@
 ├── internal            // 私有程序
 |  ├── api              // 接口
 |  ├── config           // 配置文件解析
-|  ├── cache            // 缓存相关
 |  ├── constvar         // 常量
 |  ├── domain           // 表结构
+|  ├── httpcode         // 请求处理组件
+|  ├── kit              // 公用逻辑函数
 |  └── monitor          // 监控定时服务相关
 |  └── rpc              // rpc
 ├── logs                // 日志存放
@@ -49,7 +50,6 @@
 |  ├── clickhouse       // ck组件
 |  ├── email            // 邮件组件
 |  ├── es               // es组件
-|  ├── httpcode         // 请求处理组件
 |  ├── kafka            // kafka组件
 |  ├── jwt              // jwt组件
 |  ├── libs             // 封装的公用方法
@@ -126,10 +126,12 @@
 
 ## 启动方式
 
+> 请先复制 configs 目录下的配置文件, 并修改为自己的配置
+
 ### 命令行启动
 
 ```
-go run cmd/app/main.go -config ./configs/config.toml
+go run cmd/app/main.go -config ./configs/config.yml
 ```
 
 ### Docker启动

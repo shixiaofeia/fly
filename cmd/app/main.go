@@ -51,7 +51,7 @@ func main() {
 }
 
 func init() {
-	flag.StringVar(&configPath, "config", "./configs/config.json", "配置文件路径以及文件名(必填)")
+	flag.StringVar(&configPath, "config", "./configs/config.yml", "配置文件路径以及文件名(必填)")
 	flag.Parse()
 
 	// 初始化配置

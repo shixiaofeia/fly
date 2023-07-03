@@ -24,7 +24,7 @@ func main() {
 		fName := val.Name
 		gName := ColumnName(val.Tag.Get("gorm"))
 		fType := val.Type.Name()
-		//fmt.Println(fName, fType, gName)
+		// fmt.Println(fName, fType, gName)
 		if v := getWhere(fName, fType, gName); v != "" {
 			buildFunc += v
 		}

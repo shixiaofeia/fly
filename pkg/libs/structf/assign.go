@@ -6,6 +6,7 @@ import (
 )
 
 // Assign 赋值结构体并忽略指定字段.
+// 适用于结构体转换, 想要使用更全面的转换建议使用 https://goframe.org/pages/viewpage.action?pageId=1114677.
 func Assign(src, dst interface{}, excludes ...string) {
 	srcVal := reflect.ValueOf(src).Elem()
 	dstVal := reflect.ValueOf(dst).Elem()

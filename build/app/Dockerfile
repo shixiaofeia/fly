@@ -23,4 +23,4 @@ WORKDIR /data/fly
 COPY --from=builder /data/fly /data/fly
 
 # 容器入口, 执行命令
-CMD ["./flyServer", "-config", "./configs/config.json"]
+CMD ["./flyServer", "-config", "./configs/config.yml"]

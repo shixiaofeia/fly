@@ -17,3 +17,6 @@ logs
 
 # Test export
 test.xlsx
+
+# configs
+configs/config.yml
