@@ -9,6 +9,7 @@ import (
 
 // InitApi 初始化路由.
 func InitApi(app iris.Party) {
+	InitCtr()
 	app.Post("/hello", controller.Hello)        // 请求示例
 	app.Get("/export", controller.Export)       // 导出示例
 	app.Get("/socket", controller.SocketHealth) // socket示例

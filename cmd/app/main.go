@@ -30,7 +30,7 @@ var (
 
 func main() {
 	// 初始化业务表
-	domain.Init()
+	domain.Init(mysql.NewWriteDB())
 
 	// 监控服务
 	safe.Go(func() {

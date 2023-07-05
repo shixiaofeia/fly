@@ -15,7 +15,7 @@ import (
 
 var (
 	err         error
-	configPath  = "configs/config.json"
+	configPath  = "configs/config.yml"
 	ctx, cancel = context.WithCancel(context.Background())
 	wg          = new(sync.WaitGroup)
 	app         = iris.New()
@@ -27,7 +27,7 @@ func main() {
 	// 初始化路由
 	Index(app)
 	// 初始化业务表
-	domain.Init()
+	domain.Init(mysql.NewWriteDB())
 
 	// 监听端口
 	logging.Info("Start Web Server ")

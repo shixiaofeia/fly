@@ -2,14 +2,12 @@ package controller
 
 import "fly/example/api/example/service"
 
-var (
-	demoService = service.NewDemoService()
-)
-
 type (
-	DemoController struct{}
+	DemoController struct {
+		srv *service.DemoService
+	}
 )
 
-func NewDemoController() *DemoController {
-	return &DemoController{}
+func NewDemoController(srv *service.DemoService) *DemoController {
+	return &DemoController{srv: srv}
 }

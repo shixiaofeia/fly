@@ -4,14 +4,17 @@ import (
 	"fly/internal/domain/sqldb"
 	"fly/internal/domain/types"
 	"github.com/shopspring/decimal"
+	"gorm.io/datatypes"
 )
 
 type (
 	DemoCreateReq struct {
-		Name   string          `json:"name" validate:"nonzero"`
-		Amount decimal.Decimal `json:"amount" validate:"nonzero"`
-		IsFree int             `json:"isFree" validate:"nonzero,min=1,max=2"`
-		Remark string          `json:"remark" validate:"nonzero"`
+		Name   string            `json:"name" validate:"nonzero"`
+		Amount decimal.Decimal   `json:"amount" validate:"nonzero"`
+		IsFree int               `json:"isFree" validate:"nonzero,min=1,max=2"`
+		Remark string            `json:"remark" validate:"nonzero"`
+		Items  sqldb.StructItem  `json:"items" validate:"nonzero"`
+		Info   datatypes.JSONMap `json:"info" validate:"nonzero"`
 	}
 
 	DemoRecordReq struct {
@@ -19,6 +22,7 @@ type (
 		types.Pager
 	}
 	DemoRecordItem struct {
+		ID     int64           `json:"id"`
 		Name   string          `json:"name"`
 		Amount decimal.Decimal `json:"amount"`
 		IsFree int             `json:"isFree"`

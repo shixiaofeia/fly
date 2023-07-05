@@ -6,23 +6,25 @@ import (
 	"fly/internal/httpcode"
 	"fly/pkg/libs/structf"
 	"fmt"
+	"gorm.io/gorm"
 )
 
-type DemoService struct{}
+type DemoService struct {
+	orm *gorm.DB
+}
 
-func NewDemoService() *DemoService {
-	return &DemoService{}
+func NewDemoService(orm *gorm.DB) *DemoService {
+	return &DemoService{orm: orm}
 }
 
 // DemoCreate demo创建.
 func (slf *DemoService) DemoCreate(req *model.DemoCreateReq) error {
 	var (
-		factory = sqldb.NewDemoSearch(nil)
 		recordM = new(sqldb.Demo)
 	)
 	structf.Assign(req, recordM)
 
-	if _, err := factory.Create(recordM); err != nil {
+	if _, err := sqldb.NewDemoSearch(slf.orm).Create(recordM); err != nil {
 		return fmt.Errorf("demo create err: %v", err)
 	}
 
@@ -31,14 +33,10 @@ func (slf *DemoService) DemoCreate(req *model.DemoCreateReq) error {
 
 // DemoRecords demo列表.
 func (slf *DemoService) DemoRecords(req *model.DemoRecordReq) (res model.DemoRecordResp, err error) {
-	var (
-		factory = sqldb.NewDemoSearch(nil)
-	)
 	res.PageNum, res.PageSize = req.PageNum, req.PageSize
 	res.List = make([]*model.DemoRecordItem, 0)
-	structf.Assign(req, factory)
 
-	records, total, err := factory.Find()
+	records, total, err := sqldb.NewDemoSearch(slf.orm).SetName(req.Name).SetPager(req.PageNum, req.PageSize).Find()
 	if err != nil {
 		return res, fmt.Errorf("demo records err: %v", err)
 	}
@@ -56,7 +54,7 @@ func (slf *DemoService) DemoRecords(req *model.DemoRecordReq) (res model.DemoRec
 
 // DemoInfo 单条查询.
 func (slf *DemoService) DemoInfo(req *model.DemoInfoReq) (res model.DemoInfoResp, err error) {
-	recordM, err := sqldb.NewDemoSearch(nil).SetID(req.DemoID).First()
+	recordM, err := sqldb.NewDemoSearch(slf.orm).SetID(req.DemoID).First()
 	if err != nil {
 		return res, fmt.Errorf("demo info err: %v", err)
 	}
@@ -86,7 +84,7 @@ func (slf *DemoService) DemoUpdate(req *model.DemoUpdateReq) (httpcode.ErrCode, 
 		return httpcode.ParamErr, fmt.Errorf("upmap is nil")
 	}
 
-	if err := sqldb.NewDemoSearch(nil).SetID(req.DemoID).UpdateByMap(upMap); err != nil {
+	if err := sqldb.NewDemoSearch(slf.orm).SetID(req.DemoID).UpdateByMap(upMap); err != nil {
 		return httpcode.ServiceErr, fmt.Errorf("demo update err: %v", err)
 	}
 
@@ -95,7 +93,7 @@ func (slf *DemoService) DemoUpdate(req *model.DemoUpdateReq) (httpcode.ErrCode, 
 
 // DemoDelete 删除.
 func (slf *DemoService) DemoDelete(req *model.DemoDeleteReq) error {
-	if err := sqldb.NewDemoSearch(nil).SetID(req.DemoID).Delete(); err != nil {
+	if err := sqldb.NewDemoSearch(slf.orm).SetID(req.DemoID).Delete(); err != nil {
 		return fmt.Errorf("demo delete err: %v", err)
 	}
 
