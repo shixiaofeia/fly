@@ -59,10 +59,12 @@ func NewWriterSync(topic string) *kafkago.Writer {
 // NewReaderAutoCommit 消费自动确认.
 func NewReaderAutoCommit(ctx context.Context, topic, groupId string, handle func(kafkago.Message) error) error {
 	r := kafkago.NewReader(kafkago.ReaderConfig{
-		Brokers: cfg.Addr,
-		Topic:   topic,
-		MaxWait: 100 * time.Millisecond,
-		GroupID: groupId,
+		Brokers:  cfg.Addr,
+		Topic:    topic,
+		MaxWait:  time.Second,
+		GroupID:  groupId,
+		MinBytes: 10e3,
+		MaxBytes: 10e6,
 	})
 	defer r.Close()
 	for {
@@ -79,10 +81,12 @@ func NewReaderAutoCommit(ctx context.Context, topic, groupId string, handle func
 // NewReaderAckCommit 消费成功确认.
 func NewReaderAckCommit(ctx context.Context, topic, groupId string, handle func(kafkago.Message) error) error {
 	r := kafkago.NewReader(kafkago.ReaderConfig{
-		Brokers: cfg.Addr,
-		Topic:   topic,
-		MaxWait: 100 * time.Millisecond,
-		GroupID: groupId,
+		Brokers:  cfg.Addr,
+		Topic:    topic,
+		MaxWait:  time.Second,
+		GroupID:  groupId,
+		MinBytes: 10e3,
+		MaxBytes: 10e6,
 	})
 	defer r.Close()
 	for {
