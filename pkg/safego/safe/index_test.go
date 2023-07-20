@@ -3,6 +3,7 @@ package safe
 import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
+	"math/rand"
 	"sync"
 	"testing"
 	"time"
@@ -17,6 +18,22 @@ func TestSafeGo(t *testing.T) {
 		fmt.Println(total / size)
 	})
 	time.Sleep(3 * time.Second)
+	t.Log("end")
+}
+
+func TestGoAutoRestart(t *testing.T) {
+	GoAutoRestart(func() {
+		rand.Seed(time.Now().UnixNano())
+		for {
+			var (
+				total = 10
+				size  = rand.Intn(10)
+			)
+			fmt.Println(size)
+			fmt.Println(total / size)
+		}
+	})
+	time.Sleep(time.Second)
 	t.Log("end")
 }
 
