@@ -30,6 +30,7 @@ var (
 			IgnoreRecordNotFoundError: true,          // 忽略记录为空的错误
 		},
 	)
+	createBatchSize = 200 // 批量插入条数
 )
 
 // Init 初始化db.
@@ -78,7 +79,7 @@ func InitWriteDB(c Conf) (err error) {
 	}
 	dsn := c.User + ":" + c.Pwd + "@tcp(" + c.Addr + ":" + c.Port + ")/" + c.Name + "?charset=utf8mb4&parseTime=True&loc=Local"
 	mysqlConfig.DSN = dsn
-	db, err := gorm.Open(mysql.New(mysqlConfig), &gorm.Config{Logger: newLogger})
+	db, err := gorm.Open(mysql.New(mysqlConfig), &gorm.Config{Logger: newLogger, CreateBatchSize: createBatchSize})
 	if err != nil {
 		return fmt.Errorf("InitWriteDB err: %v", err)
 	}
