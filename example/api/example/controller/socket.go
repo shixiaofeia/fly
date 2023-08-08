@@ -48,6 +48,6 @@ func GroupSend() {
 	g := ws.NewGroup("10010")
 	for {
 		g.SendMsg("group send msg")
-		time.Sleep(1 * time.Second)
+		time.Sleep(10 * time.Second)
 	}
 }

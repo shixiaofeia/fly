@@ -18,11 +18,17 @@ type Config struct {
 
 // Init 初始化.
 func Init(c Config) (err error) {
+	if c.Address == "" {
+		return
+	}
 	connect, err = dbr.Open("clickhouse", fmt.Sprintf("%s/%s", c.Address, c.Database), nil)
 	return
 }
 
 // NewSession  实例一个会话.
 func NewSession() *dbr.Session {
-	return connect.NewSession(nil)
+	if connect != nil {
+		return connect.NewSession(nil)
+	}
+	return nil
 }

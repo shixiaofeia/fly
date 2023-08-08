@@ -4,6 +4,7 @@ import (
 	"context"
 	"fly/internal/config"
 	"fly/internal/domain"
+	"fly/pkg/clickhouse"
 	"fly/pkg/logging"
 	"fly/pkg/mysql"
 	"fly/pkg/safego/safe"
@@ -27,7 +28,7 @@ func main() {
 	// 初始化路由
 	Index(app)
 	// 初始化业务表
-	domain.Init(mysql.NewWriteDB())
+	domain.Init(mysql.NewWriteDB(), clickhouse.NewSession())
 
 	// 监听端口
 	logging.Info("Start Web Server ")

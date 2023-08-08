@@ -8,6 +8,7 @@ import (
 	"fly/internal/domain"
 	"fly/internal/monitor"
 	"fly/internal/rpc"
+	"fly/pkg/clickhouse"
 	"fly/pkg/logging"
 	"fly/pkg/mq"
 	"fly/pkg/mysql"
@@ -30,7 +31,7 @@ var (
 
 func main() {
 	// 初始化业务表
-	domain.Init(mysql.NewWriteDB())
+	domain.Init(mysql.NewWriteDB(), clickhouse.NewSession())
 
 	// 监控服务
 	safe.Go(func() {
