@@ -12,16 +12,21 @@ var (
 )
 
 type Config struct {
-	Address  string
+	Host     string
+	Port     string
 	Database string
+	User     string
+	Pwd      string
 }
 
 // Init 初始化.
 func Init(c Config) (err error) {
-	if c.Address == "" {
+	if c.Host == "" {
 		return
 	}
-	connect, err = dbr.Open("clickhouse", fmt.Sprintf("%s/%s", c.Address, c.Database), nil)
+
+	dsn := fmt.Sprintf("http://%s:%s@%s:%s/%s", c.User, c.Pwd, c.Host, c.Port, c.Database)
+	connect, err = dbr.Open("clickhouse", dsn, nil)
 	return
 }
 

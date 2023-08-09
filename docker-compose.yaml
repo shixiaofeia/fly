@@ -57,7 +57,9 @@ services:
     image: bitnami/clickhouse:latest
     container_name: ck
     environment:
-      - ALLOW_EMPTY_PASSWORD=yes
+      - CLICKHOUSE_ADMIN_USER=root
+      - CLICKHOUSE_ADMIN_PASSWORD=root
+      - ALLOW_EMPTY_PASSWORD=no
     ports:
       - "8123:8123"
       - "9000:9000"

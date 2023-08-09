@@ -26,7 +26,7 @@ type (
 func TestInit(t *testing.T) {
 	var err error
 	// create database if not exists house;
-	c := Config{Address: "http://127.0.0.1:8123", Database: "house"}
+	c := Config{Host: "127.0.0.1", Port: "8123", Database: "fly", User: "root", Pwd: "root"}
 	if err = Init(c); err != nil {
 		log.Fatal("init clickhouse err: " + err.Error())
 	}

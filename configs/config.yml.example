@@ -34,3 +34,10 @@ email:
   nickName: "fly"
   pwd: ""
   logo: "https://profile.csdnimg.cn/8/9/2/3_ywdhzxf"
+
+clickhouse:
+  host:
+  port: 8123
+  database: fly
+  user: root
+  pwd: root
