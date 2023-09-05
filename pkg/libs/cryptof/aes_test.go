@@ -12,7 +12,7 @@ func TestAes_CFB(t *testing.T) {
 		data    = "what are you 弄啥嘞"
 	)
 
-	ciphertext, err := factory.CFBEncrypt(data, key)
+	ciphertext, err := factory.CFBEncrypt([]byte(data), key)
 	if err != nil {
 		t.Error(err)
 	}
@@ -22,7 +22,7 @@ func TestAes_CFB(t *testing.T) {
 		t.Error(err)
 	}
 
-	assert.Equal(t, plaintext, data)
+	assert.Equal(t, string(plaintext), data)
 }
 
 func TestAes_CBC(t *testing.T) {
@@ -32,7 +32,7 @@ func TestAes_CBC(t *testing.T) {
 		data    = "what are you 弄啥嘞"
 	)
 
-	ciphertext, err := factory.CBCEncrypt(data, key, nil)
+	ciphertext, err := factory.CBCEncrypt([]byte(data), key, nil)
 	if err != nil {
 		t.Error(err)
 	}
@@ -42,5 +42,5 @@ func TestAes_CBC(t *testing.T) {
 		t.Error(err)
 	}
 
-	assert.Equal(t, plaintext, data)
+	assert.Equal(t, string(plaintext), data)
 }

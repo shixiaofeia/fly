@@ -20,7 +20,7 @@ func NewAes() *Aes {
 }
 
 // CFBEncrypt 加密.
-func (slf *Aes) CFBEncrypt(plaintext string, key []byte) (string, error) {
+func (slf *Aes) CFBEncrypt(plaintext, key []byte) (string, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		return "", err
@@ -33,25 +33,25 @@ func (slf *Aes) CFBEncrypt(plaintext string, key []byte) (string, error) {
 		return "", err
 	}
 
-	cipher.NewCFBEncrypter(block, iv).XORKeyStream(cipherText[aes.BlockSize:], []byte(plaintext))
+	cipher.NewCFBEncrypter(block, iv).XORKeyStream(cipherText[aes.BlockSize:], plaintext)
 
 	return hex.EncodeToString(cipherText), nil
 }
 
 // CFBDecrypt 解密.
-func (slf *Aes) CFBDecrypt(ciphertext string, key []byte) (string, error) {
+func (slf *Aes) CFBDecrypt(ciphertext string, key []byte) ([]byte, error) {
 	cipherText, err := hex.DecodeString(ciphertext)
 	if err != nil {
-		return "", err
+		return []byte{}, err
 	}
 
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		return "", err
+		return []byte{}, err
 	}
 
 	if len(cipherText) < aes.BlockSize {
-		return "", fmt.Errorf("cipher ciphertext too short")
+		return []byte{}, fmt.Errorf("cipher ciphertext too short")
 	}
 
 	iv := cipherText[:aes.BlockSize]
@@ -59,12 +59,11 @@ func (slf *Aes) CFBDecrypt(ciphertext string, key []byte) (string, error) {
 
 	cipher.NewCFBDecrypter(block, iv).XORKeyStream(cipherText, cipherText)
 
-	return string(cipherText), nil
+	return cipherText, nil
 }
 
 // CBCEncrypt 加密.
-func (slf *Aes) CBCEncrypt(plaintext string, key, iv []byte) (string, error) {
-	plaintextByte := []byte(plaintext)
+func (slf *Aes) CBCEncrypt(plaintext, key, iv []byte) (string, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		return "", err
@@ -74,20 +73,20 @@ func (slf *Aes) CBCEncrypt(plaintext string, key, iv []byte) (string, error) {
 	if iv == nil {
 		iv = key[:blockSize]
 	}
-	plaintextByte = slf.PKCS7Padding(plaintextByte, blockSize)
+	plaintext = slf.PKCS7Padding(plaintext, blockSize)
 	blockMode := cipher.NewCBCEncrypter(block, iv)
-	crypted := make([]byte, len(plaintextByte))
-	blockMode.CryptBlocks(crypted, plaintextByte)
+	encrypted := make([]byte, len(plaintext))
+	blockMode.CryptBlocks(encrypted, plaintext)
 
-	return base64.StdEncoding.EncodeToString(crypted), nil
+	return base64.StdEncoding.EncodeToString(encrypted), nil
 }
 
 // CBCDecrypt 解密.
-func (slf *Aes) CBCDecrypt(ciphertext string, key, iv []byte) (string, error) {
+func (slf *Aes) CBCDecrypt(ciphertext string, key, iv []byte) ([]byte, error) {
 	ciphertextByte, _ := base64.StdEncoding.DecodeString(ciphertext)
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		return "", err
+		return []byte{}, err
 	}
 
 	blockSize := block.BlockSize()
@@ -99,17 +98,17 @@ func (slf *Aes) CBCDecrypt(ciphertext string, key, iv []byte) (string, error) {
 	blockMode.CryptBlocks(origData, ciphertextByte)
 	origData = slf.PKCS7UnPadding(origData)
 
-	return string(origData), nil
+	return origData, nil
 }
 
 func (slf *Aes) PKCS7Padding(ciphertext []byte, blockSize int) []byte {
 	padding := blockSize - len(ciphertext)%blockSize
-	padtext := bytes.Repeat([]byte{byte(padding)}, padding)
-	return append(ciphertext, padtext...)
+	padText := bytes.Repeat([]byte{byte(padding)}, padding)
+	return append(ciphertext, padText...)
 }
 
 func (slf *Aes) PKCS7UnPadding(origData []byte) []byte {
 	length := len(origData)
-	unpadding := int(origData[length-1])
-	return origData[:(length - unpadding)]
+	unPadding := int(origData[length-1])
+	return origData[:(length - unPadding)]
 }
