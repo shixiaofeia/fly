@@ -49,6 +49,7 @@ func InitCluster(address []string, passWord string) (err error) {
 	if err = clusterClient.ReloadState(); err != nil {
 		return fmt.Errorf("InitCluster err: %v", err)
 	}
+
 	return
 }
 
@@ -63,5 +64,9 @@ func InitStandAlone(address string, passWord string) (err error) {
 			Password:     passWord,
 			MinIdleConns: 100,
 		})
+	if err = standAloneClient.Ping().Err(); err != nil {
+		return err
+	}
+
 	return
 }

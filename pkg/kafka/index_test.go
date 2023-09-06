@@ -17,14 +17,14 @@ var (
 )
 
 func TestCreateTopic(t *testing.T) {
-	Init(conf())
+	_ = Init(conf())
 	if _, err := CreateTopic(topic, 0); err != nil {
 		t.Error(err.Error())
 	}
 }
 
 func TestNewWriterAsync(t *testing.T) {
-	Init(conf())
+	_ = Init(conf())
 	w := NewWriterAsync(topic, func(messages []kafkago.Message, err error) {
 		fmt.Println("async err", err, len(messages))
 	})
@@ -39,7 +39,7 @@ func TestNewWriterAsync(t *testing.T) {
 
 }
 func TestNewWriterSync(t *testing.T) {
-	Init(conf())
+	_ = Init(conf())
 	w := NewWriterSync(topic)
 	msg := make([]kafkago.Message, 0)
 	for i := 0; i < 5; i++ {
@@ -51,8 +51,10 @@ func TestNewWriterSync(t *testing.T) {
 }
 
 func TestNewReaderAutoCommit(t *testing.T) {
-	Init(conf())
-	ctx, _ := context.WithDeadline(context.Background(), time.Now().Add(2*time.Second))
+	_ = Init(conf())
+	ctx, cancel := context.WithDeadline(context.Background(), time.Now().Add(2*time.Second))
+	defer cancel()
+
 	if err := NewReaderAutoCommit(ctx, topic, "test1", func(message kafkago.Message) error {
 		fmt.Println(string(message.Value))
 		return nil
@@ -62,8 +64,9 @@ func TestNewReaderAutoCommit(t *testing.T) {
 }
 
 func TestNewReaderAckCommit(t *testing.T) {
-	Init(conf())
-	ctx, _ := context.WithDeadline(context.Background(), time.Now().Add(2*time.Second))
+	_ = Init(conf())
+	ctx, cancel := context.WithDeadline(context.Background(), time.Now().Add(2*time.Second))
+	defer cancel()
 
 	if err := NewReaderAckCommit(ctx, topic, "test2", func(message kafkago.Message) error {
 		fmt.Println(string(message.Value))

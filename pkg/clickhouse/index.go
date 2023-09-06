@@ -1,7 +1,9 @@
 package clickhouse
 
 import (
+	"context"
 	"fmt"
+	"time"
 
 	"github.com/mailru/dbr"
 	_ "github.com/mailru/go-clickhouse"
@@ -27,6 +29,15 @@ func Init(c Config) (err error) {
 
 	dsn := fmt.Sprintf("http://%s:%s@%s:%s/%s", c.User, c.Pwd, c.Host, c.Port, c.Database)
 	connect, err = dbr.Open("clickhouse", dsn, nil)
+	if err != nil {
+		return err
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err = connect.PingContext(ctx); err != nil {
+		return err
+	}
+
 	return
 }
 

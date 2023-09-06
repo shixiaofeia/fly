@@ -13,8 +13,18 @@ type Config struct {
 
 var cfg *Config
 
-func Init(c Config) {
+func Init(c Config) error {
 	cfg = &c
+	if cfg == nil || len(cfg.Addr) == 0 {
+		return fmt.Errorf("cfg is nil")
+	}
+	conn, err := kafkago.Dial("tcp", cfg.Addr[0])
+	if err != nil {
+		return err
+	}
+	defer conn.Close()
+
+	return nil
 }
 
 // CreateTopic 创建主题.

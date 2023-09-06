@@ -2,6 +2,7 @@ package es
 
 import (
 	"context"
+	"time"
 
 	"github.com/olivere/elastic/v6"
 )
@@ -13,9 +14,12 @@ func Init(address ...string) (err error) {
 	if client, err = elastic.NewClient(elastic.SetSniff(false), elastic.SetURL(address...)); err != nil {
 		return
 	}
-	if _, _, err = client.Ping(address[0]).Do(context.Background()); err != nil {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if _, _, err = client.Ping(address[0]).Do(ctx); err != nil {
 		return
 	}
+
 	return
 }
 

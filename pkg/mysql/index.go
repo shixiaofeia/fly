@@ -1,6 +1,7 @@
 package mysql
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
@@ -68,7 +69,13 @@ func InitReadDB(c Conf) (err error) {
 	sqlDB, _ := db.DB()
 	sqlDB.SetMaxIdleConns(c.MaxIdleCoon)
 	sqlDB.SetMaxOpenConns(c.MaxOpenCoon)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err = sqlDB.PingContext(ctx); err != nil {
+		return err
+	}
 	readDB = db
+
 	return
 }
 
@@ -86,6 +93,12 @@ func InitWriteDB(c Conf) (err error) {
 	sqlDB, _ := db.DB()
 	sqlDB.SetMaxIdleConns(c.MaxIdleCoon)
 	sqlDB.SetMaxOpenConns(c.MaxOpenCoon)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err = sqlDB.PingContext(ctx); err != nil {
+		return err
+	}
 	writeDB = db
+
 	return
 }
