@@ -111,6 +111,7 @@ func (slf *%sSearch) Set%s(%s %s) *%sSearch {
 func getFormat(objName string) string {
 	tableName := strings.ToLower(objName)
 	str := `
+import "errors"
 
 type (
 	DemoSearch struct {
@@ -188,6 +189,15 @@ func (slf *DemoSearch) Count() (int64, error) {
 	}
 
 	return total, nil
+}
+
+// Pluck 单列查询.
+func (slf *DemoSearch) Pluck(column string, dest interface{}) error {
+	if err := slf.build().Pluck(column, dest).Error; err != nil {
+		return fmt.Errorf("pluck err: %v", err)
+	}
+
+	return nil
 }
 
 // Find 多条查询.
@@ -278,6 +288,19 @@ func (slf *DemoSearch) First() (*Demo, error) {
 	}
 
 	return recordM, nil
+}
+
+// IsExist 判断是否存在.
+func (slf *DemoSearch) IsExist() (bool, error) {
+	_, err := slf.First()
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return false, nil
+		}
+		return false, err
+	}
+
+	return true, nil
 }
 
 // UpdateByMap 更新.
