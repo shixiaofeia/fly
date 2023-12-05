@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	kafkago "github.com/segmentio/kafka-go"
+	"log"
 	"time"
 )
 
@@ -66,13 +67,49 @@ func NewWriterSync(topic string) *kafkago.Writer {
 	return w
 }
 
+type (
+	// consumerFunc 消费者func.
+	consumerFunc  func(ctx context.Context, param consumerParam) error
+	consumerParam struct {
+		topic   string                      // topic 主题名称.
+		groupID string                      // groupID 消费者组ID.
+		handle  func(kafkago.Message) error // handle 处理消息.
+	}
+)
+
+// reconnect 自动重连.
+func reconnect(ctx context.Context, param consumerParam, f consumerFunc) error {
+	num := 1
+	for {
+		if err := f(ctx, param); err != nil {
+			select {
+			case <-ctx.Done():
+				return nil
+			default:
+				log.Printf("NewReaderAutoCommit topic: %s kafka err: %v, reconnect reader num: %d", param.topic, err.Error(), num)
+				num += 1
+				time.Sleep(3 * time.Second)
+			}
+		}
+	}
+}
+
 // NewReaderAutoCommit 消费自动确认.
-func NewReaderAutoCommit(ctx context.Context, topic, groupId string, handle func(kafkago.Message) error) error {
+func NewReaderAutoCommit(ctx context.Context, topic, groupID string, handle func(kafkago.Message) error) error {
+	return reconnect(ctx, consumerParam{
+		topic:   topic,
+		groupID: groupID,
+		handle:  handle,
+	}, readerAutoCommit)
+}
+
+// readerAutoCommit 消费自动确认.
+func readerAutoCommit(ctx context.Context, param consumerParam) error {
 	r := kafkago.NewReader(kafkago.ReaderConfig{
 		Brokers:  cfg.Addr,
-		Topic:    topic,
+		Topic:    param.topic,
 		MaxWait:  time.Second,
-		GroupID:  groupId,
+		GroupID:  param.groupID,
 		MinBytes: 10e3,
 		MaxBytes: 10e6,
 	})
@@ -82,19 +119,28 @@ func NewReaderAutoCommit(ctx context.Context, topic, groupId string, handle func
 		if err != nil {
 			return fmt.Errorf("read msg err: %v", err)
 		}
-		if err = handle(msg); err != nil {
+		if err = param.handle(msg); err != nil {
 			return err
 		}
 	}
 }
 
 // NewReaderAckCommit 消费成功确认.
-func NewReaderAckCommit(ctx context.Context, topic, groupId string, handle func(kafkago.Message) error) error {
+func NewReaderAckCommit(ctx context.Context, topic, groupID string, handle func(kafkago.Message) error) error {
+	return reconnect(ctx, consumerParam{
+		topic:   topic,
+		groupID: groupID,
+		handle:  handle,
+	}, readerAckCommit)
+}
+
+// readerAckCommit 消费成功确认.
+func readerAckCommit(ctx context.Context, param consumerParam) error {
 	r := kafkago.NewReader(kafkago.ReaderConfig{
 		Brokers:  cfg.Addr,
-		Topic:    topic,
+		Topic:    param.topic,
 		MaxWait:  time.Second,
-		GroupID:  groupId,
+		GroupID:  param.groupID,
 		MinBytes: 10e3,
 		MaxBytes: 10e6,
 	})
@@ -104,7 +150,7 @@ func NewReaderAckCommit(ctx context.Context, topic, groupId string, handle func(
 		if err != nil {
 			return fmt.Errorf("fetch msg err: %v", err)
 		}
-		if err = handle(msg); err != nil {
+		if err = param.handle(msg); err != nil {
 			return err
 		}
 		if err = r.CommitMessages(ctx, msg); err != nil {
