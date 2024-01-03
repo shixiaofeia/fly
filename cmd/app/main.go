@@ -14,10 +14,15 @@ import (
 	"fly/pkg/mysql"
 	"fly/pkg/redis"
 	"fly/pkg/safego/safe"
-	"github.com/kataras/iris/v12"
+	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc"
 	"net"
+	"net/http"
+	"os"
+	"os/signal"
 	"sync"
+	"syscall"
+	"time"
 )
 
 var (
@@ -25,8 +30,8 @@ var (
 	configPath  string
 	ctx, cancel = context.WithCancel(context.Background())
 	wg          = new(sync.WaitGroup)
-	app         = iris.New()
 	gServer     = grpc.NewServer()
+	srv         *http.Server
 )
 
 func main() {
@@ -39,6 +44,7 @@ func main() {
 	})
 
 	// 初始化路由
+	app := gin.Default()
 	api.Index(app)
 
 	// rpc
@@ -46,9 +52,17 @@ func main() {
 
 	// 监听端口
 	logging.Info("start Web Server")
-	if err = app.Run(iris.Addr(config.Config.Addr+":"+config.Config.Port), iris.WithoutInterruptHandler); err != nil {
-		logging.Fatal("start Web Server err: " + err.Error())
+	srv = &http.Server{
+		Addr:    config.Config.Addr + ":" + config.Config.Port,
+		Handler: app,
 	}
+	go func() {
+		if err = srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			logging.Fatal("start Web Server err: " + err.Error())
+		}
+	}()
+
+	shutdown()
 }
 
 func init() {
@@ -72,16 +86,6 @@ func init() {
 	if err = mq.Init(config.Config.Mq); err != nil {
 		logging.Fatal("init rabbit mq err: " + err.Error())
 	}
-
-	// 优雅关闭程序
-	iris.RegisterOnInterrupt(func() {
-		cancel()
-		// 关闭所有主机
-		gServer.Stop()
-		_ = app.Shutdown(ctx)
-		wg.Wait()
-		logging.Sync()
-	})
 }
 
 // initRpc 初始化rpc.
@@ -97,4 +101,22 @@ func initRpc() {
 			logging.Fatal("start Rpc Server err: " + err.Error())
 		}
 	})
+}
+
+// shutdown 优雅的关闭
+func shutdown() {
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, os.Interrupt, syscall.SIGQUIT, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+	logging.Info("Shutdown start")
+	cancel()
+	// 关闭所有主机
+	gServer.Stop()
+	shutDownCtx, ShutDownCancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer ShutDownCancel()
+	if err = srv.Shutdown(shutDownCtx); err != nil {
+		logging.Errorf("server shutdown err: %v", err)
+	}
+	wg.Wait()
+	logging.Sync()
 }

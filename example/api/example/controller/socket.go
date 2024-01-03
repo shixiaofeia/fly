@@ -4,23 +4,23 @@ import (
 	"encoding/json"
 	"fly/example/api/example/model"
 	"fly/pkg/ws"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"time"
 
 	"github.com/gorilla/websocket"
-	"github.com/kataras/iris/v12"
 	uuid "github.com/satori/go.uuid"
 )
 
 // SocketHealth socket.
-func SocketHealth(ctx iris.Context) {
+func SocketHealth(ctx *gin.Context) {
 	upgrade := websocket.Upgrader{
 		// 允许跨域
 		CheckOrigin: func(r *http.Request) bool {
 			return true
 		},
 	}
-	conn, err := upgrade.Upgrade(ctx.ResponseWriter(), ctx.Request(), nil)
+	conn, err := upgrade.Upgrade(ctx.Writer, ctx.Request, nil)
 	if err != nil {
 		return
 	}

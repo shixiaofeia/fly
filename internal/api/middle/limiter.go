@@ -4,8 +4,8 @@ import (
 	"fly/internal/httpcode"
 	"fly/pkg/redis"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis_rate"
-	"github.com/kataras/iris/v12"
 	"golang.org/x/time/rate"
 	"time"
 )
@@ -27,9 +27,9 @@ var exampleStandAloneLimiterMap = map[string]*rate.Limiter{
 }
 
 // LimiterMiddle 分布式限流中间件.
-func LimiterMiddle(ctx iris.Context) {
+func LimiterMiddle(ctx *gin.Context) {
 	var (
-		uri    = ctx.Request().RequestURI
+		uri    = ctx.Request.RequestURI
 		client = redis.NewClusterClient()
 		key    = uri
 	)
@@ -47,9 +47,9 @@ func LimiterMiddle(ctx iris.Context) {
 }
 
 // StandAloneLimiterMiddle 单机限流中间件.
-func StandAloneLimiterMiddle(ctx iris.Context) {
+func StandAloneLimiterMiddle(ctx *gin.Context) {
 	var (
-		uri = ctx.Request().RequestURI
+		uri = ctx.Request.RequestURI
 	)
 	limiter, ok := exampleStandAloneLimiterMap[uri]
 	if ok {

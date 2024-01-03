@@ -9,12 +9,12 @@ import (
 
 type (
 	DemoCreateReq struct {
-		Name   string            `json:"name" validate:"nonzero"`
-		Amount decimal.Decimal   `json:"amount" validate:"nonzero"`
-		IsFree int               `json:"isFree" validate:"nonzero,min=1,max=2"`
-		Remark string            `json:"remark" validate:"nonzero"`
-		Items  sqldb.StructItem  `json:"items" validate:"nonzero"`
-		Info   datatypes.JSONMap `json:"info" validate:"nonzero"`
+		Name   string            `json:"name" binding:"required"`
+		Amount decimal.Decimal   `json:"amount" binding:"required"`
+		IsFree int               `json:"isFree" binding:"required,min=1,max=2"`
+		Remark string            `json:"remark" binding:"required"`
+		Items  sqldb.StructItem  `json:"items" binding:"required"`
+		Info   datatypes.JSONMap `json:"info" binding:"required"`
 	}
 
 	DemoRecordReq struct {
@@ -34,21 +34,21 @@ type (
 	}
 
 	DemoInfoReq struct {
-		DemoID int64 `json:"demoID" validate:"nonzero"`
+		DemoID int64 `json:"demoID" binding:"required"`
 	}
 	DemoInfoResp struct {
 		sqldb.Demo
 	}
 
 	DemoUpdateReq struct {
-		DemoID int64           `json:"demoID" validate:"nonzero"`
+		DemoID int64           `json:"demoID" binding:"required"`
 		Name   string          `json:"name"`
 		Amount decimal.Decimal `json:"amount"`
-		IsFree int             `json:"isFree" validate:"min=0,max=2"`
+		IsFree int             `json:"isFree" binding:"min=0,max=2"`
 		Remark string          `json:"remark"`
 	}
 
 	DemoDeleteReq struct {
-		DemoID int64 `json:"demoID" validate:"nonzero"`
+		DemoID int64 `json:"demoID" binding:"required"`
 	}
 )

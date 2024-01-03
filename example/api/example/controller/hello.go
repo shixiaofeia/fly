@@ -4,12 +4,11 @@ import (
 	"fly/example/api/example/model"
 	"fly/internal/httpcode"
 	"fmt"
-
-	"github.com/kataras/iris/v12"
+	"github.com/gin-gonic/gin"
 )
 
 // Hello 请求示例.
-func Hello(ctx iris.Context) {
+func Hello(ctx *gin.Context) {
 	req := &model.HelloReq{}
 	r, err := httpcode.NewRequest(ctx, req)
 	if err != nil {
@@ -23,7 +22,7 @@ func Hello(ctx iris.Context) {
 }
 
 // Export 导出示例.
-func Export(ctx iris.Context) {
+func Export(ctx *gin.Context) {
 	r, err := httpcode.NewRequest(ctx, nil)
 	if err != nil {
 		return

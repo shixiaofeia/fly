@@ -3,28 +3,28 @@ package main
 import (
 	"fly/pkg/safego/safe"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 	"time"
 
 	"github.com/gorilla/websocket"
-	"github.com/kataras/iris/v12"
 )
 
 func main() {
-	app := iris.New()
-	app.Get("/websocket_endpoint", Hello)
-	log.Fatal(app.Run(iris.Addr(":9999")))
+	app := gin.Default()
+	app.GET("/websocket_endpoint", Hello)
+	log.Fatal(app.Run(":9999"))
 }
 
-func Hello(ctx iris.Context) {
+func Hello(ctx *gin.Context) {
 	upgrade := websocket.Upgrader{
 		// 允许跨域
 		CheckOrigin: func(r *http.Request) bool {
 			return true
 		},
 	}
-	conn, err := upgrade.Upgrade(ctx.ResponseWriter(), ctx.Request(), nil)
+	conn, err := upgrade.Upgrade(ctx.Writer, ctx.Request, nil)
 	if err != nil {
 		return
 	}

@@ -3,11 +3,11 @@ package controller
 import (
 	"fly/example/api/example/model"
 	"fly/internal/httpcode"
-	"github.com/kataras/iris/v12"
+	"github.com/gin-gonic/gin"
 )
 
 // DemoCreate demo创建.
-func (slf *DemoController) DemoCreate(ctx iris.Context) {
+func (slf *DemoController) DemoCreate(ctx *gin.Context) {
 	var (
 		req    = new(model.DemoCreateReq)
 		r, err = httpcode.NewRequest(ctx, req)
@@ -26,7 +26,7 @@ func (slf *DemoController) DemoCreate(ctx iris.Context) {
 }
 
 // DemoRecords demo列表.
-func (slf *DemoController) DemoRecords(ctx iris.Context) {
+func (slf *DemoController) DemoRecords(ctx *gin.Context) {
 	var (
 		req    = new(model.DemoRecordReq)
 		r, err = httpcode.NewRequest(ctx, req)
@@ -46,7 +46,7 @@ func (slf *DemoController) DemoRecords(ctx iris.Context) {
 }
 
 // DemoInfo demo详情.
-func (slf *DemoController) DemoInfo(ctx iris.Context) {
+func (slf *DemoController) DemoInfo(ctx *gin.Context) {
 	var (
 		req    = new(model.DemoInfoReq)
 		r, err = httpcode.NewRequest(ctx, req)
@@ -66,7 +66,7 @@ func (slf *DemoController) DemoInfo(ctx iris.Context) {
 }
 
 // DemoUpdate demo更新.
-func (slf *DemoController) DemoUpdate(ctx iris.Context) {
+func (slf *DemoController) DemoUpdate(ctx *gin.Context) {
 	var (
 		req    = new(model.DemoUpdateReq)
 		r, err = httpcode.NewRequest(ctx, req)
@@ -85,7 +85,7 @@ func (slf *DemoController) DemoUpdate(ctx iris.Context) {
 }
 
 // DemoDelete demo删除.
-func (slf *DemoController) DemoDelete(ctx iris.Context) {
+func (slf *DemoController) DemoDelete(ctx *gin.Context) {
 	var (
 		req    = new(model.DemoDeleteReq)
 		r, err = httpcode.NewRequest(ctx, req)
